@@ -204,6 +204,36 @@ function ResultContent() {
           </div>
         </div>
 
+        {/* 테토남 등 유형별 상세 가이드 (fullGuide 있을 때만) */}
+        {result.fullGuide && (
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+              <span>📌</span>
+              <span>상세 가이드</span>
+            </h3>
+            <div className="bg-gradient-to-br from-pastel-blue/20 to-pastel-purple/20 rounded-2xl p-6 border border-gray-100">
+              <p className="text-gray-700 leading-relaxed whitespace-pre-line text-sm">
+                {result.fullGuide}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* 상세 설명 - 왜 이런 결과가 나왔는지 (SEO·가치 있는 콘텐츠) */}
+        {result.detailExplanation && (
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+              <span>📖</span>
+              <span>왜 이런 결과가 나왔을까요?</span>
+            </h3>
+            <div className="bg-white/80 rounded-2xl p-6 border border-gray-100">
+              <p className="text-gray-700 leading-relaxed whitespace-pre-line text-sm">
+                {result.detailExplanation}
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* 공유 버튼들 */}
         <div className="space-y-3 pt-4">
           <button

@@ -1,21 +1,39 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { questions } from "@/data/questions";
+import { questions, type Question } from "@/data/questions";
+
+/** Fisher-Yates 셔플 - 배열을 랜덤 순서로 섞음 */
+function shuffleArray<T>(array: T[]): T[] {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
 
 export default function TestPage() {
   const router = useRouter();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
 
-  const progress = ((currentQuestion + 1) / questions.length) * 100;
+  // 새로 테스트 시작할 때마다 각 질문의 선택지 순서를 랜덤으로 섞음 (한 번만 실행)
+  const shuffledQuestions = useMemo<Question[]>(() => {
+    return questions.map((q) => ({
+      ...q,
+      answers: shuffleArray(q.answers),
+    }));
+  }, []);
+
+  const progress = ((currentQuestion + 1) / shuffledQuestions.length) * 100;
 
   const handleAnswer = (type: string) => {
     const newAnswers = [...answers, type];
     setAnswers(newAnswers);
 
-    if (currentQuestion < questions.length - 1) {
+    if (currentQuestion < shuffledQuestions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
       // 모든 질문이 끝나면 로딩 페이지로 이동
@@ -31,7 +49,7 @@ export default function TestPage() {
     }
   };
 
-  const question = questions[currentQuestion];
+  const question = shuffledQuestions[currentQuestion];
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 py-8">
@@ -40,7 +58,7 @@ export default function TestPage() {
         <div className="space-y-2">
           <div className="flex justify-between text-sm text-gray-600">
             <span className="font-medium">
-              질문 {currentQuestion + 1} / {questions.length}
+              질문 {currentQuestion + 1} / {shuffledQuestions.length}
             </span>
             <span className="text-pink-500 font-bold">
               {Math.round(progress)}%
