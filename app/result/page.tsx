@@ -35,7 +35,7 @@ function ResultContent() {
 
     // 카카오 SDK 초기화
     if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_KEY || "YOUR_KAKAO_KEY");
+      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_KEY || "3226a5c1a88b15cf36cbd977ec3b1821");
     }
   }, [searchParams, router]);
 
