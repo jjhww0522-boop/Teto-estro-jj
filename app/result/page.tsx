@@ -45,11 +45,12 @@ function ResultContent() {
       return;
     }
 
-    // 카카오 공유 링크는 반드시 등록된 도메인(새 주소)으로 보내야 클릭 시 열림
+    // 공유 시 링크 클릭하면 이 결과 페이지로 바로 들어오도록 URL에 answers 포함
+    const answersParam = searchParams.get("answers") || "";
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://teto-potato-test.vercel.app";
-    const pathname = typeof window !== "undefined" ? window.location.pathname : "/result";
-    const search = typeof window !== "undefined" ? window.location.search : "";
-    const resultUrl = `${baseUrl}${pathname}${search}`;
+    const resultUrl = answersParam
+      ? `${baseUrl}/result?answers=${encodeURIComponent(answersParam)}`
+      : baseUrl;
     const homeUrl = baseUrl;
 
     // 공유 문구 길게 (짧게만 나오는 문제 해결)
@@ -60,7 +61,6 @@ function ResultContent() {
       content: {
         title: `나는 ${result.type}! ${result.title}`,
         description: longDescription,
-        // 썸네일 없으면 placeholder. public/images/main-thumbnail.png 추가 시 아래를 `${homeUrl}/images/main-thumbnail.png` 로 변경
         imageUrl: "https://via.placeholder.com/1200x630/FFD6E8/5a4a6a?text=테토남+연애+테스트",
         link: {
           mobileWebUrl: resultUrl,
