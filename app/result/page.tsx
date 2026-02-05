@@ -45,15 +45,12 @@ function ResultContent() {
       return;
     }
 
-    // 절대 URL 생성 (카카오는 도메인 등록된 URL만 링크 연결됨)
-    const origin =
-      typeof window !== "undefined"
-        ? window.location.origin
-        : process.env.NEXT_PUBLIC_SITE_URL || "https://teto-estro-jj-knyb.vercel.app";
+    // 카카오 공유 링크는 반드시 등록된 도메인(새 주소)으로 보내야 클릭 시 열림
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://teto-potato-test.vercel.app";
     const pathname = typeof window !== "undefined" ? window.location.pathname : "/result";
     const search = typeof window !== "undefined" ? window.location.search : "";
-    const resultUrl = `${origin}${pathname}${search}`;
-    const homeUrl = origin;
+    const resultUrl = `${baseUrl}${pathname}${search}`;
+    const homeUrl = baseUrl;
 
     // 공유 문구 길게 (짧게만 나오는 문제 해결)
     const longDescription = `${result.description}\n\n${result.loveStyle}`.slice(0, 200);
