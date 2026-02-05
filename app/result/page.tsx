@@ -53,8 +53,10 @@ function ResultContent() {
       : baseUrl;
     const homeUrl = baseUrl;
 
-    // 공유 문구 길게 (짧게만 나오는 문제 해결)
-    const longDescription = `${result.description}\n\n${result.loveStyle}`.slice(0, 200);
+    // 설명 + 링크를 문구에 넣어서 카카오톡에 링크가 텍스트로도 전달되게 함
+    const textPart = `${result.description}\n\n${result.loveStyle}`.slice(0, 150);
+    const linkText = `\n\n🔗 결과 보기: ${resultUrl}`;
+    const longDescription = textPart + linkText;
 
     window.Kakao.Share.sendDefault({
       objectType: "feed",
