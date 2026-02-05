@@ -178,3 +178,22 @@ export function calculateResult(answers: string[]): string {
 
   return maxType;
 }
+
+/** sitemap/URL용 슬러그 ↔ 결과 키 매핑 (예: /result/teto → T) */
+export const SLUG_TO_KEY: Record<string, string> = {
+  teto: "T",
+  potato: "P",
+  egen: "E",
+  sweet_potato: "G",
+  cheese: "C",
+  salsa: "S",
+  ehem: "H",
+  era: "A",
+};
+
+export const RESULT_SLUGS = Object.keys(SLUG_TO_KEY);
+
+export function getResultBySlug(slug: string): ResultType | null {
+  const key = SLUG_TO_KEY[slug];
+  return key ? results[key] ?? null : null;
+}
