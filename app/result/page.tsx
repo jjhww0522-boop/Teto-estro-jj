@@ -45,25 +45,44 @@ function ResultContent() {
       return;
     }
 
-    const url = typeof window !== "undefined" ? window.location.href : "";
+    // 절대 URL 생성 (카카오는 도메인 등록된 URL만 링크 연결됨)
+    const origin =
+      typeof window !== "undefined"
+        ? window.location.origin
+        : process.env.NEXT_PUBLIC_SITE_URL || "https://teto-estro-jj-knyb.vercel.app";
+    const pathname = typeof window !== "undefined" ? window.location.pathname : "/result";
+    const search = typeof window !== "undefined" ? window.location.search : "";
+    const resultUrl = `${origin}${pathname}${search}`;
+    const homeUrl = origin;
+
+    // 공유 문구 길게 (짧게만 나오는 문제 해결)
+    const longDescription = `${result.description}\n\n${result.loveStyle}`.slice(0, 200);
 
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
         title: `나는 ${result.type}! ${result.title}`,
-        description: result.description,
-        imageUrl: "https://via.placeholder.com/800x600.png?text=Test+Result",
+        description: longDescription,
+        // 썸네일 없으면 placeholder. public/images/main-thumbnail.png 추가 시 아래를 `${homeUrl}/images/main-thumbnail.png` 로 변경
+        imageUrl: "https://via.placeholder.com/1200x630/FFD6E8/5a4a6a?text=테토남+연애+테스트",
         link: {
-          mobileWebUrl: url,
-          webUrl: url,
+          mobileWebUrl: resultUrl,
+          webUrl: resultUrl,
         },
       },
       buttons: [
         {
+          title: "결과 보기",
+          link: {
+            mobileWebUrl: resultUrl,
+            webUrl: resultUrl,
+          },
+        },
+        {
           title: "나도 테스트하기",
           link: {
-            mobileWebUrl: url.split("/result")[0],
-            webUrl: url.split("/result")[0],
+            mobileWebUrl: homeUrl,
+            webUrl: homeUrl,
           },
         },
       ],
