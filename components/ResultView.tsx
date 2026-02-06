@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
-import AdPlaceholder from "@/components/AdPlaceholder";
 import html2canvas from "html2canvas";
 import type { ResultType } from "@/data/results";
 
@@ -33,7 +32,7 @@ export default function ResultView({ result, shareUrl }: ResultViewProps) {
       alert("카카오톡 공유 기능을 사용할 수 없습니다.");
       return;
     }
-    const textPart = `${result.description}\n\n${result.loveStyle}`.slice(0, 150);
+    const textPart = `${result.tagline}\n\n${result.oneLiner}`.slice(0, 150);
     const linkText = `\n\n🔗 결과 보기: ${shareUrl}`;
     const longDescription = textPart + linkText;
     window.Kakao.Share.sendDefault({
@@ -81,45 +80,70 @@ export default function ResultView({ result, shareUrl }: ResultViewProps) {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 py-8">
-      <AdPlaceholder position="top" />
       <div
         ref={resultCardRef}
         className="card max-w-2xl w-full space-y-8 bg-gradient-to-br from-white via-pastel-pink/10 to-pastel-purple/10"
         style={{ backgroundColor: "#ffffff" }}
       >
+        {/* 헤더: 이모지 + 유형명: 부제 */}
         <div className="text-center space-y-4">
           <div className="text-8xl animate-bounce-slow">{result.emoji}</div>
-          <h1 className="text-4xl font-bold text-gray-800">{result.type}</h1>
-          <h2 className="text-2xl font-bold bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">
-            {result.title}
-          </h2>
-          <p className="text-lg text-gray-700 leading-relaxed px-4">{result.description}</p>
+          <h1 className="text-3xl font-bold text-gray-800">
+            {result.type}: {result.title}
+          </h1>
+          <blockquote className="text-lg text-gray-600 italic border-l-4 border-pastel-pink/50 pl-4 py-1 text-left">
+            &ldquo;{result.tagline}&rdquo;
+          </blockquote>
+          <p className="text-base text-gray-600 font-medium">{result.oneLiner}</p>
         </div>
 
-        <div className="space-y-4">
+        {/* 키워드 태그 */}
+        <div className="flex flex-wrap gap-2 justify-center">
+          {result.keywords.map((keyword, index) => (
+            <span
+              key={index}
+              className="px-3 py-1.5 rounded-full text-sm font-medium bg-pastel-yellow/30 text-gray-700 border border-pastel-yellow/50"
+            >
+              #{keyword}
+            </span>
+          ))}
+        </div>
+
+        {/* 당신의 연애는... */}
+        <div className="space-y-3">
           <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-            <span>✨</span><span>나의 특징</span>
+            <span>🔍</span>
+            <span>당신의 연애는...</span>
           </h3>
-          <div className="bg-pastel-yellow/30 rounded-2xl p-6 space-y-3">
-            {result.characteristics.map((char: string, index: number) => (
-              <div key={index} className="flex items-start gap-2 text-gray-700"><span>{char}</span></div>
-            ))}
+          <div className="bg-pastel-pink/20 rounded-2xl p-6 border border-pastel-pink/30">
+            <p className="text-gray-700 leading-relaxed">{result.loveDescription}</p>
           </div>
         </div>
 
-        <div className="space-y-4">
+        {/* 체크 포인트 Good / Bad */}
+        <div className="space-y-3">
           <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-            <span>💕</span><span>연애 스타일</span>
+            <span>✅</span>
+            <span>체크 포인트</span>
           </h3>
-          <div className="bg-pastel-pink/30 rounded-2xl p-6">
-            <p className="text-gray-700 leading-relaxed">{result.loveStyle}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-pastel-mint/30 rounded-2xl p-4 border border-pastel-mint/40">
+              <p className="text-xs font-bold text-pastel-mint/80 uppercase tracking-wide mb-2">Good</p>
+              <p className="text-gray-700 text-sm leading-relaxed">{result.checkGood}</p>
+            </div>
+            <div className="bg-pastel-peach/30 rounded-2xl p-4 border border-pastel-peach/40">
+              <p className="text-xs font-bold text-pastel-peach/80 uppercase tracking-wide mb-2">Bad</p>
+              <p className="text-gray-700 text-sm leading-relaxed">{result.checkBad}</p>
+            </div>
           </div>
         </div>
 
+        {/* 찰떡궁합 / 조심궁합 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-3">
             <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
-              <span>💚</span><span>찰떡궁합</span>
+              <span>💚</span>
+              <span>찰떡궁합</span>
             </h3>
             <div className="bg-pastel-mint/30 rounded-2xl p-4">
               {result.goodMatch.map((match: string, index: number) => (
@@ -129,7 +153,8 @@ export default function ResultView({ result, shareUrl }: ResultViewProps) {
           </div>
           <div className="space-y-3">
             <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
-              <span>💔</span><span>조심궁합</span>
+              <span>💔</span>
+              <span>조심궁합</span>
             </h3>
             <div className="bg-pastel-peach/30 rounded-2xl p-4">
               {result.badMatch.map((match: string, index: number) => (
@@ -139,28 +164,18 @@ export default function ResultView({ result, shareUrl }: ResultViewProps) {
           </div>
         </div>
 
-        {result.fullGuide && (
-          <div className="space-y-4">
-            <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-              <span>📌</span><span>상세 가이드</span>
-            </h3>
-            <div className="bg-gradient-to-br from-pastel-blue/20 to-pastel-purple/20 rounded-2xl p-6 border border-gray-100">
-              <p className="text-gray-700 leading-relaxed whitespace-pre-line text-sm">{result.fullGuide}</p>
-            </div>
+        {/* 왜 이런 결과가? (심리학적 분석) */}
+        <div className="space-y-3">
+          <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+            <span>💡</span>
+            <span>왜 이런 결과가? (심리학적 분석)</span>
+          </h3>
+          <div className="bg-gradient-to-br from-pastel-blue/20 to-pastel-purple/20 rounded-2xl p-6 border border-gray-100">
+            <p className="text-gray-700 leading-relaxed text-sm">{result.psychologicalAnalysis}</p>
           </div>
-        )}
+        </div>
 
-        {result.detailExplanation && (
-          <div className="space-y-4">
-            <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-              <span>📖</span><span>왜 이런 결과가 나왔을까요?</span>
-            </h3>
-            <div className="bg-white/80 rounded-2xl p-6 border border-gray-100">
-              <p className="text-gray-700 leading-relaxed whitespace-pre-line text-sm">{result.detailExplanation}</p>
-            </div>
-          </div>
-        )}
-
+        {/* 액션 버튼 */}
         <div className="space-y-3 pt-4">
           <button
             onClick={shareToKakao}
@@ -189,7 +204,6 @@ export default function ResultView({ result, shareUrl }: ResultViewProps) {
           </Link>
         </div>
       </div>
-      <AdPlaceholder position="bottom" />
     </div>
   );
 }

@@ -47,20 +47,6 @@ function LoadingContent() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
-      {/* 상단 광고 영역 */}
-      <div className="w-full max-w-2xl mb-8">
-        <div className="bg-gradient-to-r from-pastel-pink/20 via-pastel-purple/20 to-pastel-blue/20 rounded-2xl p-6 border-2 border-dashed border-pastel-purple/30 backdrop-blur-sm">
-          <div className="flex flex-col items-center justify-center space-y-2 min-h-[100px]">
-            <p className="text-xs text-gray-400">Advertisement</p>
-            <div className="bg-white/40 rounded-xl p-6 w-full text-center">
-              <p className="text-sm text-gray-400 font-mono">
-                728 x 90 (Top Ad)
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* 메인 로딩 화면 */}
       <div className="card max-w-md w-full text-center space-y-8">
         {/* 로딩 애니메이션 */}
@@ -118,20 +104,6 @@ function LoadingContent() {
             <span className={`text-sm ${progress > 80 ? 'text-gray-700 font-medium' : 'text-gray-400'}`}>
               궁합 정보 생성 중
             </span>
-          </div>
-        </div>
-      </div>
-
-      {/* 하단 광고 영역 */}
-      <div className="w-full max-w-2xl mt-8">
-        <div className="bg-gradient-to-r from-pastel-mint/20 via-pastel-blue/20 to-pastel-purple/20 rounded-2xl p-6 border-2 border-dashed border-pastel-mint/30 backdrop-blur-sm">
-          <div className="flex flex-col items-center justify-center space-y-2 min-h-[100px]">
-            <p className="text-xs text-gray-400">Advertisement</p>
-            <div className="bg-white/40 rounded-xl p-6 w-full text-center">
-              <p className="text-sm text-gray-400 font-mono">
-                728 x 90 (Bottom Ad)
-              </p>
-            </div>
           </div>
         </div>
       </div>

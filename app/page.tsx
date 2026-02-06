@@ -13,19 +13,21 @@ export default function Home() {
         
         {/* 제목 */}
         <div className="space-y-3">
-          <h1 className="text-4xl font-bold text-gray-800">
-            테토남/포테토남/에겐남
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
+            포테토 연애 도감
           </h1>
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">
-            유형 테스트
+          <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">
+            나의 &apos;감자&apos; 유형 찾기
           </h2>
         </div>
         
         {/* 설명 */}
         <p className="text-gray-600 text-lg leading-relaxed px-4">
-          당신은 어떤 남자친구 유형인가요?<br />
-          12개의 질문으로 알아보는<br />
-          <span className="font-bold text-pink-500">8가지 연애 스타일!</span>
+          겉바속촉? 포근달달?<br />
+          당신의 연애 온도와 닮은 감자는?
+        </p>
+        <p className="text-gray-600 text-base leading-relaxed px-4">
+          12가지 질문을 통해 <span className="font-bold text-pink-500">숨겨진 8가지 로맨스 취향</span>을 분석해 드려요.
         </p>
         <p className="text-xs text-gray-400">
           테토·포테토·에겐·고구마·치즈·살사·에헴·에라
@@ -34,7 +36,7 @@ export default function Home() {
         {/* 시작 버튼 */}
         <Link href="/test">
           <button className="btn-primary w-full text-xl">
-            테스트 시작하기 ✨
+            내 유형 확인하러 가기 🥔
           </button>
         </Link>
         
