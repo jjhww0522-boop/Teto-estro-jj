@@ -1,28 +1,22 @@
+import { RESULTS_DATA as RESULTS_DATA_CONST } from "@/constants/results";
+
 export interface ResultType {
   type: string;
   title: string;
   emoji: string;
-  /** 메인 캐치프레이즈 (인용 문구) */
   tagline: string;
-  /** 한 줄 요약 */
   oneLiner: string;
-  /** 해시태그 키워드 */
   keywords: string[];
-  /** 당신의 연애는... 본문 */
   loveDescription: string;
-  /** 체크 포인트 Good */
   checkGood: string;
-  /** 체크 포인트 Bad */
   checkBad: string;
-  /** 왜 이런 결과가? (심리학적 분석) */
   psychologicalAnalysis: string;
   goodMatch: string[];
   badMatch: string[];
-  /** 구글/SEO용 상세 설명 (선택) */
+  /** 궁합 페이지용: 타 유형 slug → 점수·설명 */
+  compatibilities?: Record<string, { score: number; description: string }>;
   detailExplanation?: string;
-  /** 레거시: 특징 목록 (표시 생략 가능) */
   characteristics?: string[];
-  /** 레거시: 연애 스타일 한 줄 (표시 생략 가능) */
   loveStyle?: string;
   fullGuide?: string;
 }
@@ -161,7 +155,7 @@ export function calculateResult(answers: string[]): string {
   return maxType;
 }
 
-/** sitemap/URL용 슬러그 ↔ 결과 키 매핑 (예: /result/teto → T) */
+/** sitemap/URL용 슬러그 ↔ 결과 키 매핑. 여성형(_f)은 동일 키로 매핑 */
 export const SLUG_TO_KEY: Record<string, string> = {
   teto: "T",
   potato: "P",
@@ -171,11 +165,25 @@ export const SLUG_TO_KEY: Record<string, string> = {
   salsa: "S",
   ehem: "H",
   era: "A",
+  teto_f: "T",
+  potato_f: "P",
+  egen_f: "E",
+  sweet_potato_f: "G",
+  cheese_f: "C",
+  salsa_f: "S",
+  ehem_f: "H",
+  era_f: "A",
 };
 
 export const RESULT_SLUGS = Object.keys(SLUG_TO_KEY);
 
 export function getResultBySlug(slug: string): ResultType | null {
   const key = SLUG_TO_KEY[slug];
-  return key ? results[key] ?? null : null;
+  const base = key ? results[key] ?? null : null;
+  if (!base) return null;
+  const overlay = RESULTS_DATA_CONST[slug];
+  if (overlay) {
+    return { ...base, ...overlay } as ResultType;
+  }
+  return base;
 }

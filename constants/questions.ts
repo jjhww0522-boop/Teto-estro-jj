@@ -1,6 +1,7 @@
 /**
  * 질문 데이터 및 가중치 설정 (비밀 매핑 테이블)
- * 관찰자 시점: 여친이 남친의 데이트 스타일을 관찰해 '테토 농도'를 분석
+ * 관찰자 시점: 연인이 파트너의 데이트 스타일을 관찰해 '테토 농도' 분석
+ * {subject} → '그'(남친 분석) 또는 '그녀'(여친 분석)로 동적 치환
  * 캐릭터 키: teto, potato, egen, sweet_potato, cheese, salsa, ehem, era
  */
 
@@ -13,14 +14,20 @@ export type QuestionOption = { text: string; scores: ScoreMap };
 
 export type QuestionItem = {
   id: number;
+  /** 질문 문구. {subject}는 '그' 또는 '그녀'로 치환됨 */
   question: string;
   options: QuestionOption[];
 };
 
+/** 주어 치환: question 문자열 내 {subject} → '그' | '그녀' */
+export function formatQuestion(question: string, subject: "그" | "그녀"): string {
+  return question.replace(/\{subject\}/g, subject);
+}
+
 export const QUESTIONS: QuestionItem[] = [
   {
     id: 1,
-    question: "데이트 코스를 정할 때, 그의 스타일은?",
+    question: "데이트 코스를 정할 때, {subject}의 스타일은?",
     options: [
       { text: "\"여기 가자!\" 이미 맛집부터 동선까지 농도 100% 계획을 짜온다.", scores: { teto: 2 } },
       { text: "\"뭐 먹고 싶어?\" 내 의견을 묻고 조심스럽게 옵션을 제안한다.", scores: { potato: 1, sweet_potato: 1 } },
@@ -30,7 +37,7 @@ export const QUESTIONS: QuestionItem[] = [
   },
   {
     id: 2,
-    question: "약속 장소에서 나를 발견했을 때, 그의 반응은?",
+    question: "약속 장소에서 나를 발견했을 때, {subject}의 반응은?",
     options: [
       { text: "\"어이~! 여기야!\" 멀리서부터 크게 손 흔들며 환하게 웃어준다.", scores: { salsa: 1 } },
       { text: "\"오느라 고생했어.\" 부드럽게 미소 지으며 자연스럽게 짐을 들어준다.", scores: { cheese: 1 } },
@@ -40,7 +47,7 @@ export const QUESTIONS: QuestionItem[] = [
   },
   {
     id: 3,
-    question: "북적이는 핫플에서 내가 \"사람 너무 많아서 기 빨려..\"라고 하면, 그의 반응은?",
+    question: "북적이는 핫플에서 내가 \"사람 너무 많아서 기 빨려..\"라고 하면, {subject}의 반응은?",
     options: [
       { text: "\"그럼 바로 다른 데 갈까? 근처에 조용한 곳 내가 알고 있어.\"", scores: { teto: 1 } },
       { text: "\"고생이 많네.. 우리 조금만 더 기운 내보자! 다 먹고 맛있는 거 사줄게.\"", scores: { salsa: 1, cheese: 1 } },
@@ -50,7 +57,7 @@ export const QUESTIONS: QuestionItem[] = [
   },
   {
     id: 4,
-    question: "메뉴를 고를 때, 그가 가장 중시하는 건?",
+    question: "메뉴를 고를 때, {subject}가 가장 중시하는 건?",
     options: [
       { text: "실패 없는 정석. 이 집 대표 메뉴로 무조건 고른다.", scores: { potato: 1, ehem: 1 } },
       { text: "사진 찍기 예쁜 메뉴. 비주얼과 플레이팅이 감각적인 걸 고른다.", scores: { egen: 1 } },
@@ -60,7 +67,7 @@ export const QUESTIONS: QuestionItem[] = [
   },
   {
     id: 5,
-    question: "내가 \"오늘 나 좀 피곤해 보여?\"라고 물으면, 그의 반응은?",
+    question: "내가 \"오늘 나 좀 피곤해 보여?\"라고 물으면, {subject}의 반응은?",
     options: [
       { text: "\"어제 몇 시에 잤어? 커피 좀 마실까?\" 원인과 해결책부터 찾는다.", scores: { ehem: 1 } },
       { text: "\"아이구.. 속상해. 오늘 무리하지 말고 일찍 들어갈까?\" 마음부터 달래준다.", scores: { egen: 1 } },
@@ -70,7 +77,7 @@ export const QUESTIONS: QuestionItem[] = [
   },
   {
     id: 6,
-    question: "밥 먹고 나왔더니 비가 온다. 우산이 하나뿐일 때 그의 대처는?",
+    question: "밥 먹고 나왔더니 비가 온다. 우산이 하나뿐일 때 {subject}의 대처는?",
     options: [
       { text: "\"잠시만, 편의점 위치 파악 끝!\" 10초 만에 달려가 우산을 하나 더 사온다.", scores: { teto: 1 } },
       { text: "\"오히려 좋아!\" 우산을 나 쪽으로 더 기울여주며 딱 붙어서 걷는다.", scores: { cheese: 1, salsa: 1 } },
@@ -80,7 +87,7 @@ export const QUESTIONS: QuestionItem[] = [
   },
   {
     id: 7,
-    question: "카페에서 내가 \"만약 우리가 헤어진다면 어떨 것 같아?\"라고 묻으면, 그의 반응은?",
+    question: "카페에서 내가 \"만약 우리가 헤어진다면 어떨 것 같아?\"라고 묻으면, {subject}의 반응은?",
     options: [
       { text: "\"갑자기 왜 그런 말을 해? 무슨 일 있어?\" 이유를 논리적으로 묻는다.", scores: { ehem: 1, teto: 1 } },
       { text: "\"상상만 해도 너무 슬퍼.. 우리 절대 헤어지지 말자.\" 울컥하며 감정 이입한다.", scores: { egen: 1 } },
@@ -90,7 +97,7 @@ export const QUESTIONS: QuestionItem[] = [
   },
   {
     id: 8,
-    question: "데이트 중 사소한 오해로 분위기가 냉랭해졌을 때, 그의 스타일은?",
+    question: "데이트 중 사소한 오해로 분위기가 냉랭해졌을 때, {subject}의 스타일은?",
     options: [
       { text: "\"이건 내가 이래서 그랬던 거야.\" 논리적으로 상황을 설명하고 오해를 바로 푼다.", scores: { teto: 1, ehem: 1 } },
       { text: "\"기분 나쁘게 해서 미안해.. 화 풀릴 때까지 기다릴게.\" 내 감정을 먼저 살핀다.", scores: { potato: 1, sweet_potato: 1 } },
@@ -100,7 +107,7 @@ export const QUESTIONS: QuestionItem[] = [
   },
   {
     id: 9,
-    question: "내 사진을 찍어줄 때, 그의 스타일은?",
+    question: "내 사진을 찍어줄 때, {subject}의 스타일은?",
     options: [
       { text: "\"수평 맞추고 발끝은 선에 맞춰야지.\" 완벽한 구도를 위해 여러 번 찍는다.", scores: { ehem: 1, potato: 1 } },
       { text: "\"지금 표정 너무 좋다!\" 분위기와 찰나의 감성을 담는 데 집중한다.", scores: { egen: 1, era: 1 } },
@@ -110,7 +117,7 @@ export const QUESTIONS: QuestionItem[] = [
   },
   {
     id: 10,
-    question: "데이트 종료 직전, \"2차로 어디 갈까?\"에 그의 대답은?",
+    question: "데이트 종료 직전, \"2차로 어디 갈까?\"에 {subject}의 대답은?",
     options: [
       { text: "\"이대로 헤어지기 아쉽지! 힙한 펍 하나 알아놨는데 거기로 갈까?\"", scores: { salsa: 1, teto: 1 } },
       { text: "\"오늘 정말 즐거웠어! 이제는 각자 집에서 편하게 쉬는 게 어때?\"", scores: { sweet_potato: 1, ehem: 1 } },
@@ -120,7 +127,7 @@ export const QUESTIONS: QuestionItem[] = [
   },
   {
     id: 11,
-    question: "내가 준비한 선물이 그의 취향과 정반대일 때, 그의 반응은?",
+    question: "내가 준비한 선물이 {subject}의 취향과 정반대일 때, {subject}의 반응은?",
     options: [
       { text: "\"진짜 감동이야.. 나 생각하며 골랐을 그 마음이 너무 예쁘다.\"", scores: { egen: 1, potato: 1 } },
       { text: "\"우와 고마워! 잘 쓸게!\" 리액션은 크게 하지만 속으로는 활용도를 생각하는 눈치.", scores: { cheese: 1, salsa: 1 } },
@@ -130,7 +137,7 @@ export const QUESTIONS: QuestionItem[] = [
   },
   {
     id: 12,
-    question: "데이트를 마치고 헤어질 때, 그의 마무리 스타일은?",
+    question: "데이트를 마치고 헤어질 때, {subject}의 마무리 스타일은?",
     options: [
       { text: "\"오늘 정말 행복했다~\" 같이 찍은 사진을 다시 보며 몽글몽글해한다.", scores: { egen: 1, salsa: 1 } },
       { text: "\"오늘 쓴 거 정리하고, 내일 할 일 미리 체크해야지.\" 깔끔하게 마무리한다.", scores: { ehem: 1, teto: 1 } },

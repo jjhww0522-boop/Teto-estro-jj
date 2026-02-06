@@ -33,9 +33,15 @@ function LoadingContent() {
       });
     }, 60); // 3초 동안 100%까지
 
-    // 3초 후 결과 페이지로 이동 (쉼표 포함 시 인코딩 유지)
+    const modeParam = searchParams.get("mode") || "";
+    const matchMeParam = searchParams.get("matchMe") || "";
+
+    // 3초 후 결과 페이지로 이동 (answers, mode, matchMe 유지)
     const timer = setTimeout(() => {
-      router.push(`/result?answers=${encodeURIComponent(answersParam)}`);
+      const params = new URLSearchParams({ answers: answersParam });
+      if (modeParam) params.set("mode", modeParam);
+      if (matchMeParam) params.set("matchMe", matchMeParam);
+      router.push(`/result?${params.toString()}`);
     }, 3000);
 
     return () => {

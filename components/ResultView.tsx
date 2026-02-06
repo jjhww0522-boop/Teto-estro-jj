@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import html2canvas from "html2canvas";
 import type { ResultType } from "@/data/results";
+import ResultStoryCard from "@/components/ResultStoryCard";
 
 declare global {
   interface Window {
@@ -16,10 +17,15 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://teto-potato-test.v
 interface ResultViewProps {
   result: ResultType;
   shareUrl: string;
+  /** 결과 slug (궁합 페이지 링크용, 예: teto, teto_f) */
+  resultSlug?: string;
+  /** 궁합 페이지에서 넘어온 '내' slug (연인이 테스트 후 you로 들어갈 때) */
+  matchMe?: string | null;
 }
 
-export default function ResultView({ result, shareUrl }: ResultViewProps) {
+export default function ResultView({ result, shareUrl, resultSlug, matchMe }: ResultViewProps) {
   const resultCardRef = useRef<HTMLDivElement>(null);
+  const storyCardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
@@ -75,6 +81,31 @@ export default function ResultView({ result, shareUrl }: ResultViewProps) {
     } catch (error) {
       console.error("이미지 저장 실패:", error);
       alert("이미지 저장에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
+
+  /** 인스타 스토리용 9:16 카드 이미지 저장 (1080×1920) */
+  const downloadStoryImage = async () => {
+    const card = document.getElementById("result-story-card");
+    if (!card) return;
+    try {
+      const btn = document.getElementById("download-story-btn");
+      if (btn) btn.textContent = "이미지 생성 중...";
+      const canvas = await html2canvas(card, {
+        backgroundColor: "#F5F0FF",
+        scale: 3,
+        logging: false,
+        useCORS: true,
+      });
+      const link = document.createElement("a");
+      link.download = "남친_테토_농도_분석_스토리.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+      if (btn) btn.textContent = "📱 스토리용 이미지 저장";
+      alert("스토리용 이미지가 저장되었습니다! 인스타에 올려보세요 📱");
+    } catch (error) {
+      console.error("스토리 이미지 저장 실패:", error);
+      alert("저장에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -199,6 +230,46 @@ export default function ResultView({ result, shareUrl }: ResultViewProps) {
             <span className="text-xl">📸</span>
             <span>이미지로 저장하기</span>
           </button>
+
+          {/* 인스타 스토리용 9:16 카드 */}
+          <div className="space-y-3 pt-6 border-t border-gray-200">
+            <h3 className="text-lg font-bold text-gray-800 text-center">
+              📱 인스타 스토리용 카드
+            </h3>
+            <p className="text-sm text-gray-500 text-center">
+              9:16 비율 · 스토리에 올린 뒤 링크 스티커를 붙여보세요!
+            </p>
+            <div ref={storyCardRef} className="flex justify-center">
+              <ResultStoryCard result={result} testUrl={BASE_URL} />
+            </div>
+            <button
+              id="download-story-btn"
+              onClick={downloadStoryImage}
+              className="w-full bg-gradient-to-r from-purple-400 to-pink-400 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-4 px-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2"
+            >
+              <span className="text-xl">📱</span>
+              <span>스토리용 이미지 저장</span>
+            </button>
+          </div>
+
+          {resultSlug && (
+            <Link
+              href={
+                matchMe
+                  ? `/match?me=${encodeURIComponent(matchMe)}&you=${encodeURIComponent(resultSlug)}`
+                  : `/match?me=${encodeURIComponent(resultSlug)}`
+              }
+              className="w-full block"
+            >
+              <button
+                type="button"
+                className="w-full py-4 bg-gradient-to-r from-amber-400 to-orange-500 text-white font-bold rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+              >
+                <span className="text-xl">💕</span>
+                <span>우리 궁합 보기 (Chemistry)</span>
+              </button>
+            </Link>
+          )}
           <Link href="/">
             <button className="w-full btn-primary">다시 테스트하기 🔄</button>
           </Link>

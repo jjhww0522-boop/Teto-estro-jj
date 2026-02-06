@@ -3,21 +3,20 @@ import "./globals.css";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "테토남 연애 유형 테스트 - 나의 연애 스타일은?",
+  title: "남자친구 테토 농도 분석기",
   description:
-    "테토남, 포테토남, 에겐남... 나는 어떤 유형일까? 12가지 문항으로 알아보는 정통 연애 심리 테스트!",
-  keywords: ["연애테스트", "심리테스트", "테토남", "연애유형", "MBTI테스트"],
+    "내 남친의 테토 농도는 몇 %? 지금 바로 정밀 분석 리포트를 확인하세요!",
   openGraph: {
-    title: "테토남 연애 유형 테스트",
-    description: "지금 바로 나의 연애 불도저 지수를 확인해보세요!",
-    url: "https://teto-estro-jj-knyb.vercel.app",
-    siteName: "테토남 테스트",
+    title: "남자친구 테토 농도 분석기 ⚗️",
+    description: "12가지 상황으로 알아보는 우리 남친의 진짜 테토력!",
+    url: "https://teto-potato-test.vercel.app",
+    siteName: "테토 연구소",
     images: [
       {
-        url: "/images/main-thumbnail.png",
+        url: "/images/og-main.png",
         width: 1200,
         height: 630,
-        alt: "테토남 연애 유형 테스트",
+        alt: "테토 농도 분석기 대표 이미지",
       },
     ],
     locale: "ko_KR",
@@ -25,9 +24,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "테토남 연애 유형 테스트",
-    description: "나의 연애 스타일을 확인해보세요!",
-    images: ["/images/main-thumbnail.png"],
+    title: "남자친구 테토 농도 분석기 ⚗️",
+    description: "12가지 상황으로 알아보는 우리 남친의 진짜 테토력!",
+    images: ["/images/og-main.png"],
   },
   robots: {
     index: true,

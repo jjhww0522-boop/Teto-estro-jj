@@ -1,26 +1,100 @@
 /**
  * 결과 페이지 문구 상수 (slug 기준)
- * data/results.ts와 동일한 콘텐츠를 slug(teto, potato 등) 키로 참조할 때 사용
+ * 남성형: teto, potato, ... / 여성형: teto_f, potato_f, ...
+ * data/results.ts와 연동하여 사용
  */
-export const RESULTS_DATA: Record<
-  string,
-  {
-    type: string;
-    title: string;
-    emoji: string;
-    tagline: string;
-    oneLiner: string;
-    keywords: string[];
-    loveDescription: string;
-    checkGood: string;
-    checkBad: string;
-    psychologicalAnalysis: string;
-    goodMatch: string[];
-    badMatch: string[];
-    mbti?: string;
-    image?: string;
-  }
-> = {
+export type CompatibilityItem = { score: number; description: string };
+
+export type ResultDataItem = {
+  type: string;
+  title: string;
+  emoji: string;
+  tagline: string;
+  oneLiner: string;
+  keywords: string[];
+  loveDescription: string;
+  checkGood: string;
+  checkBad: string;
+  psychologicalAnalysis: string;
+  goodMatch: string[];
+  badMatch: string[];
+  mbti?: string;
+  image?: string;
+  /** 타 유형 slug → 궁합 점수·설명 (궁합 페이지에서 사용) */
+  compatibilities?: Record<string, CompatibilityItem>;
+};
+
+const SLUG_TO_BASE_NAME: Record<string, string> = {
+  teto: "테토",
+  potato: "포테토",
+  egen: "에겐",
+  sweet_potato: "고구마",
+  cheese: "치즈",
+  salsa: "살사",
+  ehem: "에헴",
+  era: "에라",
+  teto_f: "테토",
+  potato_f: "포테토",
+  egen_f: "에겐",
+  sweet_potato_f: "고구마",
+  cheese_f: "치즈",
+  salsa_f: "살사",
+  ehem_f: "에헴",
+  era_f: "에라",
+};
+
+export const ALL_RESULT_SLUGS = [
+  "teto",
+  "potato",
+  "egen",
+  "sweet_potato",
+  "cheese",
+  "salsa",
+  "ehem",
+  "era",
+  "teto_f",
+  "potato_f",
+  "egen_f",
+  "sweet_potato_f",
+  "cheese_f",
+  "salsa_f",
+  "ehem_f",
+  "era_f",
+] as const;
+
+export type ResultSlug = (typeof ALL_RESULT_SLUGS)[number];
+
+function hash(s: string): number {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h << 5) - h + s.charCodeAt(i);
+  return h >>> 0;
+}
+
+function buildCompatibilities(
+  mySlug: string,
+  goodMatch: string[],
+  badMatch: string[]
+): Record<string, CompatibilityItem> {
+  const goodBases = new Set(goodMatch.map((s) => s.replace(/남$|녀$/, "")));
+  const badBases = new Set(badMatch.map((s) => s.replace(/남$|녀$/, "")));
+  const out: Record<string, CompatibilityItem> = {};
+  ALL_RESULT_SLUGS.forEach((slug) => {
+    if (slug === mySlug) return;
+    const base = SLUG_TO_BASE_NAME[slug];
+    if (!base) return;
+    const h = hash(mySlug + slug);
+    if (goodBases.has(base)) {
+      out[slug] = { score: 88 + (h % 8), description: "찰떡 궁합! 서로를 잘 받쳐 줘요." };
+    } else if (badBases.has(base)) {
+      out[slug] = { score: 45 + (h % 10), description: "조심해서 만나보기. 서로 선을 지키는 게 좋아요." };
+    } else {
+      out[slug] = { score: 68 + (h % 10), description: "무난한 조합. 대화로 맞춰가면 좋아요." };
+    }
+  });
+  return out;
+}
+
+export const RESULTS_DATA: Record<string, ResultDataItem> = {
   teto: {
     type: "테토남",
     title: "직진 불도저형",
@@ -38,7 +112,7 @@ export const RESULTS_DATA: Record<
     badMatch: ["테토남", "살사남"],
     mbti: "ENTJ / ESTP",
     image: "/images/results/teto.png",
-  },
+  } as ResultDataItem,
   potato: {
     type: "포테토남",
     title: "든든 안정형",
@@ -164,5 +238,164 @@ export const RESULTS_DATA: Record<
     badMatch: ["에라남", "에겐남"],
     mbti: "ENTP / ISTP",
     image: "/images/results/era.png",
-  },
+  } as ResultDataItem,
+  teto_f: {
+    type: "테토녀",
+    title: "직진 불도저형",
+    emoji: "🚜",
+    tagline: "밀당 없는 순도 100%의 확신, 당신에게만 직진합니다.",
+    oneLiner: "거침없는 추진력과 솔직함으로 관계의 확신을 주는 리더.",
+    keywords: ["투명한감정", "리드하는연애", "확신메이커", "열정파"],
+    loveDescription:
+      "사랑에 빠진 당신은 계산기를 두드리지 않습니다. 상대가 헷갈리지 않게 먼저 손을 내밀고, 매 순간 최고의 확신을 선물하네요. 당신의 리더십은 연인에게 큰 안정감을 주며, 함께라면 어디든 갈 수 있을 것 같은 에너지를 뿜어냅니다.",
+    checkGood: "솔직하고 뒤끝 없는 성격으로 갈등을 빠르게 해결함.",
+    checkBad: "가끔은 상대방이 당신의 속도를 따라오지 못해 버거워할 수 있음.",
+    psychologicalAnalysis:
+      "테토녀 유형은 '외향형(E)'과 '판단형(J)' 특성이 두드러집니다. 목표 지향적인 소통을 선호하며, 관계에서 확신을 주는 타입입니다.",
+    goodMatch: ["포테토녀", "에겐녀", "치즈녀", "에라녀"],
+    badMatch: ["테토녀", "살사녀"],
+    mbti: "ENTJ / ESTP",
+    image: "/images/results/teto.png",
+  } as ResultDataItem,
+  potato_f: {
+    type: "포테토녀",
+    title: "든든 안정형",
+    emoji: "🧸",
+    tagline: "당신의 하루 끝, 가장 편안한 휴식처가 되어줄게요.",
+    oneLiner: "변치 않는 꾸준함과 따뜻한 포용력으로 연인을 감싸는 수호자.",
+    keywords: ["인간담요", "높은공감대", "평온한일상", "진국"],
+    loveDescription:
+      "화려한 불꽃놀이보다 은은하게 오래 타오르는 숯불을 닮았습니다. 연인의 작은 변화를 세심하게 살피고, 언제나 그 자리에 있어 줄 것 같은 안정감을 주네요.",
+    checkGood: "사소한 취향까지 기억해 챙겨주는 디테일한 다정함.",
+    checkBad: "갈등 상황에서 본인의 마음을 억누르다 속으로 병이 날 수 있음.",
+    psychologicalAnalysis:
+      "포테토녀 유형은 '이타성'과 '정서적 지지' 지수가 매우 높습니다. 동반자적 사랑을 지향하는 타입입니다.",
+    goodMatch: ["테토녀", "에겐녀", "살사녀", "치즈녀"],
+    badMatch: ["포테토녀", "고구마녀"],
+    mbti: "ISFJ / ISTJ",
+    image: "/images/results/potato.png",
+  } as ResultDataItem,
+  egen_f: {
+    type: "에겐녀",
+    title: "감성 로맨티스트",
+    emoji: "💌",
+    tagline: "우리의 평범한 일상을 한 편의 영화처럼 만듭니다.",
+    oneLiner: "깊은 공감 능력과 섬세한 감수성으로 영혼의 교감을 꿈꾸는 사랑꾼.",
+    keywords: ["영혼의단짝", "예술적감수성", "섬세한배려", "몽상가"],
+    loveDescription:
+      "당신에게 연애는 단순히 시간을 공유하는 것이 아니라 마음을 나누는 과정입니다. 당신의 섬세함은 연인에게 '사랑받고 있음'을 깊이 느끼게 해줍니다.",
+    checkGood: "상대방의 감정선을 예리하게 읽어내는 치유의 마법사.",
+    checkBad: "혼자만의 생각에 잠겨 가끔은 현실적인 문제에 소홀할 수 있음.",
+    psychologicalAnalysis:
+      "에겐녀 유형은 '개방성'과 '직관(N)' 능력이 발달해 있습니다. 정서적 일체감을 중요하게 여깁니다.",
+    goodMatch: ["테토녀", "포테토녀", "살사녀", "고구마녀"],
+    badMatch: ["에겐녀", "에라녀"],
+    mbti: "INFP / ENFP",
+    image: "/images/results/egen.png",
+  } as ResultDataItem,
+  sweet_potato_f: {
+    type: "고구마녀",
+    title: "달달한 성실형",
+    emoji: "🍠",
+    tagline: "천천히 달궈지지만 결코 식지 않는 군고구마 같은 사람",
+    oneLiner: "묵직한 진심과 성실함으로 신뢰를 쌓아가는 든든한 휴식처.",
+    keywords: ["은근한다정함", "행동파로맨티스트", "신뢰도100%", "가정적"],
+    loveDescription:
+      "말 한마디보다 따뜻한 행동 하나로 사랑을 증명하는 당신은 연인에게 세상에서 가장 안전한 울타리가 되어주네요.",
+    checkGood: "상대방의 사소한 취향을 기억해 두었다가 챙겨주는 세심함.",
+    checkBad: "너무 신중해서 가끔은 감정 표현이 늦어 보일 수 있음.",
+    psychologicalAnalysis:
+      "고구마녀 유형은 '안정 애착' 성향이 강합니다. 성실성과 책임감을 최우선으로 여깁니다.",
+    goodMatch: ["살사녀", "치즈녀", "에겐녀"],
+    badMatch: ["포테토녀", "고구마녀"],
+    mbti: "ISTJ / ISFJ",
+    image: "/images/results/sweet_potato.png",
+  } as ResultDataItem,
+  cheese_f: {
+    type: "치즈녀",
+    title: "사르르 녹는 유연형",
+    emoji: "🧀",
+    tagline: "능글맞은 다정함 뒤에 숨겨진 진한 진심을 아시나요?",
+    oneLiner: "부드러운 매너와 유머 감각으로 분위기를 리드하는 로맨틱한 사교가.",
+    keywords: ["분위기메이커", "스윗한매너", "공감의달인", "능글다정"],
+    loveDescription:
+      "녹아내린 치즈처럼 유연하고 부드럽습니다. 당신과 함께라면 지루할 틈이 없고, 언제나 존중받는다는 느낌을 받게 됩니다.",
+    checkGood: "어떤 상황에서도 유연하게 대처하는 높은 사회적 지능.",
+    checkBad: "모든 사람에게 친절한 모습 때문에 연인이 질투를 느낄 수 있음.",
+    psychologicalAnalysis:
+      "치즈녀 유형은 '사회적 조망 수용' 능력이 탁월합니다.",
+    goodMatch: ["테토녀", "살사녀", "고구마녀", "에헴녀"],
+    badMatch: ["치즈녀"],
+    mbti: "ENFJ / ESFJ",
+    image: "/images/results/cheese.png",
+  } as ResultDataItem,
+  salsa_f: {
+    type: "살사녀",
+    title: "정열적인 에너자이저",
+    emoji: "🌶️",
+    tagline: "매 순간이 축제처럼, 화끈한 열정으로 당신을 사랑합니다.",
+    oneLiner: "넘치는 에너지와 적극적인 표현으로 연애의 불꽃을 매일 터뜨리는 열정파.",
+    keywords: ["화끈한표현", "인간비타민", "적극적인스킨십", "직진녀"],
+    loveDescription:
+      "식어버린 연애는 당신에게 있을 수 없는 일입니다. 당신의 열정은 연인의 지루한 일상을 매일 색다르게 채색합니다.",
+    checkGood: "지칠 줄 모르는 리액션과 표현으로 연인을 행복하게 함.",
+    checkBad: "본인의 텐션이 너무 높아 상대방이 가끔 피로를 느낄 수 있음.",
+    psychologicalAnalysis:
+      "살사녀 유형은 '활력성'과 '표현 지수'가 정점을 찍습니다.",
+    goodMatch: ["포테토녀", "고구마녀", "치즈녀", "에라녀"],
+    badMatch: ["테토녀", "살사녀"],
+    mbti: "ESFP / ENFP",
+    image: "/images/results/salsa.png",
+  } as ResultDataItem,
+  ehem_f: {
+    type: "에헴녀",
+    title: "진중한 원칙주의자",
+    emoji: "⚖️",
+    tagline: "가볍지 않은 무게감으로, 당신을 향한 신뢰를 지킵니다.",
+    oneLiner: "말보다 행동으로, 책임감과 원칙을 바탕으로 사랑을 일궈가는 듬직한 전략가.",
+    keywords: ["바른생활러", "높은책임감", "안정적미래", "무뚝뚝한다정함"],
+    loveDescription:
+      "한 번 내뱉은 말은 반드시 지키는 신용 100%의 연애를 합니다. 당신과의 연애는 시간이 흐를수록 그 가치가 기하급수적으로 올라갑니다.",
+    checkGood: "위기 상황에서 흔들리지 않고 해결책을 제시하는 든든함.",
+    checkBad: "본인만의 기준이 확고해 가끔은 고집스럽게 느껴질 수 있음.",
+    psychologicalAnalysis:
+      "에헴녀 유형은 '성실성'과 '논리적 사고'가 핵심입니다.",
+    goodMatch: ["살사녀", "치즈녀", "포테토녀"],
+    badMatch: ["에헴녀", "에라녀"],
+    mbti: "ISTJ / INTJ",
+    image: "/images/results/ehem.png",
+  } as ResultDataItem,
+  era_f: {
+    type: "에라녀",
+    title: "쿨한 모험가형",
+    emoji: "🌊",
+    tagline: "얽매이지 않는 자유로움 속에서 더 깊은 사랑을 찾습니다.",
+    oneLiner: "계획보다는 즉흥적인 즐거움을, 구속보다는 존중을 추구하는 자유로운 영혼.",
+    keywords: ["YOLO로맨스", "쿨한연애", "뒤끝제로", "이벤트제조기"],
+    loveDescription:
+      "정해진 틀에 갇힌 데이트는 거부합니다. 집착하기보다 서로의 성장을 응원하는 쿨한 관계를 지향합니다.",
+    checkGood: "불필요한 감정 소모가 적고 매 순간 즐거움에 집중함.",
+    checkBad: "진지한 미래 계획에 대해서는 다소 회피적으로 보일 수 있음.",
+    psychologicalAnalysis:
+      "에라녀 유형은 '탐색적 기질'이 매우 강합니다.",
+    goodMatch: ["테토녀", "살사녀", "고구마녀"],
+    badMatch: ["에라녀", "에겐녀"],
+    mbti: "ENTP / ISTP",
+    image: "/images/results/era.png",
+  } as ResultDataItem,
 };
+
+// 각 결과에 궁합(compatibilities) 주입
+ALL_RESULT_SLUGS.forEach((slug) => {
+  const d = RESULTS_DATA[slug];
+  if (d) d.compatibilities = buildCompatibilities(slug, d.goodMatch, d.badMatch);
+});
+
+/** slug로 궁합 데이터 조회 (me → you 점수·설명) */
+export function getCompatibility(
+  mySlug: string,
+  otherSlug: string
+): CompatibilityItem | null {
+  const d = RESULTS_DATA[mySlug];
+  return d?.compatibilities?.[otherSlug] ?? null;
+}
