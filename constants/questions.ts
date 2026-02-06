@@ -3,7 +3,21 @@
  * 관찰자 시점: 여친이 남친의 데이트 스타일을 관찰해 '테토 농도'를 분석
  * 캐릭터 키: teto, potato, egen, sweet_potato, cheese, salsa, ehem, era
  */
-export const QUESTIONS = [
+
+/** 캐릭터별 가중치 (일부만 있어도 됨) */
+export type ScoreMap = Partial<
+  Record<"teto" | "potato" | "egen" | "sweet_potato" | "cheese" | "salsa" | "ehem" | "era", number>
+>;
+
+export type QuestionOption = { text: string; scores: ScoreMap };
+
+export type QuestionItem = {
+  id: number;
+  question: string;
+  options: QuestionOption[];
+};
+
+export const QUESTIONS: QuestionItem[] = [
   {
     id: 1,
     question: "데이트 코스를 정할 때, 그의 스타일은?",
