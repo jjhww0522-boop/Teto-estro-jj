@@ -33,9 +33,9 @@ function LoadingContent() {
       });
     }, 60); // 3초 동안 100%까지
 
-    // 3초 후 결과 페이지로 이동
+    // 3초 후 결과 페이지로 이동 (쉼표 포함 시 인코딩 유지)
     const timer = setTimeout(() => {
-      router.push(`/result?answers=${answersParam}`);
+      router.push(`/result?answers=${encodeURIComponent(answersParam)}`);
     }, 3000);
 
     return () => {
