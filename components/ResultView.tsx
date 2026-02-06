@@ -23,9 +23,21 @@ interface ResultViewProps {
   matchMe?: string | null;
 }
 
+/** 결과가 남성형(ㅇㅇ남)이면 궁합은 여성형(ㅇㅇ녀)으로, 여성형이면 궁합은 남성형(ㅇㅇ남)으로 표시 */
+function toPartnerMatchNames(names: string[], resultSlug?: string): string[] {
+  if (!resultSlug) return names;
+  const isFemaleResult = resultSlug.endsWith("_f"); // 테토녀 등 = 여친 분석 결과
+  return names.map((name) =>
+    isFemaleResult ? name.replace(/녀$/, "남") : name.replace(/남$/, "녀")
+  );
+}
+
 export default function ResultView({ result, shareUrl, resultSlug, matchMe }: ResultViewProps) {
   const resultCardRef = useRef<HTMLDivElement>(null);
   const storyCardRef = useRef<HTMLDivElement>(null);
+
+  const displayGoodMatch = toPartnerMatchNames(result.goodMatch, resultSlug);
+  const displayBadMatch = toPartnerMatchNames(result.badMatch, resultSlug);
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
@@ -177,7 +189,7 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
               <span>찰떡궁합</span>
             </h3>
             <div className="bg-pastel-mint/30 rounded-2xl p-4">
-              {result.goodMatch.map((match: string, index: number) => (
+              {displayGoodMatch.map((match: string, index: number) => (
                 <div key={index} className="text-gray-700 font-medium">• {match}</div>
               ))}
             </div>
@@ -188,7 +200,7 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
               <span>조심궁합</span>
             </h3>
             <div className="bg-pastel-peach/30 rounded-2xl p-4">
-              {result.badMatch.map((match: string, index: number) => (
+              {displayBadMatch.map((match: string, index: number) => (
                 <div key={index} className="text-gray-700 font-medium">• {match}</div>
               ))}
             </div>
@@ -240,7 +252,7 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
               9:16 비율 · 스토리에 올린 뒤 링크 스티커를 붙여보세요!
             </p>
             <div ref={storyCardRef} className="flex justify-center">
-              <ResultStoryCard result={result} testUrl={BASE_URL} />
+              <ResultStoryCard result={result} testUrl={BASE_URL} resultSlug={resultSlug} />
             </div>
             <button
               id="download-story-btn"

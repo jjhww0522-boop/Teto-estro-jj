@@ -10,6 +10,16 @@ const CARD_HEIGHT = 640;
 interface ResultStoryCardProps {
   result: ResultType;
   testUrl: string;
+  /** 결과 slug (남친=teto → 궁합 ㅇㅇ녀, 여친=teto_f → 궁합 ㅇㅇ남) */
+  resultSlug?: string;
+}
+
+function toPartnerMatchNames(names: string[], resultSlug?: string): string[] {
+  if (!resultSlug) return names;
+  const isFemaleResult = resultSlug.endsWith("_f");
+  return names.map((name) =>
+    isFemaleResult ? name.replace(/녀$/, "남") : name.replace(/남$/, "녀")
+  );
 }
 
 function getSerialNumber() {
@@ -27,11 +37,13 @@ function getConcentrationPercent(type: string): number {
   return 88 + (n % 12);
 }
 
-export default function ResultStoryCard({ result, testUrl }: ResultStoryCardProps) {
+export default function ResultStoryCard({ result, testUrl, resultSlug }: ResultStoryCardProps) {
   const serial = getSerialNumber();
   const percent = getConcentrationPercent(result.type);
-  const goodOne = result.goodMatch[0] ?? "—";
-  const badOne = result.badMatch[0] ?? "—";
+  const goodMatches = toPartnerMatchNames(result.goodMatch, resultSlug);
+  const badMatches = toPartnerMatchNames(result.badMatch, resultSlug);
+  const goodOne = goodMatches[0] ?? "—";
+  const badOne = badMatches[0] ?? "—";
 
   return (
     <div

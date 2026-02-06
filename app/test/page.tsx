@@ -2,7 +2,12 @@
 
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { QUESTIONS, formatQuestion, type QuestionOption } from "@/constants/questions";
+import {
+  QUESTIONS,
+  QUESTIONS_GIRLFRIEND,
+  formatQuestion,
+  type QuestionOption,
+} from "@/constants/questions";
 import RollingPotatoBar from "@/components/RollingPotatoBar";
 
 export type TestMode = "boyfriend" | "girlfriend";
@@ -20,20 +25,26 @@ function shuffleArray<T>(array: T[]): T[] {
   return arr;
 }
 
-/** 셔플된 질문 목록 (선택지 순서만 섞음, 각 옵션에 원본 인덱스 보관) */
-const SHUFFLED_QUESTIONS = QUESTIONS.map((q) => {
-  const optionsWithIndex: OptionWithIndex[] = q.options.map((opt, idx) => ({
-    ...opt,
-    originalIndex: idx,
-  }));
-  return { ...q, options: shuffleArray(optionsWithIndex) };
-});
+function buildShuffledQuestions(questions: typeof QUESTIONS) {
+  return questions.map((q) => {
+    const optionsWithIndex: OptionWithIndex[] = q.options.map((opt, idx) => ({
+      ...opt,
+      originalIndex: idx,
+    }));
+    return { ...q, options: shuffleArray(optionsWithIndex) };
+  });
+}
+
+const SHUFFLED_QUESTIONS_BOYFRIEND = buildShuffledQuestions(QUESTIONS);
+const SHUFFLED_QUESTIONS_GIRLFRIEND = buildShuffledQuestions(QUESTIONS_GIRLFRIEND);
 
 function TestContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const mode: TestMode = (searchParams.get("mode") === "girlfriend" ? "girlfriend" : "boyfriend");
   const subject = mode === "girlfriend" ? "그녀" : "그";
+  const shuffledQuestions =
+    mode === "girlfriend" ? SHUFFLED_QUESTIONS_GIRLFRIEND : SHUFFLED_QUESTIONS_BOYFRIEND;
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
   /** 질문별 선택한 옵션 인덱스 (0~3) */
@@ -45,7 +56,7 @@ function TestContent() {
     const newIndices = [...selectedIndices, originalIndex];
     setSelectedIndices(newIndices);
 
-    if (currentQuestion < SHUFFLED_QUESTIONS.length - 1) {
+    if (currentQuestion < shuffledQuestions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
       const params = new URLSearchParams({ answers: newIndices.join(","), mode });
@@ -62,20 +73,22 @@ function TestContent() {
     }
   };
 
-  const question = SHUFFLED_QUESTIONS[currentQuestion];
+  const question = shuffledQuestions[currentQuestion];
+  const questionText =
+    mode === "girlfriend" ? question.question : formatQuestion(question.question, subject);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 py-8">
       <div className="card max-w-2xl w-full space-y-6">
         <RollingPotatoBar
           currentStep={currentQuestion + 1}
-          totalSteps={SHUFFLED_QUESTIONS.length}
+          totalSteps={shuffledQuestions.length}
         />
 
         <div className="text-center py-8">
           <div className="text-4xl mb-4">🤔</div>
           <h2 className="text-2xl md:text-3xl font-bold text-gray-800 leading-relaxed">
-            {formatQuestion(question.question, subject)}
+            {questionText}
           </h2>
         </div>
 

@@ -34,7 +34,8 @@ function ResultContent() {
     if (answersParam.includes(",")) {
       const indices = answersParam.split(",").map((s) => parseInt(s.trim(), 10));
       if (indices.every((n) => !Number.isNaN(n))) {
-        const baseSlug = getTestResult(indices);
+        const modeForCalc = isGirlfriend ? "girlfriend" : "boyfriend";
+        const baseSlug = getTestResult(indices, modeForCalc);
         displaySlug = isGirlfriend ? `${baseSlug}_f` : baseSlug;
         resolvedResult = getResultBySlug(displaySlug);
       }
