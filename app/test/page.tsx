@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { questions, type Question } from "@/data/questions";
+import RollingPotatoBar from "@/components/RollingPotatoBar";
 
 /** Fisher-Yates 셔플 - 배열을 랜덤 순서로 섞음 */
 function shuffleArray<T>(array: T[]): T[] {
@@ -26,8 +27,6 @@ export default function TestPage() {
       answers: shuffleArray(q.answers),
     }));
   }, []);
-
-  const progress = ((currentQuestion + 1) / shuffledQuestions.length) * 100;
 
   const handleAnswer = (type: string) => {
     const newAnswers = [...answers, type];
@@ -54,23 +53,11 @@ export default function TestPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 py-8">
       <div className="card max-w-2xl w-full space-y-6">
-        {/* 프로그레스 바 */}
-        <div className="space-y-2">
-          <div className="flex justify-between text-sm text-gray-600">
-            <span className="font-medium">
-              질문 {currentQuestion + 1} / {shuffledQuestions.length}
-            </span>
-            <span className="text-pink-500 font-bold">
-              {Math.round(progress)}%
-            </span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-            <div
-              className="bg-gradient-to-r from-pastel-purple to-pastel-pink h-full rounded-full transition-all duration-500 ease-out"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-        </div>
+        {/* 감자 구르는 진행 바 */}
+        <RollingPotatoBar
+          currentStep={currentQuestion + 1}
+          totalSteps={shuffledQuestions.length}
+        />
 
         {/* 질문 */}
         <div className="text-center py-8">
