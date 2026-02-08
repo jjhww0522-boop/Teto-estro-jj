@@ -37,7 +37,7 @@ NEXT_PUBLIC_KAKAO_KEY=your_javascript_key_here
 
 ### 3. 분석 완료 수 실데이터 (선택사항)
 
-메인 페이지의 "현재까지 N명의 남친 분석 완료" 숫자를 실제 완료 건수로 표시하려면 [Upstash Redis](https://upstash.com/)를 사용합니다.
+메인 페이지의 "현재까지 N명의 애인 분석 완료" 숫자를 실제 완료 건수로 표시하려면 [Upstash Redis](https://upstash.com/)를 사용합니다.
 
 1. [Upstash Console](https://console.upstash.com/)에서 Redis 데이터베이스 생성
 2. REST URL과 토큰을 복사한 뒤 `.env.local` 또는 Vercel 환경 변수에 추가:

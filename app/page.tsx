@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getAnalysisCount } from "@/lib/redis";
+import ResearchReport from "@/components/ResearchReport";
 
 export const metadata: Metadata = {
   title: "남자친구 테토 농도 분석기 | 테토 연구소",
@@ -79,10 +80,13 @@ export default async function HomePage() {
         <div className="text-xs text-gray-400 flex flex-col gap-1">
           <span>약 2분 소요 · 총 12문항</span>
           <span className="text-purple-300 font-mono mt-2">
-            현재까지 {formatCount(analysisCount)}명의 남친 분석 완료
+            현재까지 {formatCount(analysisCount)}명의 애인 분석 완료
           </span>
         </div>
       </div>
+
+      {/* 연구 리포트 (접이식) */}
+      <ResearchReport />
 
       {/* 푸터 */}
       <footer className="mt-10 text-[10px] text-gray-400 space-x-4">
