@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, Suspense, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { calculateResult, results, getResultBySlug } from "@/data/results";
 import { getTestResult } from "@/utils/calculate";
@@ -16,6 +16,7 @@ function ResultContent() {
   const [shareUrl, setShareUrl] = useState("");
   const [resultSlug, setResultSlug] = useState<string>("");
   const [matchMe, setMatchMe] = useState<string | null>(null);
+  const hasRecordedStats = useRef(false);
 
   useEffect(() => {
     const answersParam = searchParams.get("answers");
@@ -57,6 +58,13 @@ function ResultContent() {
     if (isGirlfriend) shareParams.set("mode", "girlfriend");
     setShareUrl(`${BASE_URL}/result?${shareParams.toString()}`);
   }, [searchParams, router]);
+
+  // 분석 완료 시 실데이터 카운트 1회만 증가
+  useEffect(() => {
+    if (!result || hasRecordedStats.current) return;
+    hasRecordedStats.current = true;
+    fetch("/api/stats", { method: "POST" }).catch(() => {});
+  }, [result]);
 
   if (!result) {
     return (

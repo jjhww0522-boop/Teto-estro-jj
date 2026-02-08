@@ -1,12 +1,18 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { getAnalysisCount } from "@/lib/redis";
 
 export const metadata: Metadata = {
   title: "남자친구 테토 농도 분석기 | 테토 연구소",
   description: "내 남친의 테토력은 과연 몇 %? 12가지 상황으로 분석하는 정밀 성향 리포트",
 };
 
-export default function HomePage() {
+function formatCount(n: number) {
+  return n.toLocaleString("ko-KR");
+}
+
+export default async function HomePage() {
+  const analysisCount = (await getAnalysisCount()) ?? 1234;
   return (
     <main className="min-h-screen bg-[#FDFCF7] flex flex-col items-center justify-center p-6 font-sans relative">
       {/* 연구소 배경 효과 (grid 패턴) */}
@@ -73,7 +79,7 @@ export default function HomePage() {
         <div className="text-xs text-gray-400 flex flex-col gap-1">
           <span>약 2분 소요 · 총 12문항</span>
           <span className="text-purple-300 font-mono mt-2">
-            현재까지 1,234명의 남친 분석 완료
+            현재까지 {formatCount(analysisCount)}명의 남친 분석 완료
           </span>
         </div>
       </div>
