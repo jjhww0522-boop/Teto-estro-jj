@@ -97,7 +97,7 @@ function TestContent() {
             <button
               key={index}
               onClick={() => handleAnswer(index)}
-              className="btn-answer w-full text-left"
+              className="btn-answer w-full text-left text-kr-wrap"
             >
               <span className="text-lg">{option.text}</span>
             </button>

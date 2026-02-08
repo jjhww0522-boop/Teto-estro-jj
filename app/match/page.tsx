@@ -134,7 +134,7 @@ function MatchContent() {
           </div>
         </div>
 
-        <p className="text-center text-gray-700 leading-relaxed">{description}</p>
+        <p className="text-center text-gray-700 leading-relaxed text-kr-wrap">{description}</p>
 
         <div className="pt-4 space-y-3">
           <button

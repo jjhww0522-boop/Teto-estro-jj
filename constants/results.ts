@@ -3,6 +3,8 @@
  * 남성형: teto, potato, ... / 여성형: teto_f, potato_f, ...
  * data/results.ts와 연동하여 사용
  */
+import { MATCH_REASONS } from "@/constants/chemistry";
+
 export type CompatibilityItem = { score: number; description: string };
 
 export type ResultDataItem = {
@@ -77,16 +79,24 @@ function buildCompatibilities(
 ): Record<string, CompatibilityItem> {
   const goodBases = new Set(goodMatch.map((s) => s.replace(/남$|녀$/, "")));
   const badBases = new Set(badMatch.map((s) => s.replace(/남$|녀$/, "")));
+  const myReasons = MATCH_REASONS[mySlug];
   const out: Record<string, CompatibilityItem> = {};
   ALL_RESULT_SLUGS.forEach((slug) => {
     if (slug === mySlug) return;
     const base = SLUG_TO_BASE_NAME[slug];
     if (!base) return;
     const h = hash(mySlug + slug);
+    const customReason = myReasons?.[slug];
     if (goodBases.has(base)) {
-      out[slug] = { score: 88 + (h % 8), description: "찰떡 궁합! 서로를 잘 받쳐 줘요." };
+      out[slug] = {
+        score: 88 + (h % 8),
+        description: customReason ?? "찰떡 궁합! 서로를 잘 받쳐 줘요.",
+      };
     } else if (badBases.has(base)) {
-      out[slug] = { score: 45 + (h % 10), description: "조심해서 만나보기. 서로 선을 지키는 게 좋아요." };
+      out[slug] = {
+        score: 45 + (h % 10),
+        description: customReason ?? "조심해서 만나보기. 서로 선을 지키는 게 좋아요.",
+      };
     } else {
       out[slug] = { score: 68 + (h % 10), description: "무난한 조합. 대화로 맞춰가면 좋아요." };
     }

@@ -12,7 +12,7 @@ export default function ResearchReport() {
             ▼
           </span>
         </summary>
-        <div className="mt-2 p-4 bg-white/90 border border-purple-100 rounded-2xl shadow-sm text-left text-[13px] text-gray-600 leading-relaxed space-y-4">
+        <div className="mt-2 p-4 bg-white/90 border border-purple-100 rounded-2xl shadow-sm text-left text-[13px] text-gray-600 leading-relaxed space-y-4 text-kr-wrap">
           <p>
             우리는 왜 새로운 사람을 만날 때나 연인과의 갈등이 생길 때 성향 테스트를
             찾게 될까요? 단순히 흥미를 넘어, 테토 연구소가 지향하는 연애 성향
@@ -66,18 +66,6 @@ export default function ResearchReport() {
             </ul>
           </div>
 
-          <div className="py-3 px-4 bg-purple-50 rounded-xl border border-purple-100">
-            <p className="text-center text-purple-700 font-medium mb-2">
-              당신의 농도가 궁금하다면?
-            </p>
-            <Link
-              href="/test?mode=boyfriend"
-              className="block w-full py-2.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-center rounded-full font-bold text-sm hover:opacity-90 transition-opacity"
-            >
-              테스트 시작하기 →
-            </Link>
-          </div>
-
           <div>
             <h3 className="font-bold text-gray-800 mb-1">
               3. 바넘 효과와 인지적 정교화
@@ -90,6 +78,18 @@ export default function ResearchReport() {
               유도합니다. 이를 통해 사용자는 단순한 결과를 넘어 자신의 연애
               방식을 객관적으로 관찰할 기회를 얻게 됩니다.
             </p>
+          </div>
+
+          <div className="py-3 px-4 bg-purple-50 rounded-xl border border-purple-100">
+            <p className="text-center text-purple-700 font-medium mb-2">
+              당신의 농도가 궁금하다면?
+            </p>
+            <Link
+              href="/test?mode=boyfriend"
+              className="block w-full py-2.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-center rounded-full font-bold text-sm hover:opacity-90 transition-opacity"
+            >
+              테스트 시작하기 →
+            </Link>
           </div>
         </div>
       </details>

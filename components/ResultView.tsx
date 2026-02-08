@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import html2canvas from "html2canvas";
 import type { ResultType } from "@/data/results";
-import ResultStoryCard from "@/components/ResultStoryCard";
+import { RESULTS_DATA } from "@/constants/results";
 
 declare global {
   interface Window {
@@ -32,9 +32,34 @@ function toPartnerMatchNames(names: string[], resultSlug?: string): string[] {
   );
 }
 
+/** 남친 분석(남성형 결과)일 때는 궁합에 ㅇㅇ녀만, 여친 분석(여성형 결과)일 때는 궁합에 ㅇㅇ남만 표시 */
+function isPartnerSlug(resultSlug: string | undefined, otherSlug: string): boolean {
+  if (!resultSlug) return true;
+  const resultIsFemale = resultSlug.endsWith("_f");
+  const otherIsFemale = otherSlug.endsWith("_f");
+  return resultIsFemale ? !otherIsFemale : otherIsFemale; // 반대 성별만
+}
+
+/** 설명(description)이 같은 항목끼리 묶어서 [{ typeNames: ['에겐녀','치즈녀'], description }] 형태로 반환 */
+function groupCompatibilitiesByDescription(
+  entries: [string, { score: number; description: string }][],
+  resultSlug: string | undefined
+): { typeNames: string[]; description: string }[] {
+  const filtered = entries.filter(([slug, v]) => isPartnerSlug(resultSlug, slug));
+  const byDesc = new Map<string, string[]>();
+  for (const [slug, { description }] of filtered) {
+    const name = RESULTS_DATA[slug]?.type ?? slug;
+    if (!byDesc.has(description)) byDesc.set(description, []);
+    byDesc.get(description)!.push(name);
+  }
+  return Array.from(byDesc.entries()).map(([description, typeNames]) => ({
+    typeNames,
+    description,
+  }));
+}
+
 export default function ResultView({ result, shareUrl, resultSlug, matchMe }: ResultViewProps) {
   const resultCardRef = useRef<HTMLDivElement>(null);
-  const storyCardRef = useRef<HTMLDivElement>(null);
 
   const displayGoodMatch = toPartnerMatchNames(result.goodMatch, resultSlug);
   const displayBadMatch = toPartnerMatchNames(result.badMatch, resultSlug);
@@ -96,31 +121,6 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
     }
   };
 
-  /** 인스타 스토리용 9:16 카드 이미지 저장 (1080×1920) */
-  const downloadStoryImage = async () => {
-    const card = document.getElementById("result-story-card");
-    if (!card) return;
-    try {
-      const btn = document.getElementById("download-story-btn");
-      if (btn) btn.textContent = "이미지 생성 중...";
-      const canvas = await html2canvas(card, {
-        backgroundColor: "#F5F0FF",
-        scale: 3,
-        logging: false,
-        useCORS: true,
-      });
-      const link = document.createElement("a");
-      link.download = "남친_테토_농도_분석_스토리.png";
-      link.href = canvas.toDataURL("image/png");
-      link.click();
-      if (btn) btn.textContent = "📱 스토리용 이미지 저장";
-      alert("스토리용 이미지가 저장되었습니다! 인스타에 올려보세요 📱");
-    } catch (error) {
-      console.error("스토리 이미지 저장 실패:", error);
-      alert("저장에 실패했습니다. 다시 시도해주세요.");
-    }
-  };
-
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 py-8">
       <div
@@ -134,10 +134,10 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
           <h1 className="text-3xl font-bold text-gray-800">
             {result.type}: {result.title}
           </h1>
-          <blockquote className="text-lg text-gray-600 italic border-l-4 border-pastel-pink/50 pl-4 py-1 text-left">
+          <blockquote className="text-lg text-gray-600 italic border-l-4 border-pastel-pink/50 pl-4 py-1 text-left text-kr-wrap">
             &ldquo;{result.tagline}&rdquo;
           </blockquote>
-          <p className="text-base text-gray-600 font-medium">{result.oneLiner}</p>
+          <p className="text-base text-gray-600 font-medium text-kr-wrap">{result.oneLiner}</p>
         </div>
 
         {/* 키워드 태그 */}
@@ -159,7 +159,7 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
             <span>당신의 연애는...</span>
           </h3>
           <div className="bg-pastel-pink/20 rounded-2xl p-6 border border-pastel-pink/30">
-            <p className="text-gray-700 leading-relaxed">{result.loveDescription}</p>
+            <p className="text-gray-700 leading-relaxed text-kr-wrap">{result.loveDescription}</p>
           </div>
         </div>
 
@@ -172,26 +172,42 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-pastel-mint/30 rounded-2xl p-4 border border-pastel-mint/40">
               <p className="text-xs font-bold text-pastel-mint/80 uppercase tracking-wide mb-2">Good</p>
-              <p className="text-gray-700 text-sm leading-relaxed">{result.checkGood}</p>
+              <p className="text-gray-700 text-sm leading-relaxed text-kr-wrap">{result.checkGood}</p>
             </div>
             <div className="bg-pastel-peach/30 rounded-2xl p-4 border border-pastel-peach/40">
               <p className="text-xs font-bold text-pastel-peach/80 uppercase tracking-wide mb-2">Bad</p>
-              <p className="text-gray-700 text-sm leading-relaxed">{result.checkBad}</p>
+              <p className="text-gray-700 text-sm leading-relaxed text-kr-wrap">{result.checkBad}</p>
             </div>
           </div>
         </div>
 
-        {/* 찰떡궁합 / 조심궁합 */}
+        {/* 찰떡궁합 / 조심궁합 (상세 사유 포함) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-3">
             <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
               <span>💚</span>
               <span>찰떡궁합</span>
             </h3>
-            <div className="bg-pastel-mint/30 rounded-2xl p-4">
-              {displayGoodMatch.map((match: string, index: number) => (
-                <div key={index} className="text-gray-700 font-medium">• {match}</div>
-              ))}
+            <div className="bg-pastel-mint/30 rounded-2xl p-4 space-y-3">
+              {result.compatibilities
+                ? (() => {
+                    const entries = Object.entries(result.compatibilities).filter(
+                      ([, v]) => v.score >= 80
+                    );
+                    const groups = groupCompatibilitiesByDescription(entries, resultSlug);
+                    return groups.map(({ typeNames, description }, i) => (
+                      <div key={i} className="text-left">
+                        <p className="text-gray-800 font-semibold text-sm text-kr-wrap">
+                          • {typeNames.join(" & ")} : {description}
+                        </p>
+                      </div>
+                    ));
+                  })()
+                : displayGoodMatch.map((match: string, index: number) => (
+                    <div key={index} className="text-gray-700 font-medium text-kr-wrap">
+                      • {match}
+                    </div>
+                  ))}
             </div>
           </div>
           <div className="space-y-3">
@@ -199,10 +215,26 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
               <span>💔</span>
               <span>조심궁합</span>
             </h3>
-            <div className="bg-pastel-peach/30 rounded-2xl p-4">
-              {displayBadMatch.map((match: string, index: number) => (
-                <div key={index} className="text-gray-700 font-medium">• {match}</div>
-              ))}
+            <div className="bg-pastel-peach/30 rounded-2xl p-4 space-y-3">
+              {result.compatibilities
+                ? (() => {
+                    const entries = Object.entries(result.compatibilities).filter(
+                      ([, v]) => v.score <= 55
+                    );
+                    const groups = groupCompatibilitiesByDescription(entries, resultSlug);
+                    return groups.map(({ typeNames, description }, i) => (
+                      <div key={i} className="text-left">
+                        <p className="text-gray-800 font-semibold text-sm text-kr-wrap">
+                          • {typeNames.join(" & ")} : {description}
+                        </p>
+                      </div>
+                    ));
+                  })()
+                : displayBadMatch.map((match: string, index: number) => (
+                    <div key={index} className="text-gray-700 font-medium text-kr-wrap">
+                      • {match}
+                    </div>
+                  ))}
             </div>
           </div>
         </div>
@@ -214,7 +246,7 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
             <span>왜 이런 결과가? (심리학적 분석)</span>
           </h3>
           <div className="bg-gradient-to-br from-pastel-blue/20 to-pastel-purple/20 rounded-2xl p-6 border border-gray-100">
-            <p className="text-gray-700 leading-relaxed text-sm">{result.psychologicalAnalysis}</p>
+            <p className="text-gray-700 leading-relaxed text-sm text-kr-wrap">{result.psychologicalAnalysis}</p>
           </div>
         </div>
 
@@ -242,27 +274,6 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
             <span className="text-xl">📸</span>
             <span>이미지로 저장하기</span>
           </button>
-
-          {/* 인스타 스토리용 9:16 카드 */}
-          <div className="space-y-3 pt-6 border-t border-gray-200">
-            <h3 className="text-lg font-bold text-gray-800 text-center">
-              📱 인스타 스토리용 카드
-            </h3>
-            <p className="text-sm text-gray-500 text-center">
-              9:16 비율 · 스토리에 올린 뒤 링크 스티커를 붙여보세요!
-            </p>
-            <div ref={storyCardRef} className="flex justify-center">
-              <ResultStoryCard result={result} testUrl={BASE_URL} resultSlug={resultSlug} />
-            </div>
-            <button
-              id="download-story-btn"
-              onClick={downloadStoryImage}
-              className="w-full bg-gradient-to-r from-purple-400 to-pink-400 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-4 px-6 rounded-2xl shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2"
-            >
-              <span className="text-xl">📱</span>
-              <span>스토리용 이미지 저장</span>
-            </button>
-          </div>
 
           {resultSlug && (
             <Link

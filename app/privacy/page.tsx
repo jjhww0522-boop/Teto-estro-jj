@@ -13,7 +13,7 @@ export default function PrivacyPage() {
       </h1>
       <p className="text-sm text-gray-500 mb-8">[개인정보처리방침 전문 보기]</p>
 
-      <div className="prose prose-sm text-gray-700 space-y-8">
+      <div className="prose prose-sm text-gray-700 space-y-8 text-kr-wrap">
         <section>
           <h2 className="text-lg font-bold text-gray-800 mb-2">
             1. 수집하는 개인정보 항목

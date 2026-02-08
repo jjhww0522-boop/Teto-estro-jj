@@ -11,7 +11,7 @@ export default function TermsPage() {
       <h1 className="text-2xl font-bold text-gray-800 mb-2">서비스 이용약관</h1>
       <p className="text-sm text-gray-500 mb-8">Terms of Service · 시행일: 서비스 게시일</p>
 
-      <div className="prose prose-sm text-gray-700 space-y-8">
+      <div className="prose prose-sm text-gray-700 space-y-8 text-kr-wrap">
         <section>
           <h2 className="text-lg font-bold text-gray-800 mt-0 mb-2">제1조 (목적)</h2>
           <p className="m-0 leading-relaxed">

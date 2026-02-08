@@ -43,7 +43,7 @@ export default async function HomePage() {
         </p>
 
         {/* 상세 설명 리스트 */}
-        <div className="bg-purple-50 rounded-2xl p-5 mb-8 w-full text-sm text-gray-600 space-y-2">
+        <div className="bg-purple-50 rounded-2xl p-5 mb-8 w-full text-sm text-gray-600 space-y-2 text-kr-wrap">
           <p>🥔 겉바속촉 감자부터 직진 불도저 테토까지</p>
           <p>📊 12가지 상황으로 추출하는 정밀 성향 리포트</p>
           <p className="font-bold text-purple-700 underline underline-offset-4">
