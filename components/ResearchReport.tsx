@@ -1,27 +1,17 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
 
 export default function ResearchReport() {
-  const [open, setOpen] = useState(false);
-
   return (
-    <section className="w-full max-w-[480px] mt-6">
-      <button
-        type="button"
-        onClick={() => setOpen(!open)}
-        className="w-full text-left py-3 px-4 bg-white/80 hover:bg-white border border-purple-100 rounded-2xl shadow-sm transition-colors flex items-center justify-between gap-2"
-        aria-expanded={open}
-      >
-        <span className="text-sm font-bold text-purple-700">
-          📋 연구 리포트: 연애 성향 테스트, 과학일까?
-        </span>
-        <span className="text-purple-400 text-lg shrink-0">
-          {open ? "▲" : "▼"}
-        </span>
-      </button>
-      {open && (
+    <section className="w-full max-w-[480px] mt-6 relative z-20">
+      <details className="group">
+        <summary className="list-none cursor-pointer w-full py-3 px-4 bg-white/80 hover:bg-white border border-purple-100 rounded-2xl shadow-sm transition-colors flex items-center justify-between gap-2 [&::-webkit-details-marker]:hidden">
+          <span className="text-sm font-bold text-purple-700">
+            📋 연구 리포트: 연애 성향 테스트, 과학일까?
+          </span>
+          <span className="text-purple-400 text-lg shrink-0 group-open:rotate-180 transition-transform">
+            ▼
+          </span>
+        </summary>
         <div className="mt-2 p-4 bg-white/90 border border-purple-100 rounded-2xl shadow-sm text-left text-[13px] text-gray-600 leading-relaxed space-y-4">
           <p>
             우리는 왜 새로운 사람을 만날 때나 연인과의 갈등이 생길 때 성향 테스트를
@@ -102,7 +92,7 @@ export default function ResearchReport() {
             </p>
           </div>
         </div>
-      )}
+      </details>
     </section>
   );
 }
