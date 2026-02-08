@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getAnalysisCount } from "@/lib/redis";
 import ResearchReport from "@/components/ResearchReport";
+import ResearchReportInvisibleHand from "@/components/ResearchReportInvisibleHand";
 
 export const metadata: Metadata = {
   title: "남자친구 테토 농도 분석기 | 테토 연구소",
@@ -87,6 +88,7 @@ export default async function HomePage() {
 
       {/* 연구 리포트 (접이식) */}
       <ResearchReport />
+      <ResearchReportInvisibleHand />
 
       {/* 푸터 */}
       <footer className="mt-10 text-[10px] text-gray-400 space-x-4">
