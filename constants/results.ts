@@ -4,6 +4,7 @@
  * data/results.ts와 연동하여 사용
  */
 import { MATCH_REASONS } from "@/constants/chemistry";
+import { getNormalMatchReason } from "@/utils/normalMatchReasons";
 
 export type CompatibilityItem = { score: number; description: string };
 
@@ -100,7 +101,10 @@ function buildCompatibilities(
         description: customReason ?? "조심해서 만나보기. 서로 선을 지키는 게 좋아요.",
       };
     } else {
-      out[slug] = { score: 68 + (h % 10), description: "무난한 조합. 대화로 맞춰가면 좋아요." };
+      out[slug] = {
+        score: 68 + (h % 10),
+        description: getNormalMatchReason(mySlug, slug),
+      };
     }
   });
   return out;
