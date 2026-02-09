@@ -198,7 +198,7 @@ export default function CompatibilityCalculator({
             className="space-y-4"
           >
             <p className="text-center text-gray-700 font-medium">상대방 유형을 선택해주세요</p>
-            <div className="grid grid-cols-4 gap-2 sm:gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
               {otherSlugs.map((slug) => {
                 const data = RESULTS_DATA[slug];
                 if (!data) return null;
@@ -209,10 +209,10 @@ export default function CompatibilityCalculator({
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => selectTarget(slug)}
-                    className="flex flex-col items-center justify-center p-3 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 border-2 border-purple-100 hover:border-pastel-purple hover:shadow-md transition-all"
+                    className="flex flex-col items-center justify-center p-3 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 border-2 border-purple-100 hover:border-pastel-purple hover:shadow-md transition-all min-w-0"
                   >
-                    <span className="text-2xl sm:text-3xl mb-1">{data.emoji}</span>
-                    <span className="text-xs font-medium text-gray-700 truncate w-full text-center">
+                    <span className="text-2xl sm:text-3xl mb-1 shrink-0">{data.emoji}</span>
+                    <span className="text-xs font-medium text-gray-700 text-center break-keep leading-tight">
                       {data.type}
                     </span>
                   </motion.button>

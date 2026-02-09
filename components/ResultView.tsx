@@ -135,8 +135,11 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
         <div className="text-center space-y-4">
           <div className="text-8xl animate-bounce-slow">{result.emoji}</div>
           <TetoConcentrationBar percent={getConcentrationPercent(resultSlug ?? result.type)} />
-          <h1 className="text-3xl font-bold text-gray-800">
-            {result.type}: {result.title}
+          <h1
+            className="font-bold text-gray-800 whitespace-nowrap max-w-full text-sm min-[400px]:text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl px-0.5"
+            style={{ letterSpacing: "-0.04em" }}
+          >
+            {result.type}:{"\u00A0"}{result.title}
           </h1>
           <blockquote className="text-lg text-gray-600 italic border-l-4 border-pastel-pink/50 pl-4 py-1 text-center text-kr-balance" style={{ letterSpacing: "-0.03em" }}>
             &ldquo;{result.tagline}&rdquo;
