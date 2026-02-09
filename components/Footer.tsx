@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { APP_VERSION, LAST_UPDATED } from "@/constants/version";
 
 export default function Footer() {
   return (
@@ -24,6 +25,11 @@ export default function Footer() {
         <p className="text-xs text-gray-500 leading-relaxed max-w-xl mx-auto pt-2">
           본 테스트는 연애 성향을 재미로 알아보는 심리 테스트입니다.
           진단·치료 목적이 아니며, 결과는 참고용으로만 활용해 주세요.
+        </p>
+
+        {/* 버전 · 수정일시 (최하단) */}
+        <p className="text-[10px] text-gray-400 pt-4">
+          v{APP_VERSION} · 수정 {LAST_UPDATED}
         </p>
       </div>
     </footer>
