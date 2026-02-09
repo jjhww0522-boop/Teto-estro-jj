@@ -1,0 +1,25 @@
+{
+  "home": {
+    "title": "恋人のテト濃度分析",
+    "titleHighlight": "テト濃度",
+    "subtitle": "彼/彼女の「テト力」は果たして何%？",
+    "bullet1": "🥔 ほくほくポテトから一直線テトまで",
+    "bullet2": "📊 12のシチュエーションで導き出す詳細レポート",
+    "bullet3": "恋人を観察したまま答えてください！",
+    "analyzeBoyfriend": "彼氏濃度を分析",
+    "analyzeGirlfriend": "彼女濃度を分析",
+    "statsTime": "約2分・全12問",
+    "statsCount": "これまで{{count}}人が分析完了",
+    "characters": "TETO · POTATO · EGEN · GOGUMA · CHEESE · SALSA · EHEM · ERA"
+  },
+  "footer": {
+    "privacy": "プライバシーポリシー",
+    "terms": "利用規約",
+    "copyright": "Copyright © 2026 potatoboyfriends. All rights reserved.",
+    "disclaimer": "本テストは恋愛傾向を楽しむ心理テストです。診断・治療目的ではなく、結果は参考としてご利用ください。",
+    "modified": "更新"
+  },
+  "common": {
+    "language": "言語"
+  }
+}

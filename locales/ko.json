@@ -1,0 +1,25 @@
+{
+  "home": {
+    "title": "연인 테토 농도 분석기",
+    "titleHighlight": "테토 농도",
+    "subtitle": "내 연인의 '테토력'은 과연 몇 %?",
+    "bullet1": "🥔 겉바속촉 감자부터 직진 불도저 테토까지",
+    "bullet2": "📊 12가지 상황으로 추출하는 정밀 성향 리포트",
+    "bullet3": "당신의 연인을 관찰한 그대로 응답하세요!",
+    "analyzeBoyfriend": "남친 농도 분석하기",
+    "analyzeGirlfriend": "여친 농도 분석하기",
+    "statsTime": "약 2분 소요 · 총 12문항",
+    "statsCount": "현재까지 {{count}}명의 애인 분석 완료",
+    "characters": "TETO · POTATO · EGEN · GOGUMA · CHEESE · SALSA · EHEM · ERA"
+  },
+  "footer": {
+    "privacy": "개인정보처리방침",
+    "terms": "이용약관",
+    "copyright": "Copyright © 2026 potatoboyfriends. All rights reserved.",
+    "disclaimer": "본 테스트는 연애 성향을 재미로 알아보는 심리 테스트입니다. 진단·치료 목적이 아니며, 결과는 참고용으로만 활용해 주세요.",
+    "modified": "수정"
+  },
+  "common": {
+    "language": "언어"
+  }
+}

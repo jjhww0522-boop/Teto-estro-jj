@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
+import { LocaleProvider } from "@/components/LocaleProvider";
 import Footer from "@/components/Footer";
 
 export const viewport: Viewport = {
@@ -60,9 +61,11 @@ export default function RootLayout({
         <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" async></script>
       </head>
       <body className="antialiased flex flex-col min-h-screen">
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <Analytics />
+        <LocaleProvider>
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <Analytics />
+        </LocaleProvider>
       </body>
     </html>
   );

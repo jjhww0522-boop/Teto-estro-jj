@@ -1,0 +1,25 @@
+{
+  "home": {
+    "title": "恋人的泰托浓度分析",
+    "titleHighlight": "泰托浓度",
+    "subtitle": "TA的「泰托力」到底有百分之几？",
+    "bullet1": "🥔 从外酥里嫩的土豆到直线型泰托",
+    "bullet2": "📊 通过12种情境得出的详细性格报告",
+    "bullet3": "请根据你观察到的恋人如实作答！",
+    "analyzeBoyfriend": "分析男友浓度",
+    "analyzeGirlfriend": "分析女友浓度",
+    "statsTime": "约2分钟 · 共12题",
+    "statsCount": "截至目前已有{{count}}人完成分析",
+    "characters": "TETO · POTATO · EGEN · GOGUMA · CHEESE · SALSA · EHEM · ERA"
+  },
+  "footer": {
+    "privacy": "隐私政策",
+    "terms": "使用条款",
+    "copyright": "Copyright © 2026 potatoboyfriends. All rights reserved.",
+    "disclaimer": "本测试仅供娱乐了解恋爱倾向，非诊断或治疗用途，结果仅供参考。",
+    "modified": "更新"
+  },
+  "common": {
+    "language": "语言"
+  }
+}

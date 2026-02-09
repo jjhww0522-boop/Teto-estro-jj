@@ -1,0 +1,25 @@
+{
+  "home": {
+    "title": "Partner Teto Level Analyzer",
+    "titleHighlight": "Teto Level",
+    "subtitle": "What's your partner's 'Teto power' %?",
+    "bullet1": "🥔 From crispy potato to full-speed Teto",
+    "bullet2": "📊 A detailed personality report from 12 situations",
+    "bullet3": "Answer as you've observed your partner!",
+    "analyzeBoyfriend": "Analyze boyfriend",
+    "analyzeGirlfriend": "Analyze girlfriend",
+    "statsTime": "About 2 min · 12 questions",
+    "statsCount": "{{count}} partners analyzed so far",
+    "characters": "TETO · POTATO · EGEN · GOGUMA · CHEESE · SALSA · EHEM · ERA"
+  },
+  "footer": {
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use",
+    "copyright": "Copyright © 2026 potatoboyfriends. All rights reserved.",
+    "disclaimer": "This test is for entertainment only. It is not for diagnosis or treatment. Use results for reference only.",
+    "modified": "Updated"
+  },
+  "common": {
+    "language": "Language"
+  }
+}
