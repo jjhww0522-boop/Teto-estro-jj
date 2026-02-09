@@ -81,12 +81,17 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
     const textPart = `${result.tagline}\n\n${result.oneLiner}`.slice(0, 150);
     const linkText = `\n\n🔗 결과 보기: ${shareUrl}`;
     const longDescription = textPart + linkText;
+    // ㅇㅇ녀 분석결과(_f) → 여성 캐릭터 이미지, ㅇㅇ남 분석결과 → 남성 캐릭터 이미지
+    const isFemaleResult = resultSlug?.endsWith("_f");
+    const imageUrl = isFemaleResult
+      ? `${BASE_URL}/images/og-result-female.png`
+      : `${BASE_URL}/images/og-result-male.png`;
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
         title: `나는 ${result.type}! ${result.title}`,
         description: longDescription,
-        imageUrl: "https://via.placeholder.com/1200x630/FFD6E8/5a4a6a?text=테토남+연애+테스트",
+        imageUrl,
         link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
       },
       buttons: [

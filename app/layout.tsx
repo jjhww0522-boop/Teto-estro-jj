@@ -10,21 +10,24 @@ export const viewport: Viewport = {
   userScalable: true,
 };
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://tetolab.com";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "내 애인의 테토 농도 분석기",
   description:
     "내 애인의 테토 농도는 몇 %? 지금 바로 정밀 분석 리포트를 확인하세요!",
   openGraph: {
     title: "내 애인의 테토 농도 분석기 ⚗️",
     description: "12가지 상황으로 알아보는 내 애인의 진짜 테토력!",
-    url: "https://teto-potato-test.vercel.app",
+    url: SITE_URL,
     siteName: "테토 연구소",
     images: [
       {
         url: "/images/og-main.png",
         width: 1200,
         height: 630,
-        alt: "테토 농도 분석기 대표 이미지",
+        alt: "내 애인의 테토 농도 분석기 대표 이미지",
       },
     ],
     locale: "ko_KR",
