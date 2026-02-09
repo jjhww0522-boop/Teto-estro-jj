@@ -259,6 +259,23 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
 
         {/* 액션 버튼 */}
         <div className="space-y-3 pt-4">
+          {resultSlug && (
+            <CompatibilityCalculator currentSlug={resultSlug} currentResult={result} />
+          )}
+          {resultSlug && (
+            <Link
+              href={
+                matchMe
+                  ? `/match?me=${encodeURIComponent(matchMe)}&you=${encodeURIComponent(resultSlug)}`
+                  : `/match?me=${encodeURIComponent(resultSlug)}`
+              }
+              className="w-full block text-center"
+            >
+              <span className="text-sm text-gray-500 hover:text-purple-600">
+                전체 궁합표 보기 (Chemistry) →
+              </span>
+            </Link>
+          )}
           <button
             onClick={shareToKakao}
             className="w-full bg-[#FEE500] hover:bg-[#FDD835] text-gray-800 font-bold py-4 px-6 rounded-2xl shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2"
@@ -281,24 +298,6 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
             <span className="text-xl">📸</span>
             <span>이미지로 저장하기</span>
           </button>
-
-          {resultSlug && (
-            <CompatibilityCalculator currentSlug={resultSlug} currentResult={result} />
-          )}
-          {resultSlug && (
-            <Link
-              href={
-                matchMe
-                  ? `/match?me=${encodeURIComponent(matchMe)}&you=${encodeURIComponent(resultSlug)}`
-                  : `/match?me=${encodeURIComponent(resultSlug)}`
-              }
-              className="w-full block text-center"
-            >
-              <span className="text-sm text-gray-500 hover:text-purple-600">
-                전체 궁합표 보기 (Chemistry) →
-              </span>
-            </Link>
-          )}
           <Link href="/">
             <button className="w-full btn-primary">다시 테스트하기 🔄</button>
           </Link>
