@@ -90,7 +90,9 @@ function buildCompatibilities(
     if (goodBases.has(base)) {
       out[slug] = {
         score: 88 + (h % 8),
-        description: customReason ?? "찰떡 궁합! 서로를 잘 받쳐 줘요.",
+        description:
+          customReason ??
+          "서로의 성향을 이해하고 부족한 부분을 채워 주는 찰떡 궁합. 감정적으로 든든하게 받쳐주고, 일상에서도 말과 행동이 잘 맞아서 편한 조합이에요.",
       };
     } else if (badBases.has(base)) {
       out[slug] = {
@@ -129,8 +131,8 @@ export const RESULTS_DATA: Record<string, ResultDataItem> = {
     type: "포테토남",
     title: "평온한 인간 휴식처",
     emoji: "🧸",
-    tagline: "당신의 가장 고단한 하루 끝, 말없이 내어줄 수 있는 넓은 등.",
-    oneLiner: "변치 않는 꾸준함과 깊은 포용력으로 연인을 감싸안는 '인간 담요' 같은 존재.",
+    tagline: "당신의 가장 고단한 하루 끝, 말없이 내어줄 수 있는 넓은\u00A0등.",
+    oneLiner: "변치 않는 꾸준함과 깊은 포용력으로 연인을 감싸안는 '인간 담요' 같은\u00A0존재.",
     keywords: ["인간쉼표", "정서적수호자", "은근한진국", "공감마스터"],
     loveDescription:
       "포테토남의 사랑은 화려한 불꽃놀이보다 밤새 은은하게 온기를 전하는 온돌방을 닮았습니다. 연인의 아주 사소한 눈빛 변화나 말투의 높낮이만으로도 컨디션을 귀신같이 읽어내어 따뜻한 차 한 잔을 내미는 세심함을 가졌죠. 당신과의 연애는 자극적인 도파민보다는 편안한 세로토닌 같은 행복을 줍니다. 자극적이지 않아도 시간이 갈수록 그 가치가 빛나는 당신은, 연인에게 '이 사람 곁이라면 평생 안전하겠다'는 깊은 신뢰와 안식처를 제공하는 진국 중의 진국입니다.",
@@ -167,7 +169,7 @@ export const RESULTS_DATA: Record<string, ResultDataItem> = {
     type: "고구마남",
     title: "묵직한 진심의 성실파",
     emoji: "🍠",
-    tagline: "천천히 달궈지지만 결코 식지 않는 군고구마 같은 사랑.",
+    tagline: "천천히 달궈지지만 결코 식지 않는 군고구마 같은\u00A0사랑.",
     oneLiner: "묵직한 진심과 성실함으로 신뢰를 쌓아가는 든든한 휴식처.",
     keywords: ["은근한다정함", "행동파로맨티스트", "신뢰도100%", "가정적"],
     loveDescription:
@@ -244,7 +246,7 @@ export const RESULTS_DATA: Record<string, ResultDataItem> = {
     title: "쿨한 자유주의자",
     emoji: "🌊",
     tagline: "얽매이지 않는 자유로움 속에서 더 깊은 사랑을 찾습니다.",
-    oneLiner: "계획보다는 즉흥적인 즐거움을, 구속보다는 존중을 추구하는 자유로운 영혼.",
+    oneLiner: "계획보다는 즉흥적인 즐거움을, 구속보다는 존중을 추구하는 자유로운\u00A0영혼.",
     keywords: ["YOLO로맨스", "쿨한연애", "뒤끝제로", "이벤트제조기"],
     loveDescription:
       "정해진 틀에 갇힌 데이트보다는 즉흥적인 즐거움을 즐깁니다. 집착하기보다 서로의 개인적인 시간과 성장을 응원하는 쿨한 관계를 지향하죠. 불필요한 감정 소모를 싫어하고 매 순간 현재의 즐거움에 집중하는 당신의 태도는 연인에게 신선한 자극과 자율성을 부여해, 더 건강하고 독립적인 관계를 만들어갑니다.",
@@ -263,7 +265,7 @@ export const RESULTS_DATA: Record<string, ResultDataItem> = {
     title: "확신의 카리스마 리더",
     emoji: "🚜",
     tagline: "우리의 연애 노선은 내가 정한다. 넌 즐기기만 해!",
-    oneLiner: "연애의 주도권을 잡고 시원하게 리드하는 스타일입니다. 결정 장애가 있는 남친에게는 구세주 같은 존재죠.",
+    oneLiner: "연애의 주도권을 잡고 시원하게 리드하는 스타일입니다. 결정 장애가 있는 남친에게는 구세주 같은\u00A0존재죠.",
     keywords: ["완벽설계", "뒤끝없는쿨함", "서포터"],
     loveDescription:
       "연애의 주도권을 잡고 시원하게 리드하는 당신은 결정 장애가 있는 남친에게 구세주 같은 존재입니다. 데이트 코스부터 맛집 예약까지 완벽하게 설계하며, 할 말은 바로 하는 뒤끝 없는 쿨한 성격으로 갈등을 빠르게 해결합니다. 당신의 추진력은 관계에 활력을 불어넣고 연인이 당신을 믿고 따르게 만드는 강력한 매력이 됩니다.",
@@ -281,7 +283,7 @@ export const RESULTS_DATA: Record<string, ResultDataItem> = {
     type: "포테토녀",
     title: "포근한 인간 휴식처",
     emoji: "🧸",
-    tagline: "지친 하루 끝에 네가 쉴 수 있는 가장 따뜻한 품이 될게.",
+    tagline: "지친 하루 끝에 네가 쉴 수 있는 가장 따뜻한 품이\u00A0될게.",
     oneLiner: "안정적이고 다정한 성격으로 곁에 있는 것만으로도 힐링을 주는 존재입니다.",
     keywords: ["인간비타민", "수호자", "일상행복"],
     loveDescription:
@@ -376,7 +378,7 @@ export const RESULTS_DATA: Record<string, ResultDataItem> = {
     type: "에라녀",
     title: "쿨한 자유주의자",
     emoji: "🌊",
-    tagline: "서로의 자유를 존중할 때 우리 사랑은 더 커져.",
+    tagline: "서로의 자유를 존중할 때 우리 사랑은 더\u00A0커져.",
     oneLiner: "얽매이는 것을 싫어하고 현재의 즐거움을 추구하는 쿨한 성격의 소유자입니다.",
     keywords: ["자유주의", "쿨함", "즉흥모험"],
     loveDescription:
@@ -396,7 +398,7 @@ export const RESULTS_DATA: Record<string, ResultDataItem> = {
     title: "묵직한 진심의 해바라기",
     emoji: "🍠",
     tagline: "표현은 조금 서툴러도, 내 행동 속엔 오직 당신뿐이에요.",
-    oneLiner: "겉은 다소 무뚝뚝해 보일 수 있으나 속은 누구보다 따뜻하고 단단한 '진국' 여자친구.",
+    oneLiner: "겉은 다소 무뚝뚝해 보일 수 있으나 속은 누구보다 따뜻하고 단단한 '진국'\u00A0여자친구.",
     keywords: ["츤데레정석", "성실한사랑", "행동파", "믿음직한동반자"],
     loveDescription:
       "고구마녀는 말로 사랑을 요리하기보다 행동으로 진심을 증명하는 타입입니다. 낯간지러운 애정 표현에는 뚝딱거리며 부끄러워할지 몰라도, 당신이 아플 때 말없이 죽을 배달시키고 당신의 중요한 일정을 메모해두었다가 응원 문자를 보내는 세심한 노력파죠. 당신의 사랑은 군고구마처럼 천천히 익어가지만, 한 번 마음을 열면 절대 식지 않는 높은 밀도를 자랑합니다. 화려한 수식어보다 묵직한 책임감으로 곁을 지키는 당신은 시간이 흐를수록 대체 불가능한 존재가 됩니다.",
@@ -424,4 +426,30 @@ export function getCompatibility(
 ): CompatibilityItem | null {
   const d = RESULTS_DATA[mySlug];
   return d?.compatibilities?.[otherSlug] ?? null;
+}
+
+/** 궁합 카테고리 (찰떡/보통/조심). 점수 구간으로 판별 */
+export type CompatibilityCategory = "good" | "normal" | "bad";
+
+export function getCompatibilityCategory(
+  mySlug: string,
+  otherSlug: string
+): CompatibilityCategory | null {
+  const comp = getCompatibility(mySlug, otherSlug);
+  if (!comp) return null;
+  if (comp.score >= 80) return "good";
+  if (comp.score <= 54) return "bad";
+  return "normal";
+}
+
+/** 카테고리별 랜덤 궁합 점수 (접속할 때마다 소수점 살짝 다르게) */
+export function getRandomCompatibilityScore(category: CompatibilityCategory): number {
+  switch (category) {
+    case "good":
+      return Math.round((80 + Math.random() * 20) * 10) / 10; // 80.0 ~ 100.0
+    case "bad":
+      return Math.round(Math.random() * 35 * 10) / 10; // 0.0 ~ 35.0
+    default:
+      return Math.round((35 + Math.random() * 45) * 10) / 10; // 35.0 ~ 80.0
+  }
 }

@@ -2,6 +2,7 @@
 
 import { QRCodeSVG } from "qrcode.react";
 import type { ResultType } from "@/data/results";
+import { getConcentrationPercent } from "@/utils/concentration";
 
 /** 인스타 스토리용 9:16 카드 (360×640 기준, 캡처 시 scale 3 → 1080×1920) */
 const CARD_WIDTH = 360;
@@ -30,16 +31,9 @@ function getSerialNumber() {
   return `No. ${y}-${m}${d}`;
 }
 
-/** 유형별 농도 % (시각적 다양성용, 88~99) */
-function getConcentrationPercent(type: string): number {
-  let n = 0;
-  for (let i = 0; i < type.length; i++) n += type.charCodeAt(i);
-  return 88 + (n % 12);
-}
-
 export default function ResultStoryCard({ result, testUrl, resultSlug }: ResultStoryCardProps) {
   const serial = getSerialNumber();
-  const percent = getConcentrationPercent(result.type);
+  const percent = getConcentrationPercent(resultSlug ?? result.type);
   const goodMatches = toPartnerMatchNames(result.goodMatch, resultSlug);
   const badMatches = toPartnerMatchNames(result.badMatch, resultSlug);
   const goodOne = goodMatches[0] ?? "—";
@@ -72,7 +66,7 @@ export default function ResultStoryCard({ result, testUrl, resultSlug }: ResultS
       {/* 중앙 상단: 분석 대상 */}
       <div className="px-4 pt-4 pb-2 text-center">
         <h2 className="text-base font-black text-gray-800 leading-tight">
-          우리 남친의 테토 농도 분석 결과
+          내 애인의 테토 농도 분석 결과
         </h2>
       </div>
 
@@ -98,7 +92,7 @@ export default function ResultStoryCard({ result, testUrl, resultSlug }: ResultS
         <p className="text-sm font-bold text-purple-700 text-center mb-1">
           테토 농도 {percent}% · 순도 100% 진국 감자
         </p>
-        <p className="text-xs text-gray-600 text-center leading-snug max-w-[280px]">
+        <p className="text-xs text-gray-600 text-center leading-snug max-w-[280px] text-kr-balance" style={{ letterSpacing: "-0.03em" }}>
           &ldquo;{result.tagline}&rdquo;
         </p>
       </div>
@@ -111,7 +105,7 @@ export default function ResultStoryCard({ result, testUrl, resultSlug }: ResultS
           background: "rgba(255,255,255,0.5)",
         }}
       >
-        <p className="text-xs text-gray-700 leading-relaxed line-clamp-2">
+        <p className="text-xs text-gray-700 leading-relaxed line-clamp-2 text-kr-balance" style={{ letterSpacing: "-0.03em" }}>
           {result.oneLiner}
         </p>
         <div className="flex flex-wrap gap-1">

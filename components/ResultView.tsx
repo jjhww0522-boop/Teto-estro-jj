@@ -5,6 +5,9 @@ import Link from "next/link";
 import html2canvas from "html2canvas";
 import type { ResultType } from "@/data/results";
 import { RESULTS_DATA } from "@/constants/results";
+import TetoConcentrationBar from "@/components/TetoConcentrationBar";
+import CompatibilityCalculator from "@/components/CompatibilityCalculator";
+import { getConcentrationPercent } from "@/utils/concentration";
 
 declare global {
   interface Window {
@@ -128,16 +131,17 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
         className="card max-w-2xl w-full space-y-8 bg-gradient-to-br from-white via-pastel-pink/10 to-pastel-purple/10"
         style={{ backgroundColor: "#ffffff" }}
       >
-        {/* 헤더: 이모지 + 유형명: 부제 */}
+        {/* 헤더: 이모지 + 테토력 그래프 + 유형명: 부제 */}
         <div className="text-center space-y-4">
           <div className="text-8xl animate-bounce-slow">{result.emoji}</div>
+          <TetoConcentrationBar percent={getConcentrationPercent(resultSlug ?? result.type)} />
           <h1 className="text-3xl font-bold text-gray-800">
             {result.type}: {result.title}
           </h1>
-          <blockquote className="text-lg text-gray-600 italic border-l-4 border-pastel-pink/50 pl-4 py-1 text-left text-kr-wrap">
+          <blockquote className="text-lg text-gray-600 italic border-l-4 border-pastel-pink/50 pl-4 py-1 text-center text-kr-balance" style={{ letterSpacing: "-0.03em" }}>
             &ldquo;{result.tagline}&rdquo;
           </blockquote>
-          <p className="text-base text-gray-600 font-medium text-kr-wrap">{result.oneLiner}</p>
+          <p className="text-base text-gray-600 font-medium text-kr-balance" style={{ letterSpacing: "-0.03em" }}>{result.oneLiner}</p>
         </div>
 
         {/* 키워드 태그 */}
@@ -171,11 +175,11 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-pastel-mint/30 rounded-2xl p-4 border border-pastel-mint/40">
-              <p className="text-xs font-bold text-pastel-mint/80 uppercase tracking-wide mb-2">Good</p>
+              <p className="text-xs font-bold text-emerald-600 uppercase tracking-wide mb-2">Good</p>
               <p className="text-gray-700 text-sm leading-relaxed text-kr-wrap">{result.checkGood}</p>
             </div>
             <div className="bg-pastel-peach/30 rounded-2xl p-4 border border-pastel-peach/40">
-              <p className="text-xs font-bold text-pastel-peach/80 uppercase tracking-wide mb-2">Bad</p>
+              <p className="text-xs font-bold text-orange-600 uppercase tracking-wide mb-2">Bad</p>
               <p className="text-gray-700 text-sm leading-relaxed text-kr-wrap">{result.checkBad}</p>
             </div>
           </div>
@@ -276,21 +280,20 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
           </button>
 
           {resultSlug && (
+            <CompatibilityCalculator currentSlug={resultSlug} currentResult={result} />
+          )}
+          {resultSlug && (
             <Link
               href={
                 matchMe
                   ? `/match?me=${encodeURIComponent(matchMe)}&you=${encodeURIComponent(resultSlug)}`
                   : `/match?me=${encodeURIComponent(resultSlug)}`
               }
-              className="w-full block"
+              className="w-full block text-center"
             >
-              <button
-                type="button"
-                className="w-full py-4 bg-gradient-to-r from-amber-400 to-orange-500 text-white font-bold rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
-              >
-                <span className="text-xl">💕</span>
-                <span>우리 궁합 보기 (Chemistry)</span>
-              </button>
+              <span className="text-sm text-gray-500 hover:text-purple-600">
+                전체 궁합표 보기 (Chemistry) →
+              </span>
             </Link>
           )}
           <Link href="/">

@@ -5,7 +5,7 @@ import ResearchReport from "@/components/ResearchReport";
 import ResearchReportInvisibleHand from "@/components/ResearchReportInvisibleHand";
 
 export const metadata: Metadata = {
-  title: "남자친구 테토 농도 분석기 | 테토 연구소",
+  title: "내 애인의 테토 농도 분석기 | 테토 연구소",
   description: "내 남친의 테토력은 과연 몇 %? 12가지 상황으로 분석하는 정밀 성향 리포트",
 };
 

@@ -19,6 +19,13 @@
     overflow-wrap: break-word;
   }
 
+  /* 한두 글자만 다음 줄로 떨어지는 것 방지 (고아 줄 완화) */
+  .text-kr-balance {
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    text-wrap: balance;
+  }
+
   .btn-primary {
     @apply bg-gradient-to-r from-pastel-purple to-pastel-pink text-gray-800 font-bold py-4 px-8 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300;
   }

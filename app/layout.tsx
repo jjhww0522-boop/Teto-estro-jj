@@ -10,12 +10,12 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "남자친구 테토 농도 분석기",
+  title: "내 애인의 테토 농도 분석기",
   description:
-    "내 남친의 테토 농도는 몇 %? 지금 바로 정밀 분석 리포트를 확인하세요!",
+    "내 애인의 테토 농도는 몇 %? 지금 바로 정밀 분석 리포트를 확인하세요!",
   openGraph: {
-    title: "남자친구 테토 농도 분석기 ⚗️",
-    description: "12가지 상황으로 알아보는 우리 남친의 진짜 테토력!",
+    title: "내 애인의 테토 농도 분석기 ⚗️",
+    description: "12가지 상황으로 알아보는 내 애인의 진짜 테토력!",
     url: "https://teto-potato-test.vercel.app",
     siteName: "테토 연구소",
     images: [
@@ -31,8 +31,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "남자친구 테토 농도 분석기 ⚗️",
-    description: "12가지 상황으로 알아보는 우리 남친의 진짜 테토력!",
+    title: "내 애인의 테토 농도 분석기 ⚗️",
+    description: "12가지 상황으로 알아보는 내 애인의 진짜 테토력!",
     images: ["/images/og-main.png"],
   },
   robots: {
