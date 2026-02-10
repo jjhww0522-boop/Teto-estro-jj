@@ -136,7 +136,7 @@ export const QUESTIONS: QuestionItem[] = [
       { text: "\"우와 고마워! 잘 쓸게!\" 리액션은 크게 하지만 속으로는 활용도를 생각하는 눈치.", scores: { cheese: 1, salsa: 1 } },
       { text: "\"준비하느라 고생했겠다. 근데 다음에는 이런 스타일로 사주면 더 좋을 것 같아!\"", scores: { teto: 1, ehem: 1 } },
       { text: "\"고마워. 근데 이런 건 나보다 네가 쓰면 더 잘 어울릴 것 같은데?\"", scores: { era: 1, sweet_potato: 1 } },
-      { text: "\"헉 이거 어디서 났어? 근데 나 이런 거 좋아하는데 어떻게 알았어?\" 감자 특유의 솔직한 감동 표출.", scores: { potato: 1, egen: 1 } },
+      { text: "\"...이거 나 주려고 산 거야?\" 취향이고 뭐고 선물 받았다는 사실 자체에 눈시울이 붉어진다.", scores: { potato: 1, egen: 1 } },
     ],
   },
   {
