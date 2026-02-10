@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import html2canvas from "html2canvas";
 import type { ResultType } from "@/data/results";
@@ -10,6 +10,7 @@ import TetoConcentrationBar from "@/components/TetoConcentrationBar";
 import CompatibilityCalculator from "@/components/CompatibilityCalculator";
 import RadarChart from "@/components/RadarChart";
 import { getConcentrationPercent } from "@/utils/concentration";
+import ResultStoryCard from "@/components/ResultStoryCard";
 import { useLocale } from "@/components/LocaleProvider";
 import { RESULTS_I18N } from "@/constants/results-i18n";
 
@@ -27,6 +28,7 @@ interface ResultViewProps {
   resultSlug?: string;
   matchMe?: string | null;
   dimensionScores?: Record<CharType, number> | null;
+  isSharedView?: boolean;
 }
 
 function toPartnerMatchNames(names: string[], resultSlug?: string): string[] {
@@ -61,9 +63,14 @@ function groupCompatibilitiesByDescription(
   }));
 }
 
-export default function ResultView({ result, shareUrl, resultSlug, matchMe, dimensionScores }: ResultViewProps) {
+export default function ResultView({ result, shareUrl, resultSlug, matchMe, dimensionScores, isSharedView }: ResultViewProps) {
   const resultCardRef = useRef<HTMLDivElement>(null);
+  const [showShareButtons, setShowShareButtons] = useState(true);
   const { t, locale } = useLocale();
+
+  const handleCompatibilityViewChange = useCallback((view: string) => {
+    setShowShareButtons(view !== "result");
+  }, []);
 
   // i18n 오버레이: 결과 텍스트
   const i18nResult = (locale !== "ko" && resultSlug) ? RESULTS_I18N[locale]?.[resultSlug] : null;
@@ -85,9 +92,8 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
       alert(t("result.kakaoUnavailable"));
       return;
     }
-    const textPart = `${displayResult.tagline}\n\n${displayResult.oneLiner}`.slice(0, 150);
-    const linkText = `\n\n${t("result.viewResult")}: ${shareUrl}`;
-    const longDescription = textPart + linkText;
+    const shortOneLiner = displayResult.oneLiner.split(/(?<=[.!?])\s/)[0];
+    const textPart = `${displayResult.tagline}\n\n${shortOneLiner}`.slice(0, 150);
     const isFemaleResult = resultSlug?.endsWith("_f");
     const imageUrl = isFemaleResult
       ? `${BASE_URL}/images/og-result-female.png`
@@ -96,7 +102,7 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
       objectType: "feed",
       content: {
         title: `나는 ${displayResult.type}! ${displayResult.title}`,
-        description: longDescription,
+        description: textPart,
         imageUrl,
         link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
       },
@@ -135,8 +141,46 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
     }
   };
 
+  const downloadStoryImage = async () => {
+    const storyCard = document.getElementById("result-story-card");
+    if (!storyCard) return;
+    try {
+      const button = document.getElementById("download-story-btn");
+      if (button) button.textContent = t("result.savingStory");
+      const canvas = await html2canvas(storyCard, {
+        backgroundColor: null,
+        scale: 3,
+        logging: false,
+        useCORS: true,
+      });
+      const link = document.createElement("a");
+      link.download = `${displayResult.type}_인스타스토리.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+      if (button) button.textContent = t("result.saveStory");
+      alert(t("result.storySaved"));
+    } catch (error) {
+      console.error("스토리 이미지 저장 실패:", error);
+      alert(t("result.imageFail"));
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 py-8">
+      {/* 인스타 스토리용 오프스크린 카드 */}
+      <div style={{ position: "absolute", left: "-9999px", top: 0 }} aria-hidden="true">
+        <ResultStoryCard result={result} resultSlug={resultSlug} />
+      </div>
+
+      {/* 공유 링크로 유입된 사용자용 CTA */}
+      {isSharedView && (
+        <Link href="/" className="w-full max-w-2xl mb-4 block">
+          <div className="btn-primary text-center py-4 px-6 flex items-center justify-center gap-2">
+            <span>{t("result.tryTestCTA")}</span>
+          </div>
+        </Link>
+      )}
+
       <div
         ref={resultCardRef}
         className="card max-w-2xl w-full space-y-8"
@@ -281,7 +325,7 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
         {/* 액션 버튼 */}
         <div className="space-y-3 pt-4">
           {resultSlug && (
-            <CompatibilityCalculator currentSlug={resultSlug} currentResult={result} />
+            <CompatibilityCalculator currentSlug={resultSlug} currentResult={result} onViewChange={handleCompatibilityViewChange} />
           )}
           {resultSlug && (
             <Link
@@ -297,25 +341,37 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
               </span>
             </Link>
           )}
-          <button
-            onClick={shareToKakao}
-            className="w-full bg-[#FEE500] hover:bg-[#FDD835] text-gray-800 font-bold py-4 px-6 rounded-button shadow-button hover:shadow-card-hover transform hover:scale-[1.02] transition-all duration-200 flex items-center justify-center gap-2"
-          >
-            <span>{t("result.shareKakao")}</span>
-          </button>
-          <button
-            onClick={copyLink}
-            className="btn-secondary w-full flex items-center justify-center gap-2"
-          >
-            <span>{t("result.copyLink")}</span>
-          </button>
-          <button
-            id="download-btn"
-            onClick={downloadImage}
-            className="btn-secondary w-full flex items-center justify-center gap-2"
-          >
-            <span>{t("result.saveImage")}</span>
-          </button>
+          {showShareButtons && (
+            <>
+              <button
+                onClick={shareToKakao}
+                className="w-full bg-[#FEE500] hover:bg-[#FDD835] text-gray-800 font-bold py-4 px-6 rounded-button shadow-button hover:shadow-card-hover transform hover:scale-[1.02] transition-all duration-200 flex items-center justify-center gap-2"
+              >
+                <span>{t("result.shareKakao")}</span>
+              </button>
+              <button
+                id="download-story-btn"
+                onClick={downloadStoryImage}
+                className="w-full text-white font-bold py-4 px-6 rounded-button shadow-button hover:shadow-card-hover transform hover:scale-[1.02] transition-all duration-200 flex items-center justify-center gap-2"
+                style={{ background: "linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)" }}
+              >
+                <span>{t("result.saveStory")}</span>
+              </button>
+              <button
+                onClick={copyLink}
+                className="btn-secondary w-full flex items-center justify-center gap-2"
+              >
+                <span>{t("result.copyLink")}</span>
+              </button>
+              <button
+                id="download-btn"
+                onClick={downloadImage}
+                className="btn-secondary w-full flex items-center justify-center gap-2"
+              >
+                <span>{t("result.saveImage")}</span>
+              </button>
+            </>
+          )}
           <Link href="/">
             <button className="w-full btn-primary">{t("result.retakeTest")}</button>
           </Link>

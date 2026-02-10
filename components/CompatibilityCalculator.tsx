@@ -24,6 +24,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://teto-potato-test.v
 interface CompatibilityCalculatorProps {
   currentSlug: string;
   currentResult: ResultType;
+  onViewChange?: (view: View) => void;
 }
 
 type View = "button" | "grid" | "loading" | "result";
@@ -86,6 +87,7 @@ function CircularGauge({ percent, size = 160 }: { percent: number; size?: number
 export default function CompatibilityCalculator({
   currentSlug,
   currentResult,
+  onViewChange,
 }: CompatibilityCalculatorProps) {
   const [view, setView] = useState<View>("button");
   const [targetSlug, setTargetSlug] = useState<string | null>(null);
@@ -101,6 +103,10 @@ export default function CompatibilityCalculator({
   const otherSlugs = ALL_RESULT_SLUGS.filter(
     (s) => s !== currentSlug && (isFemaleResult ? !s.endsWith("_f") : s.endsWith("_f"))
   );
+
+  useEffect(() => {
+    onViewChange?.(view);
+  }, [view, onViewChange]);
 
   const openGrid = useCallback(() => setView("grid"), []);
   const goBack = useCallback(() => {
@@ -155,15 +161,18 @@ export default function CompatibilityCalculator({
       window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_KEY || "3226a5c1a88b15cf36cbd977ec3b1821");
     }
     const targetName = targetSlug ? RESULTS_DATA[targetSlug]?.type ?? targetSlug : "";
-    const title = `${score.toFixed(1)}%!`;
-    const desc = `${currentResult.type} × ${targetName}\n${description.slice(0, 80)}...`;
+    const title = `${currentResult.emoji} ${currentResult.type} × ${targetName} ${RESULTS_DATA[targetSlug!]?.emoji ?? ""} ${score.toFixed(1)}%!`;
+    const desc = `${description.slice(0, 120)}`;
     const shareUrl = `${BASE_URL}/result?matchMe=${currentSlug}`;
+    const imageUrl = isFemaleResult
+      ? `${BASE_URL}/images/og-result-female.png`
+      : `${BASE_URL}/images/og-result-male.png`;
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
         title,
         description: desc,
-        imageUrl: "https://via.placeholder.com/1200x630/E5D4FF/5a4a6a?text=Chemistry",
+        imageUrl,
         link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
       },
       buttons: [
@@ -255,7 +264,7 @@ export default function CompatibilityCalculator({
           >
             <div className="flex flex-col items-center gap-4">
               <p className="text-sm font-bold text-brand-accent">
-                {currentResult.type} × {RESULTS_DATA[targetSlug]?.type ?? targetSlug}
+                {currentResult.emoji} {currentResult.type} × {RESULTS_DATA[targetSlug]?.type ?? targetSlug} {RESULTS_DATA[targetSlug]?.emoji}
               </p>
               <CircularGauge percent={score} size={180} />
               <span className={`inline-flex items-center px-3 py-1 rounded-tag text-sm font-bold ${CATEGORY_COLOR[category]}`}>

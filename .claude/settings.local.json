@@ -15,7 +15,19 @@
       "Bash(npx.cmd tsc:*)",
       "Bash(NODE_OPTIONS=\"--max-old-space-size=4096\" npx.cmd next build:*)",
       "Bash(git add:*)",
-      "Bash(git -C \"C:\\\\Users\\\\82102\\\\Desktop\\\\Tetolab\" add .)"
+      "Bash(git -C \"C:\\\\Users\\\\82102\\\\Desktop\\\\Tetolab\" add .)",
+      "Bash(git -C \"C:\\\\Users\\\\82102\\\\Desktop\\\\Tetolab\" commit -m \"$\\(cat <<''EOF''\n애드센스 코드 스니펫 삽입\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git -C \"C:\\\\Users\\\\82102\\\\Desktop\\\\Tetolab\" push)",
+      "Bash(git -C \"C:\\\\Users\\\\82102\\\\Desktop\\\\Tetolab\" status)",
+      "Bash(git -C \"C:\\\\Users\\\\82102\\\\Desktop\\\\Tetolab\" diff --stat)",
+      "Bash(git -C \"C:\\\\Users\\\\82102\\\\Desktop\\\\Tetolab\" log --oneline -3)",
+      "Bash(git -C \"C:\\\\Users\\\\82102\\\\Desktop\\\\Tetolab\" add app/about/page.tsx app/result/[type]/page.tsx app/robots.ts app/sitemap.ts components/Footer.tsx components/ResearchReport.tsx components/ResearchReportInvisibleHand.tsx public/robots.txt)",
+      "Bash(git -C \"C:\\\\Users\\\\82102\\\\Desktop\\\\Tetolab\" commit -m \"$\\(cat <<''EOF''\n애드센스 심사 대비: SEO 및 콘텐츠 개선\n\n- About 페이지 추가 \\(서비스 소개, 운영 정보, 문의\\)\n- sitemap/robots URL을 tetolab.com으로 통일\n- 사이트맵에 전체 16개 유형 + 주요 페이지 추가\n- 결과 정적 페이지에 SEO 메타데이터\\(generateMetadata\\) 추가\n- 연구 리포트 기본 펼침\\(open\\)으로 크롤러 인식 개선\n- Footer에 About 링크 추가\n- public/robots.txt 중복 제거\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\n11번 문제 5번 보기 문구 수정: 감자 캐릭터 감동 표현 개선\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(npx next dev:*)",
+      "Bash(npx.cmd next dev:*)",
+      "Bash(npm install:*)"
     ]
   }
 }

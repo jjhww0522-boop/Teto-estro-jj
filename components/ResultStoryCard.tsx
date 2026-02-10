@@ -1,6 +1,5 @@
 "use client";
 
-import { QRCodeSVG } from "qrcode.react";
 import type { ResultType } from "@/data/results";
 import { getConcentrationPercent } from "@/utils/concentration";
 
@@ -10,7 +9,6 @@ const CARD_HEIGHT = 640;
 
 interface ResultStoryCardProps {
   result: ResultType;
-  testUrl: string;
   resultSlug?: string;
 }
 
@@ -30,7 +28,7 @@ function getSerialNumber() {
   return `No. ${y}-${m}${d}`;
 }
 
-export default function ResultStoryCard({ result, testUrl, resultSlug }: ResultStoryCardProps) {
+export default function ResultStoryCard({ result, resultSlug }: ResultStoryCardProps) {
   const serial = getSerialNumber();
   const percent = getConcentrationPercent(resultSlug ?? result.type);
   const goodMatches = toPartnerMatchNames(result.goodMatch, resultSlug);
@@ -71,9 +69,15 @@ export default function ResultStoryCard({ result, testUrl, resultSlug }: ResultS
 
       {/* Hero: 캐릭터 + 농도 게이지 + 한 줄 */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-4">
-        <div className="w-16 h-16 bg-brand-highlight border border-brand-border rounded-card flex items-center justify-center text-4xl mb-3">
+        <div className="w-16 h-16 bg-brand-highlight border border-brand-border rounded-card flex items-center justify-center text-4xl mb-2">
           {result.emoji}
         </div>
+        <p className="text-sm font-black text-brand-charcoal text-center mb-1 leading-tight">
+          {result.type}
+        </p>
+        <p className="text-[11px] text-brand-muted text-center mb-3" style={{ letterSpacing: "-0.03em" }}>
+          {result.title}
+        </p>
         <div
           className="relative w-28 h-28 rounded-full flex items-center justify-center mb-3"
           style={{
@@ -119,14 +123,9 @@ export default function ResultStoryCard({ result, testUrl, resultSlug }: ResultS
           <span>|</span>
           <span>경계 대상: {badOne}</span>
         </div>
-        <div className="flex items-center justify-center gap-2 pt-2">
-          <div className="flex flex-col items-center">
-            <p className="text-[10px] text-brand-muted mb-1">여기에 링크 스티커를 붙여주세요!</p>
-          </div>
-          <div className="flex-shrink-0 bg-brand-surface p-1.5 rounded-tag border border-brand-border">
-            <QRCodeSVG value={testUrl} size={56} level="M" includeMargin={false} />
-          </div>
-        </div>
+        <p className="text-[10px] text-brand-accent font-bold text-center pt-2 tracking-wide">
+          tetolab.com
+        </p>
       </div>
     </div>
   );

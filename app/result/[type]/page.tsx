@@ -33,5 +33,5 @@ export default async function ResultTypePage({ params }: PageProps) {
   const result = getResultBySlug(type);
   if (!result) notFound();
   const shareUrl = `${BASE_URL}/result/${type}`;
-  return <ResultView result={result} shareUrl={shareUrl} resultSlug={type} />;
+  return <ResultView result={result} shareUrl={shareUrl} resultSlug={type} isSharedView />;
 }

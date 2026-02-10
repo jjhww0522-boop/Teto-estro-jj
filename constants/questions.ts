@@ -93,7 +93,7 @@ export const QUESTIONS: QuestionItem[] = [
     options: [
       { text: "\"갑자기 왜 그런 말을 해? 무슨 일 있어?\" 이유를 논리적으로 묻는다.", scores: { ehem: 1, teto: 1 } },
       { text: "\"상상만 해도 너무 슬퍼.. 우리 절대 헤어지지 말자.\" 울컥하며 감정 이입한다.", scores: { egen: 1 } },
-      { text: "\"헤어지긴 왜 헤어져~ 평생 내 옆에 딱 붙어있어야지!\" 장난스럽게 분위기를 넘긴다.", scores: { cheese: 1, salsa: 1 } },
+      { text: "\"무슨 소리야~ 나 없으면 넌 밥도 못 챙겨 먹을걸?\" 장난스럽게 웃으며 화제를 돌린다.", scores: { cheese: 1, salsa: 1 } },
       { text: "\"글쎄.. 근데 지금 우리 사이 좋잖아? 미래 일은 그때 생각하자.\"", scores: { era: 1, sweet_potato: 1 } },
     ],
   },
@@ -136,7 +136,7 @@ export const QUESTIONS: QuestionItem[] = [
       { text: "\"우와 고마워! 잘 쓸게!\" 리액션은 크게 하지만 속으로는 활용도를 생각하는 눈치.", scores: { cheese: 1, salsa: 1 } },
       { text: "\"준비하느라 고생했겠다. 근데 다음에는 이런 스타일로 사주면 더 좋을 것 같아!\"", scores: { teto: 1, ehem: 1 } },
       { text: "\"고마워. 근데 이런 건 나보다 네가 쓰면 더 잘 어울릴 것 같은데?\"", scores: { era: 1, sweet_potato: 1 } },
-      { text: "\"...이거 나 주려고 산 거야?\" 취향이고 뭐고 선물 받았다는 사실 자체에 눈시울이 붉어진다.", scores: { potato: 1, egen: 1 } },
+      { text: "\"...이거 직접 고른 거야?\" 선물 자체보다 고르는 과정을 상상하며 진심으로 고마워한다.", scores: { potato: 1, egen: 1 } },
     ],
   },
   {
