@@ -11,6 +11,7 @@ import {
   type CompatibilityCategory,
 } from "@/constants/results";
 import type { ResultType } from "@/data/results";
+import { useLocale } from "@/components/LocaleProvider";
 
 declare global {
   interface Window {
@@ -21,21 +22,26 @@ declare global {
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://teto-potato-test.vercel.app";
 
 interface CompatibilityCalculatorProps {
-  /** 현재 사용자 결과 slug (예: teto, teto_f) */
   currentSlug: string;
-  /** 현재 사용자 결과 데이터 (표시명 등) */
   currentResult: ResultType;
 }
 
 type View = "button" | "grid" | "loading" | "result";
 
-const CATEGORY_LABEL: Record<CompatibilityCategory, string> = {
-  good: "💖 찰떡궁합",
-  normal: "😐 보통궁합",
-  bad: "⚠️ 조심궁합",
+function getCategoryLabels(t: (key: string) => string): Record<CompatibilityCategory, string> {
+  return {
+    good: t("compatibility.bestMatch"),
+    normal: t("compatibility.normalMatch"),
+    bad: t("compatibility.badMatch"),
+  };
+}
+
+const CATEGORY_COLOR: Record<CompatibilityCategory, string> = {
+  good: "bg-brand-success/10 text-brand-success",
+  normal: "bg-brand-accent/10 text-brand-accent",
+  bad: "bg-brand-warning/10 text-brand-accent-rose",
 };
 
-/** 원형 게이지 (0~100%) */
 function CircularGauge({ percent, size = 160 }: { percent: number; size?: number }) {
   const stroke = 10;
   const r = (size - stroke) / 2;
@@ -43,7 +49,7 @@ function CircularGauge({ percent, size = 160 }: { percent: number; size?: number
   const offset = circumference - (percent / 100) * circumference;
 
   const color =
-    percent >= 80 ? "#e879f9" : percent >= 35 ? "#a78bfa" : "#f97316";
+    percent >= 80 ? "#6c5ce7" : percent >= 35 ? "#6c5ce7" : "#e17055";
 
   return (
     <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
@@ -53,7 +59,7 @@ function CircularGauge({ percent, size = 160 }: { percent: number; size?: number
           cy={size / 2}
           r={r}
           fill="none"
-          stroke="rgba(139, 92, 246, 0.15)"
+          stroke="rgba(108, 92, 231, 0.1)"
           strokeWidth={stroke}
         />
         <motion.circle
@@ -70,7 +76,7 @@ function CircularGauge({ percent, size = 160 }: { percent: number; size?: number
           transition={{ duration: 1.2, ease: "easeOut" }}
         />
       </svg>
-      <span className="absolute text-3xl font-black text-gray-800 tabular-nums">
+      <span className="absolute text-3xl font-black text-brand-charcoal tabular-nums">
         {percent.toFixed(1)}%
       </span>
     </div>
@@ -87,10 +93,10 @@ export default function CompatibilityCalculator({
   const [description, setDescription] = useState<string>("");
   const [category, setCategory] = useState<CompatibilityCategory | null>(null);
 
-  /** 한 페이지 안에서는 같은 (내 유형, 상대 유형) 조합일 때 항상 같은 %가 나오도록 캐시 */
+  const { t } = useLocale();
   const resultCacheRef = useRef<Record<string, { score: number; description: string; category: CompatibilityCategory }>>({});
+  const CATEGORY_LABEL = getCategoryLabels(t);
 
-  // 남자 조사 결과(ㅇㅇ남)일 때는 궁합 리스트에 ㅇㅇ녀만, 여자 조사 결과(ㅇㅇ녀)일 때는 ㅇㅇ남만
   const isFemaleResult = currentSlug.endsWith("_f");
   const otherSlugs = ALL_RESULT_SLUGS.filter(
     (s) => s !== currentSlug && (isFemaleResult ? !s.endsWith("_f") : s.endsWith("_f"))
@@ -121,7 +127,7 @@ export default function CompatibilityCalculator({
         const comp = getCompatibility(currentSlug, targetSlug);
         const cat = getCompatibilityCategory(currentSlug, targetSlug);
         if (!comp || !cat) {
-          const fallback = { score: 50, description: "알 수 없는 조합이에요.", category: "normal" as CompatibilityCategory };
+          const fallback = { score: 50, description: t("compatibility.unknown"), category: "normal" as CompatibilityCategory };
           resultCacheRef.current[cacheKey] = fallback;
           setScore(fallback.score);
           setDescription(fallback.description);
@@ -142,14 +148,14 @@ export default function CompatibilityCalculator({
 
   const shareKakaoCompatibility = useCallback(() => {
     if (typeof window === "undefined" || !window.Kakao) {
-      alert("카카오톡 공유를 사용할 수 없어요.");
+      alert(t("result.kakaoUnavailable"));
       return;
     }
     if (!window.Kakao.isInitialized()) {
       window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_KEY || "3226a5c1a88b15cf36cbd977ec3b1821");
     }
     const targetName = targetSlug ? RESULTS_DATA[targetSlug]?.type ?? targetSlug : "";
-    const title = `우리 ${score.toFixed(1)}% 나왔어! 💕`;
+    const title = `${score.toFixed(1)}%!`;
     const desc = `${currentResult.type} × ${targetName}\n${description.slice(0, 80)}...`;
     const shareUrl = `${BASE_URL}/result?matchMe=${currentSlug}`;
     window.Kakao.Share.sendDefault({
@@ -157,18 +163,18 @@ export default function CompatibilityCalculator({
       content: {
         title,
         description: desc,
-        imageUrl: "https://via.placeholder.com/1200x630/E5D4FF/5a4a6a?text=테토+궁합",
+        imageUrl: "https://via.placeholder.com/1200x630/E5D4FF/5a4a6a?text=Chemistry",
         link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
       },
       buttons: [
-        { title: "나도 궁합 보기", link: { mobileWebUrl: shareUrl, webUrl: shareUrl } },
-        { title: "테스트 하기", link: { mobileWebUrl: BASE_URL, webUrl: BASE_URL } },
+        { title: t("compatibility.viewOther"), link: { mobileWebUrl: shareUrl, webUrl: shareUrl } },
+        { title: t("result.tryTest"), link: { mobileWebUrl: BASE_URL, webUrl: BASE_URL } },
       ],
     });
-  }, [currentResult.type, targetSlug, score, description]);
+  }, [currentResult.type, targetSlug, score, description, currentSlug]);
 
   return (
-    <section className="rounded-3xl bg-white/90 backdrop-blur-sm p-6 border-2 border-purple-100 shadow-lg">
+    <section className="rounded-card bg-brand-surface p-6 border border-brand-border shadow-card">
       <AnimatePresence mode="wait">
         {view === "button" && (
           <motion.div
@@ -181,10 +187,9 @@ export default function CompatibilityCalculator({
             <button
               type="button"
               onClick={openGrid}
-              className="w-full py-4 px-6 bg-gradient-to-r from-pastel-purple to-pastel-pink text-gray-800 font-bold rounded-2xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
+              className="w-full btn-primary flex items-center justify-center gap-2"
             >
-              <span className="text-xl">💕</span>
-              <span>내 연인과의 궁합은?</span>
+              <span>{t("compatibility.title")}</span>
             </button>
           </motion.div>
         )}
@@ -197,7 +202,7 @@ export default function CompatibilityCalculator({
             exit={{ opacity: 0 }}
             className="space-y-4"
           >
-            <p className="text-center text-gray-700 font-medium">상대방 유형을 선택해주세요</p>
+            <p className="text-center text-brand-charcoal font-medium">{t("compatibility.selectType")}</p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
               {otherSlugs.map((slug) => {
                 const data = RESULTS_DATA[slug];
@@ -209,10 +214,10 @@ export default function CompatibilityCalculator({
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => selectTarget(slug)}
-                    className="flex flex-col items-center justify-center p-3 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 border-2 border-purple-100 hover:border-pastel-purple hover:shadow-md transition-all min-w-0"
+                    className="flex flex-col items-center justify-center p-3 rounded-card bg-brand-highlight border border-brand-border hover:border-brand-accent/30 hover:shadow-card-hover transition-all min-w-0"
                   >
                     <span className="text-2xl sm:text-3xl mb-1 shrink-0">{data.emoji}</span>
-                    <span className="text-xs font-medium text-gray-700 text-center break-keep leading-tight">
+                    <span className="text-xs font-medium text-brand-charcoal text-center break-keep leading-tight">
                       {data.type}
                     </span>
                   </motion.button>
@@ -233,9 +238,9 @@ export default function CompatibilityCalculator({
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              className="w-14 h-14 rounded-full border-4 border-pastel-purple border-t-transparent"
+              className="w-14 h-14 rounded-full border-4 border-brand-accent/30 border-t-brand-accent"
             />
-            <p className="text-gray-600 font-medium">테토 에너지를 분석 중입니다...</p>
+            <p className="text-brand-muted font-medium">{t("compatibility.analyzing")}</p>
           </motion.div>
         )}
 
@@ -249,30 +254,31 @@ export default function CompatibilityCalculator({
             className="space-y-6"
           >
             <div className="flex flex-col items-center gap-4">
-              <p className="text-sm font-bold text-purple-600">
+              <p className="text-sm font-bold text-brand-accent">
                 {currentResult.type} × {RESULTS_DATA[targetSlug]?.type ?? targetSlug}
               </p>
               <CircularGauge percent={score} size={180} />
-              <p className="text-lg font-bold text-gray-800">{CATEGORY_LABEL[category]}</p>
+              <span className={`inline-flex items-center px-3 py-1 rounded-tag text-sm font-bold ${CATEGORY_COLOR[category]}`}>
+                {CATEGORY_LABEL[category]}
+              </span>
             </div>
-            <p className="text-gray-700 text-sm leading-relaxed text-center text-kr-balance px-2">
+            <p className="text-brand-charcoal text-sm leading-relaxed text-center text-kr-balance px-2">
               {description}
             </p>
             <div className="flex flex-col gap-2">
               <button
                 type="button"
                 onClick={shareKakaoCompatibility}
-                className="w-full py-3 bg-[#FEE500] text-gray-800 font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-[#FDD835] transition-colors"
+                className="w-full py-3 bg-[#FEE500] text-gray-800 font-bold rounded-button flex items-center justify-center gap-2 hover:bg-[#FDD835] transition-colors"
               >
-                <span>카카오톡으로 자랑하기</span>
-                <span className="text-lg">💬</span>
+                <span>{t("compatibility.shareKakao")}</span>
               </button>
               <button
                 type="button"
                 onClick={goBack}
-                className="w-full py-2.5 text-gray-600 font-medium rounded-xl border-2 border-gray-200 hover:border-purple-200 hover:bg-purple-50/50 transition-colors"
+                className="w-full py-2.5 text-brand-muted font-medium rounded-button border border-brand-border hover:border-brand-accent/30 hover:bg-brand-highlight transition-colors"
               >
-                다른 유형 궁합 보기
+                {t("compatibility.viewOther")}
               </button>
             </div>
           </motion.div>

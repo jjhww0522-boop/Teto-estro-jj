@@ -3,19 +3,23 @@
 import { useEffect, useState, Suspense, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { calculateResult, results, getResultBySlug } from "@/data/results";
-import { getTestResult } from "@/utils/calculate";
+import { getTestResult, getTestScores } from "@/utils/calculate";
+import type { CharType } from "@/utils/calculate";
 import ResultView from "@/components/ResultView";
 import type { ResultType } from "@/data/results";
+import { useLocale } from "@/components/LocaleProvider";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://teto-potato-test.vercel.app";
 
 function ResultContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { t } = useLocale();
   const [result, setResult] = useState<ResultType | null>(null);
   const [shareUrl, setShareUrl] = useState("");
   const [resultSlug, setResultSlug] = useState<string>("");
   const [matchMe, setMatchMe] = useState<string | null>(null);
+  const [dimensionScores, setDimensionScores] = useState<Record<CharType, number> | null>(null);
   const hasRecordedStats = useRef(false);
 
   useEffect(() => {
@@ -39,6 +43,10 @@ function ResultContent() {
         const baseSlug = getTestResult(indices, modeForCalc);
         displaySlug = isGirlfriend ? `${baseSlug}_f` : baseSlug;
         resolvedResult = getResultBySlug(displaySlug);
+
+        // 차원별 점수 계산 (레이더 차트용)
+        const scores = getTestScores(indices, modeForCalc);
+        setDimensionScores(scores);
       }
     } else {
       // 레거시: 유형 코드 문자열 "TPGEC..." → 카운트 후 결과 키로 조회
@@ -69,7 +77,7 @@ function ResultContent() {
   if (!result) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-2xl">결과를 불러오는 중...</div>
+        <div className="text-2xl">{t("result.loading")}</div>
       </div>
     );
   }
@@ -80,6 +88,7 @@ function ResultContent() {
       shareUrl={shareUrl}
       resultSlug={resultSlug}
       matchMe={matchMe}
+      dimensionScores={dimensionScores}
     />
   );
 }

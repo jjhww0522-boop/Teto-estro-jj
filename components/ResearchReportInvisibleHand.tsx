@@ -5,17 +5,17 @@ export default function ResearchReportInvisibleHand() {
   return (
     <section className="w-full max-w-[480px] mt-6 relative z-20">
       <details className="group">
-        <summary className="list-none cursor-pointer w-full py-3 px-4 bg-white/80 hover:bg-white border border-purple-100 rounded-2xl shadow-sm transition-colors flex items-center justify-between gap-2 [&::-webkit-details-marker]:hidden">
-          <span className="text-sm font-bold text-purple-700">
-            📋 연구 리포트: 연애 농도를 결정짓는 또 다른 보이지 않는 손
+        <summary className="list-none cursor-pointer w-full py-3 px-4 bg-brand-surface hover:bg-brand-highlight border border-brand-border rounded-card shadow-card transition-colors flex items-center justify-between gap-2 [&::-webkit-details-marker]:hidden">
+          <span className="text-sm font-bold text-brand-accent">
+            연구 리포트: 연애 농도를 결정짓는 또 다른 보이지 않는 손
           </span>
-          <span className="text-purple-400 text-lg shrink-0 group-open:rotate-180 transition-transform">
+          <span className="text-brand-muted text-lg shrink-0 group-open:rotate-180 transition-transform">
             ▼
           </span>
         </summary>
-        <div className="mt-2 p-4 bg-white/90 border border-purple-100 rounded-2xl shadow-sm text-left text-[13px] text-gray-600 leading-relaxed space-y-4 text-kr-wrap">
+        <div className="mt-2 p-4 bg-brand-surface border border-brand-border rounded-card shadow-card text-left text-[13px] text-brand-muted leading-relaxed space-y-4 text-kr-wrap">
           <div>
-            <h3 className="font-bold text-gray-800 mb-1">
+            <h3 className="font-bold text-brand-charcoal mb-1">
               1. 5가지 사랑의 언어: 소통의 채널 맞추기
             </h3>
             <p className="mb-2">
@@ -40,7 +40,7 @@ export default function ResearchReportInvisibleHand() {
                 도와주는 행동으로 사랑을 증명하곤 합니다.
               </li>
             </ul>
-            <div className="rounded-xl overflow-hidden border border-purple-100 my-3">
+            <div className="rounded-button overflow-hidden border border-brand-border my-3">
               <Image
                 src="/images/love-languages.png"
                 alt="5가지 사랑의 언어: 인정하는 말, 함께하는 시간, 선물, 봉사, 신체적 접촉"
@@ -52,7 +52,7 @@ export default function ResearchReportInvisibleHand() {
           </div>
 
           <div>
-            <h3 className="font-bold text-gray-800 mb-1">
+            <h3 className="font-bold text-brand-charcoal mb-1">
               2. 스턴버그의 사랑의 삼각형 이론
             </h3>
             <p className="mb-2">
@@ -84,7 +84,7 @@ export default function ResearchReportInvisibleHand() {
               <strong>&apos;완전한 사랑(Consummate Love)&apos;</strong>이라
               부릅니다.
             </p>
-            <div className="rounded-xl overflow-hidden border border-purple-100 my-3">
+            <div className="rounded-button overflow-hidden border border-brand-border my-3">
               <Image
                 src="/images/sternberg-triangle.png"
                 alt="스턴버그의 사랑의 삼각형: 친밀감, 열정, 헌신과 완전한 사랑"
@@ -96,7 +96,7 @@ export default function ResearchReportInvisibleHand() {
           </div>
 
           <div>
-            <h3 className="font-bold text-gray-800 mb-1">
+            <h3 className="font-bold text-brand-charcoal mb-1">
               3. 가트맨의 4가지 파멸 요인: 조심궁합의 과학
             </h3>
             <p className="mb-2">
@@ -130,13 +130,13 @@ export default function ResearchReportInvisibleHand() {
             </p>
           </div>
 
-          <div className="py-3 px-4 bg-purple-50 rounded-xl border border-purple-100">
-            <p className="text-center text-purple-700 font-medium mb-2">
+          <div className="py-3 px-4 bg-brand-highlight rounded-button border border-brand-border">
+            <p className="text-center text-brand-accent font-medium mb-2">
               당신의 농도가 궁금하다면?
             </p>
             <Link
               href="/test?mode=boyfriend"
-              className="block w-full py-2.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-center rounded-full font-bold text-sm hover:opacity-90 transition-opacity"
+              className="block w-full py-2.5 bg-brand-accent text-white text-center rounded-button font-bold text-sm hover:opacity-90 transition-opacity"
             >
               테스트 시작하기 →
             </Link>

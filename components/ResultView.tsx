@@ -4,10 +4,14 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import html2canvas from "html2canvas";
 import type { ResultType } from "@/data/results";
+import type { CharType } from "@/utils/calculate";
 import { RESULTS_DATA } from "@/constants/results";
 import TetoConcentrationBar from "@/components/TetoConcentrationBar";
 import CompatibilityCalculator from "@/components/CompatibilityCalculator";
+import RadarChart from "@/components/RadarChart";
 import { getConcentrationPercent } from "@/utils/concentration";
+import { useLocale } from "@/components/LocaleProvider";
+import { RESULTS_I18N } from "@/constants/results-i18n";
 
 declare global {
   interface Window {
@@ -20,35 +24,31 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://teto-potato-test.v
 interface ResultViewProps {
   result: ResultType;
   shareUrl: string;
-  /** 결과 slug (궁합 페이지 링크용, 예: teto, teto_f) */
   resultSlug?: string;
-  /** 궁합 페이지에서 넘어온 '내' slug (연인이 테스트 후 you로 들어갈 때) */
   matchMe?: string | null;
+  dimensionScores?: Record<CharType, number> | null;
 }
 
-/** 결과가 남성형(ㅇㅇ남)이면 궁합은 여성형(ㅇㅇ녀)으로, 여성형이면 궁합은 남성형(ㅇㅇ남)으로 표시 */
 function toPartnerMatchNames(names: string[], resultSlug?: string): string[] {
   if (!resultSlug) return names;
-  const isFemaleResult = resultSlug.endsWith("_f"); // 테토녀 등 = 여친 분석 결과
+  const isFemaleResult = resultSlug.endsWith("_f");
   return names.map((name) =>
     isFemaleResult ? name.replace(/녀$/, "남") : name.replace(/남$/, "녀")
   );
 }
 
-/** 남친 분석(남성형 결과)일 때는 궁합에 ㅇㅇ녀만, 여친 분석(여성형 결과)일 때는 궁합에 ㅇㅇ남만 표시 */
 function isPartnerSlug(resultSlug: string | undefined, otherSlug: string): boolean {
   if (!resultSlug) return true;
   const resultIsFemale = resultSlug.endsWith("_f");
   const otherIsFemale = otherSlug.endsWith("_f");
-  return resultIsFemale ? !otherIsFemale : otherIsFemale; // 반대 성별만
+  return resultIsFemale ? !otherIsFemale : otherIsFemale;
 }
 
-/** 설명(description)이 같은 항목끼리 묶어서 [{ typeNames: ['에겐녀','치즈녀'], description }] 형태로 반환 */
 function groupCompatibilitiesByDescription(
   entries: [string, { score: number; description: string }][],
   resultSlug: string | undefined
 ): { typeNames: string[]; description: string }[] {
-  const filtered = entries.filter(([slug, v]) => isPartnerSlug(resultSlug, slug));
+  const filtered = entries.filter(([slug]) => isPartnerSlug(resultSlug, slug));
   const byDesc = new Map<string, string[]>();
   for (const [slug, { description }] of filtered) {
     const name = RESULTS_DATA[slug]?.type ?? slug;
@@ -61,8 +61,15 @@ function groupCompatibilitiesByDescription(
   }));
 }
 
-export default function ResultView({ result, shareUrl, resultSlug, matchMe }: ResultViewProps) {
+export default function ResultView({ result, shareUrl, resultSlug, matchMe, dimensionScores }: ResultViewProps) {
   const resultCardRef = useRef<HTMLDivElement>(null);
+  const { t, locale } = useLocale();
+
+  // i18n 오버레이: 결과 텍스트
+  const i18nResult = (locale !== "ko" && resultSlug) ? RESULTS_I18N[locale]?.[resultSlug] : null;
+  const displayResult = i18nResult
+    ? { ...result, ...i18nResult }
+    : result;
 
   const displayGoodMatch = toPartnerMatchNames(result.goodMatch, resultSlug);
   const displayBadMatch = toPartnerMatchNames(result.badMatch, resultSlug);
@@ -75,13 +82,12 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
 
   const shareToKakao = () => {
     if (!window.Kakao) {
-      alert("카카오톡 공유 기능을 사용할 수 없습니다.");
+      alert(t("result.kakaoUnavailable"));
       return;
     }
-    const textPart = `${result.tagline}\n\n${result.oneLiner}`.slice(0, 150);
-    const linkText = `\n\n🔗 결과 보기: ${shareUrl}`;
+    const textPart = `${displayResult.tagline}\n\n${displayResult.oneLiner}`.slice(0, 150);
+    const linkText = `\n\n${t("result.viewResult")}: ${shareUrl}`;
     const longDescription = textPart + linkText;
-    // ㅇㅇ녀 분석결과(_f) → 여성 캐릭터 이미지, ㅇㅇ남 분석결과 → 남성 캐릭터 이미지
     const isFemaleResult = resultSlug?.endsWith("_f");
     const imageUrl = isFemaleResult
       ? `${BASE_URL}/images/og-result-female.png`
@@ -89,28 +95,28 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
-        title: `나는 ${result.type}! ${result.title}`,
+        title: `나는 ${displayResult.type}! ${displayResult.title}`,
         description: longDescription,
         imageUrl,
         link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
       },
       buttons: [
-        { title: "결과 보기", link: { mobileWebUrl: shareUrl, webUrl: shareUrl } },
-        { title: "나도 테스트하기", link: { mobileWebUrl: BASE_URL, webUrl: BASE_URL } },
+        { title: t("result.viewResult"), link: { mobileWebUrl: shareUrl, webUrl: shareUrl } },
+        { title: t("result.tryTest"), link: { mobileWebUrl: BASE_URL, webUrl: BASE_URL } },
       ],
     });
   };
 
   const copyLink = () => {
     navigator.clipboard.writeText(shareUrl);
-    alert("링크가 복사되었습니다! 친구에게 공유해보세요 💕");
+    alert(t("result.linkCopied"));
   };
 
   const downloadImage = async () => {
     if (!resultCardRef.current) return;
     try {
       const button = document.getElementById("download-btn");
-      if (button) button.textContent = "이미지 생성 중...";
+      if (button) button.textContent = t("result.savingImage");
       const canvas = await html2canvas(resultCardRef.current, {
         backgroundColor: null,
         scale: 2,
@@ -118,14 +124,14 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
         useCORS: true,
       });
       const link = document.createElement("a");
-      link.download = `${result.type}_테스트결과.png`;
+      link.download = `${displayResult.type}_테스트결과.png`;
       link.href = canvas.toDataURL("image/png");
       link.click();
-      if (button) button.textContent = "📸 이미지로 저장하기";
-      alert("이미지가 저장되었습니다! 📸");
+      if (button) button.textContent = t("result.saveImage");
+      alert(t("result.imageSaved"));
     } catch (error) {
       console.error("이미지 저장 실패:", error);
-      alert("이미지 저장에 실패했습니다. 다시 시도해주세요.");
+      alert(t("result.imageFail"));
     }
   };
 
@@ -133,74 +139,82 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
     <div className="min-h-screen flex flex-col items-center justify-center p-4 py-8">
       <div
         ref={resultCardRef}
-        className="card max-w-2xl w-full space-y-8 bg-gradient-to-br from-white via-pastel-pink/10 to-pastel-purple/10"
+        className="card max-w-2xl w-full space-y-8"
         style={{ backgroundColor: "#ffffff" }}
       >
-        {/* 헤더: 이모지 + 테토력 그래프 + 유형명: 부제 */}
+        {/* 헤더: 이모지 + 테토력 그래프 + 유형명 */}
         <div className="text-center space-y-4">
-          <div className="text-8xl animate-bounce-slow">{result.emoji}</div>
+          <div className="w-20 h-20 mx-auto bg-brand-highlight border border-brand-border rounded-card flex items-center justify-center text-5xl">
+            {result.emoji}
+          </div>
           <TetoConcentrationBar percent={getConcentrationPercent(resultSlug ?? result.type)} />
           <h1
-            className="font-bold text-gray-800 whitespace-nowrap max-w-full text-sm min-[400px]:text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl px-0.5"
+            className="font-bold text-brand-charcoal whitespace-nowrap max-w-full text-sm min-[400px]:text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl px-0.5"
             style={{ letterSpacing: "-0.04em" }}
           >
-            {result.type}:{"\u00A0"}{result.title}
+            {displayResult.type}:{"\u00A0"}{displayResult.title}
           </h1>
-          <blockquote className="text-lg text-gray-600 italic border-l-4 border-pastel-pink/50 pl-4 py-1 text-center text-kr-balance" style={{ letterSpacing: "-0.03em" }}>
-            &ldquo;{result.tagline}&rdquo;
+          <blockquote className="text-lg text-brand-muted italic border-l-4 border-brand-accent/30 pl-4 py-1 text-center text-kr-balance" style={{ letterSpacing: "-0.03em" }}>
+            &ldquo;{displayResult.tagline}&rdquo;
           </blockquote>
-          <p className="text-base text-gray-600 font-medium text-kr-balance" style={{ letterSpacing: "-0.03em" }}>{result.oneLiner}</p>
+          <p className="text-base text-brand-muted font-medium text-kr-balance" style={{ letterSpacing: "-0.03em" }}>{displayResult.oneLiner}</p>
         </div>
 
         {/* 키워드 태그 */}
         <div className="flex flex-wrap gap-2 justify-center">
-          {result.keywords.map((keyword, index) => (
-            <span
-              key={index}
-              className="px-3 py-1.5 rounded-full text-sm font-medium bg-pastel-yellow/30 text-gray-700 border border-pastel-yellow/50"
-            >
+          {displayResult.keywords.map((keyword: string, index: number) => (
+            <span key={index} className="theory-badge">
               #{keyword}
             </span>
           ))}
         </div>
 
+        {/* 레이더 차트 섹션 */}
+        {dimensionScores && (
+          <div className="space-y-3">
+            <h3 className="text-xl font-bold text-brand-charcoal flex items-center gap-2">
+              <span className="section-label">{t("result.tendencyAnalysis")}</span>
+            </h3>
+            <div className="bg-brand-highlight rounded-card p-6 border border-brand-border flex justify-center">
+              <RadarChart scores={dimensionScores} />
+            </div>
+          </div>
+        )}
+
         {/* 당신의 연애는... */}
         <div className="space-y-3">
-          <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-            <span>🔍</span>
-            <span>당신의 연애는...</span>
+          <h3 className="text-xl font-bold text-brand-charcoal flex items-center gap-2">
+            <span className="section-label">{t("result.loveStyle")}</span>
           </h3>
-          <div className="bg-pastel-pink/20 rounded-2xl p-6 border border-pastel-pink/30">
-            <p className="text-gray-700 leading-relaxed text-kr-wrap">{result.loveDescription}</p>
+          <div className="bg-brand-highlight rounded-card p-6 border border-brand-border">
+            <p className="text-brand-charcoal leading-relaxed text-kr-wrap">{displayResult.loveDescription}</p>
           </div>
         </div>
 
         {/* 체크 포인트 Good / Bad */}
         <div className="space-y-3">
-          <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-            <span>✅</span>
-            <span>체크 포인트</span>
+          <h3 className="text-xl font-bold text-brand-charcoal flex items-center gap-2">
+            <span className="section-label">{t("result.checkPoint")}</span>
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-pastel-mint/30 rounded-2xl p-4 border border-pastel-mint/40">
-              <p className="text-xs font-bold text-emerald-600 uppercase tracking-wide mb-2">Good</p>
-              <p className="text-gray-700 text-sm leading-relaxed text-kr-wrap">{result.checkGood}</p>
+            <div className="bg-brand-success/5 rounded-card p-4 border border-brand-success/20">
+              <p className="text-xs font-bold text-brand-success uppercase tracking-wide mb-2">Good</p>
+              <p className="text-brand-charcoal text-sm leading-relaxed text-kr-wrap">{displayResult.checkGood}</p>
             </div>
-            <div className="bg-pastel-peach/30 rounded-2xl p-4 border border-pastel-peach/40">
-              <p className="text-xs font-bold text-orange-600 uppercase tracking-wide mb-2">Bad</p>
-              <p className="text-gray-700 text-sm leading-relaxed text-kr-wrap">{result.checkBad}</p>
+            <div className="bg-brand-warning/8 rounded-card p-4 border border-brand-warning/30">
+              <p className="text-xs font-bold text-brand-accent-rose uppercase tracking-wide mb-2">Bad</p>
+              <p className="text-brand-charcoal text-sm leading-relaxed text-kr-wrap">{displayResult.checkBad}</p>
             </div>
           </div>
         </div>
 
-        {/* 찰떡궁합 / 조심궁합 (상세 사유 포함) */}
+        {/* 찰떡궁합 / 조심궁합 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-3">
-            <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
-              <span>💚</span>
-              <span>찰떡궁합</span>
+            <h3 className="text-lg font-bold text-brand-charcoal flex items-center gap-2">
+              <span className="section-label">{t("result.goodMatch")}</span>
             </h3>
-            <div className="bg-pastel-mint/30 rounded-2xl p-4 space-y-3">
+            <div className="bg-brand-success/5 rounded-card p-4 space-y-3 border border-brand-success/20">
               {result.compatibilities
                 ? (() => {
                     const entries = Object.entries(result.compatibilities).filter(
@@ -209,25 +223,24 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
                     const groups = groupCompatibilitiesByDescription(entries, resultSlug);
                     return groups.map(({ typeNames, description }, i) => (
                       <div key={i} className="text-left">
-                        <p className="text-gray-800 font-semibold text-sm text-kr-wrap">
-                          • {typeNames.join(" & ")} : {description}
+                        <p className="text-brand-charcoal font-semibold text-sm text-kr-wrap">
+                          {typeNames.join(" & ")} : {description}
                         </p>
                       </div>
                     ));
                   })()
                 : displayGoodMatch.map((match: string, index: number) => (
-                    <div key={index} className="text-gray-700 font-medium text-kr-wrap">
-                      • {match}
+                    <div key={index} className="text-brand-charcoal font-medium text-kr-wrap">
+                      {match}
                     </div>
                   ))}
             </div>
           </div>
           <div className="space-y-3">
-            <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
-              <span>💔</span>
-              <span>조심궁합</span>
+            <h3 className="text-lg font-bold text-brand-charcoal flex items-center gap-2">
+              <span className="section-label">{t("result.badMatch")}</span>
             </h3>
-            <div className="bg-pastel-peach/30 rounded-2xl p-4 space-y-3">
+            <div className="bg-brand-warning/8 rounded-card p-4 space-y-3 border border-brand-warning/30">
               {result.compatibilities
                 ? (() => {
                     const entries = Object.entries(result.compatibilities).filter(
@@ -236,15 +249,15 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
                     const groups = groupCompatibilitiesByDescription(entries, resultSlug);
                     return groups.map(({ typeNames, description }, i) => (
                       <div key={i} className="text-left">
-                        <p className="text-gray-800 font-semibold text-sm text-kr-wrap">
-                          • {typeNames.join(" & ")} : {description}
+                        <p className="text-brand-charcoal font-semibold text-sm text-kr-wrap">
+                          {typeNames.join(" & ")} : {description}
                         </p>
                       </div>
                     ));
                   })()
                 : displayBadMatch.map((match: string, index: number) => (
-                    <div key={index} className="text-gray-700 font-medium text-kr-wrap">
-                      • {match}
+                    <div key={index} className="text-brand-charcoal font-medium text-kr-wrap">
+                      {match}
                     </div>
                   ))}
             </div>
@@ -253,12 +266,15 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
 
         {/* 왜 이런 결과가? (심리학적 분석) */}
         <div className="space-y-3">
-          <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-            <span>💡</span>
-            <span>왜 이런 결과가? (심리학적 분석)</span>
+          <h3 className="text-xl font-bold text-brand-charcoal flex items-center gap-2">
+            <span className="section-label">{t("result.psychAnalysis")}</span>
           </h3>
-          <div className="bg-gradient-to-br from-pastel-blue/20 to-pastel-purple/20 rounded-2xl p-6 border border-gray-100">
-            <p className="text-gray-700 leading-relaxed text-sm text-kr-wrap">{result.psychologicalAnalysis}</p>
+          <div className="flex flex-wrap gap-2 mb-2">
+            <span className="theory-badge">Big Five</span>
+            <span className="theory-badge">Attachment Theory</span>
+          </div>
+          <div className="bg-brand-highlight rounded-card p-6 border border-brand-border">
+            <p className="text-brand-charcoal leading-relaxed text-sm text-kr-wrap">{displayResult.psychologicalAnalysis}</p>
           </div>
         </div>
 
@@ -276,35 +292,32 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe }: Re
               }
               className="w-full block text-center"
             >
-              <span className="text-sm text-gray-500 hover:text-purple-600">
-                전체 궁합표 보기 (Chemistry) →
+              <span className="text-sm text-brand-muted hover:text-brand-accent">
+                {t("result.chemistryLink")}
               </span>
             </Link>
           )}
           <button
             onClick={shareToKakao}
-            className="w-full bg-[#FEE500] hover:bg-[#FDD835] text-gray-800 font-bold py-4 px-6 rounded-2xl shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2"
+            className="w-full bg-[#FEE500] hover:bg-[#FDD835] text-gray-800 font-bold py-4 px-6 rounded-button shadow-button hover:shadow-card-hover transform hover:scale-[1.02] transition-all duration-200 flex items-center justify-center gap-2"
           >
-            <span className="text-xl">💬</span>
-            <span>카카오톡으로 공유하기</span>
+            <span>{t("result.shareKakao")}</span>
           </button>
           <button
             onClick={copyLink}
-            className="w-full bg-white/90 hover:bg-pastel-blue text-gray-800 font-medium py-4 px-6 rounded-2xl shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2"
+            className="btn-secondary w-full flex items-center justify-center gap-2"
           >
-            <span className="text-xl">🔗</span>
-            <span>링크 복사하기</span>
+            <span>{t("result.copyLink")}</span>
           </button>
           <button
             id="download-btn"
             onClick={downloadImage}
-            className="w-full bg-gradient-to-r from-pastel-mint to-pastel-blue hover:from-pastel-mint/80 hover:to-pastel-blue/80 text-gray-800 font-bold py-4 px-6 rounded-2xl shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2"
+            className="btn-secondary w-full flex items-center justify-center gap-2"
           >
-            <span className="text-xl">📸</span>
-            <span>이미지로 저장하기</span>
+            <span>{t("result.saveImage")}</span>
           </button>
           <Link href="/">
-            <button className="w-full btn-primary">다시 테스트하기 🔄</button>
+            <button className="w-full btn-primary">{t("result.retakeTest")}</button>
           </Link>
         </div>
       </div>

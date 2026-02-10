@@ -8,7 +8,9 @@ import {
   formatQuestion,
   type QuestionOption,
 } from "@/constants/questions";
+import { QUESTIONS_I18N, QUESTIONS_GIRLFRIEND_I18N } from "@/constants/questions-i18n";
 import RollingPotatoBar from "@/components/RollingPotatoBar";
+import { useLocale } from "@/components/LocaleProvider";
 
 export type TestMode = "boyfriend" | "girlfriend";
 
@@ -38,9 +40,18 @@ function buildShuffledQuestions(questions: typeof QUESTIONS) {
 const SHUFFLED_QUESTIONS_BOYFRIEND = buildShuffledQuestions(QUESTIONS);
 const SHUFFLED_QUESTIONS_GIRLFRIEND = buildShuffledQuestions(QUESTIONS_GIRLFRIEND);
 
+/** locale별 subject 치환용 맵 */
+const SUBJECT_MAP: Record<string, { boyfriend: string; girlfriend: string }> = {
+  ko: { boyfriend: "그", girlfriend: "그녀" },
+  en: { boyfriend: "he", girlfriend: "she" },
+  ja: { boyfriend: "彼", girlfriend: "彼女" },
+  zh: { boyfriend: "他", girlfriend: "她" },
+};
+
 function TestContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { locale, t } = useLocale();
   const mode: TestMode = (searchParams.get("mode") === "girlfriend" ? "girlfriend" : "boyfriend");
   const subject = mode === "girlfriend" ? "그녀" : "그";
   const shuffledQuestions =
@@ -74,8 +85,27 @@ function TestContent() {
   };
 
   const question = shuffledQuestions[currentQuestion];
-  const questionText =
-    mode === "girlfriend" ? question.question : formatQuestion(question.question, subject);
+
+  // i18n 오버레이: locale !== "ko"일 때 번역 텍스트 사용
+  const i18nMap = mode === "girlfriend" ? QUESTIONS_GIRLFRIEND_I18N : QUESTIONS_I18N;
+  const i18nEntry = locale !== "ko" ? i18nMap[locale]?.[question.id] : null;
+
+  let questionText: string;
+  if (i18nEntry) {
+    questionText = i18nEntry.question;
+  } else if (mode === "girlfriend") {
+    questionText = question.question;
+  } else {
+    questionText = formatQuestion(question.question, subject);
+  }
+
+  // 옵션 텍스트 오버레이
+  const getOptionText = (option: OptionWithIndex): string => {
+    if (i18nEntry && i18nEntry.options[option.originalIndex]) {
+      return i18nEntry.options[option.originalIndex];
+    }
+    return option.text;
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 py-8">
@@ -86,8 +116,10 @@ function TestContent() {
         />
 
         <div className="text-center py-8">
-          <div className="text-4xl mb-4">🤔</div>
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 leading-relaxed">
+          <div className="w-10 h-10 rounded-full bg-brand-accent text-white flex items-center justify-center text-lg font-bold mx-auto mb-4">
+            🤔
+          </div>
+          <h2 className="text-2xl md:text-3xl font-bold text-brand-charcoal leading-relaxed">
             {questionText}
           </h2>
         </div>
@@ -99,7 +131,7 @@ function TestContent() {
               onClick={() => handleAnswer(index)}
               className="btn-answer w-full text-left text-kr-wrap"
             >
-              <span className="text-lg">{option.text}</span>
+              <span className="text-lg">{getOptionText(option as OptionWithIndex)}</span>
             </button>
           ))}
         </div>
@@ -107,9 +139,9 @@ function TestContent() {
         {currentQuestion > 0 && (
           <button
             onClick={handlePrevious}
-            className="w-full text-gray-500 hover:text-gray-700 py-2 text-sm transition-colors"
+            className="w-full text-brand-muted hover:text-brand-accent py-2 text-sm transition-colors"
           >
-            ← 이전 질문으로
+            {t("test.previous")}
           </button>
         )}
       </div>

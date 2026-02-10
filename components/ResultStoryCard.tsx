@@ -11,7 +11,6 @@ const CARD_HEIGHT = 640;
 interface ResultStoryCardProps {
   result: ResultType;
   testUrl: string;
-  /** 결과 slug (남친=teto → 궁합 ㅇㅇ녀, 여친=teto_f → 궁합 ㅇㅇ남) */
   resultSlug?: string;
 }
 
@@ -42,57 +41,57 @@ export default function ResultStoryCard({ result, testUrl, resultSlug }: ResultS
   return (
     <div
       id="result-story-card"
-      className="rounded-2xl overflow-hidden flex flex-col text-gray-800 shadow-2xl border-2 border-purple-100"
+      className="rounded-card overflow-hidden flex flex-col text-brand-charcoal shadow-card border border-brand-border"
       style={{
         width: CARD_WIDTH,
         height: CARD_HEIGHT,
         minWidth: CARD_WIDTH,
         minHeight: CARD_HEIGHT,
-        background: "linear-gradient(180deg, #F5F0FF 0%, #FDF8F0 50%, #FFF5F5 100%)",
+        background: "linear-gradient(180deg, #fafaf8 0%, #ffffff 100%)",
         boxSizing: "border-box",
       }}
     >
       {/* 상단: 브랜드 + 일련번호 */}
       <div
         className="flex justify-between items-start px-4 pt-4 pb-1"
-        style={{ borderBottom: "2px dashed rgba(139, 92, 246, 0.3)" }}
+        style={{ borderBottom: "2px dashed rgba(108, 92, 231, 0.2)" }}
       >
-        <p className="text-xs font-bold text-purple-600 tracking-wide opacity-90">
+        <p className="text-xs font-bold text-brand-accent tracking-wide opacity-90">
           테토 연구소 | 성향 분석 보고서
         </p>
-        <p className="text-xs font-mono text-gray-500">{serial}</p>
+        <p className="text-xs font-mono text-brand-muted">{serial}</p>
       </div>
 
       {/* 중앙 상단: 분석 대상 */}
       <div className="px-4 pt-4 pb-2 text-center">
-        <h2 className="text-base font-black text-gray-800 leading-tight">
+        <h2 className="text-base font-black text-brand-charcoal leading-tight">
           내 애인의 테토 농도 분석 결과
         </h2>
       </div>
 
       {/* Hero: 캐릭터 + 농도 게이지 + 한 줄 */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-4">
-        <div className="text-7xl mb-3 drop-shadow-md" aria-hidden>
+        <div className="w-16 h-16 bg-brand-highlight border border-brand-border rounded-card flex items-center justify-center text-4xl mb-3">
           {result.emoji}
         </div>
         <div
           className="relative w-28 h-28 rounded-full flex items-center justify-center mb-3"
           style={{
-            background: `conic-gradient(#8B5CF6 0% ${percent}%, #E9D5FF ${percent}% 100%)`,
-            boxShadow: "inset 0 0 0 6px #F5F0FF",
+            background: `conic-gradient(#6c5ce7 0% ${percent}%, #e0e0e0 ${percent}% 100%)`,
+            boxShadow: "inset 0 0 0 6px #fafaf8",
           }}
         >
           <div
-            className="absolute inset-2 rounded-full bg-gradient-to-br from-[#F5F0FF] to-white flex items-center justify-center"
-            style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}
+            className="absolute inset-2 rounded-full bg-brand-surface flex items-center justify-center"
+            style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}
           >
-            <span className="text-xl font-black text-purple-700">{percent}%</span>
+            <span className="text-xl font-black text-brand-accent">{percent}%</span>
           </div>
         </div>
-        <p className="text-sm font-bold text-purple-700 text-center mb-1">
-          테토 농도 {percent}% · 순도 100% 진국 감자
+        <p className="text-sm font-bold text-brand-accent text-center mb-1">
+          테토 농도 {percent}%
         </p>
-        <p className="text-xs text-gray-600 text-center leading-snug max-w-[280px] text-kr-balance" style={{ letterSpacing: "-0.03em" }}>
+        <p className="text-xs text-brand-muted text-center leading-snug max-w-[280px] text-kr-balance" style={{ letterSpacing: "-0.03em" }}>
           &ldquo;{result.tagline}&rdquo;
         </p>
       </div>
@@ -101,33 +100,30 @@ export default function ResultStoryCard({ result, testUrl, resultSlug }: ResultS
       <div
         className="px-4 pb-4 pt-3 space-y-2"
         style={{
-          borderTop: "2px dashed rgba(139, 92, 246, 0.3)",
+          borderTop: "2px dashed rgba(108, 92, 231, 0.2)",
           background: "rgba(255,255,255,0.5)",
         }}
       >
-        <p className="text-xs text-gray-700 leading-relaxed line-clamp-2 text-kr-balance" style={{ letterSpacing: "-0.03em" }}>
+        <p className="text-xs text-brand-charcoal leading-relaxed line-clamp-2 text-kr-balance" style={{ letterSpacing: "-0.03em" }}>
           {result.oneLiner}
         </p>
         <div className="flex flex-wrap gap-1">
           {result.keywords.slice(0, 4).map((k, i) => (
-            <span key={i} className="text-[10px] text-purple-600 font-medium">
+            <span key={i} className="text-[10px] text-brand-accent font-medium">
               #{k}
             </span>
           ))}
         </div>
-        <div className="text-[10px] text-gray-600 flex flex-wrap gap-x-2">
+        <div className="text-[10px] text-brand-muted flex flex-wrap gap-x-2">
           <span>최고의 조수: {goodOne}</span>
           <span>|</span>
           <span>경계 대상: {badOne}</span>
         </div>
         <div className="flex items-center justify-center gap-2 pt-2">
           <div className="flex flex-col items-center">
-            <p className="text-[10px] text-gray-500 mb-1">여기에 링크 스티커를 붙여주세요!</p>
-            <span className="text-lg" aria-hidden>
-              👇
-            </span>
+            <p className="text-[10px] text-brand-muted mb-1">여기에 링크 스티커를 붙여주세요!</p>
           </div>
-          <div className="flex-shrink-0 bg-white p-1.5 rounded-lg border border-purple-100">
+          <div className="flex-shrink-0 bg-brand-surface p-1.5 rounded-tag border border-brand-border">
             <QRCodeSVG value={testUrl} size={56} level="M" includeMargin={false} />
           </div>
         </div>

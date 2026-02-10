@@ -60,3 +60,37 @@ export function getTestResult(
     finalScores[a] >= finalScores[b] ? a : b
   );
 }
+
+/**
+ * 전체 차원별 점수를 반환합니다 (레이더 차트용).
+ * getTestResult()와 동일한 로직이지만 우승자 대신 전체 점수 맵을 반환합니다.
+ */
+export function getTestScores(
+  userAnswers: number[],
+  mode?: "boyfriend" | "girlfriend"
+): Record<CharType, number> {
+  const questions: QuestionItem[] = mode === "girlfriend" ? QUESTIONS_GIRLFRIEND : QUESTIONS;
+  const finalScores: Record<CharType, number> = {
+    teto: 0,
+    potato: 0,
+    egen: 0,
+    cheese: 0,
+    era: 0,
+    salsa: 0,
+    ehem: 0,
+    sweet_potato: 0,
+  };
+
+  userAnswers.forEach((answerIndex, questionIndex) => {
+    const question = questions[questionIndex];
+    if (!question || answerIndex < 0 || answerIndex >= question.options.length) return;
+    const selectedOption = question.options[answerIndex];
+    Object.entries(selectedOption.scores).forEach(([char, score]) => {
+      if (char in finalScores) {
+        finalScores[char as CharType] += score;
+      }
+    });
+  });
+
+  return finalScores;
+}

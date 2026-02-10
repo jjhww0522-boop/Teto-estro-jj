@@ -2,41 +2,81 @@
 
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { useLocale } from "@/components/LocaleProvider";
+
+/** SVG 막대 차트 애니메이션 - 8개 바가 순차적으로 올라가는 분석 시각화 */
+function AnalyzingBars() {
+  return (
+    <div className="flex items-end justify-center gap-1.5 h-24">
+      {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+        <div
+          key={i}
+          className="w-3 bg-brand-accent rounded-sm"
+          style={{
+            animation: `barPulse 1.2s ease-in-out ${i * 0.15}s infinite`,
+            height: "20%",
+          }}
+        />
+      ))}
+      <style jsx>{`
+        @keyframes barPulse {
+          0%, 100% { height: 20%; opacity: 0.4; }
+          50% { height: 90%; opacity: 1; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+/** 체크마크 SVG */
+function CheckIcon({ active }: { active: boolean }) {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      className={`shrink-0 transition-colors duration-300 ${active ? "text-brand-success" : "text-brand-border"}`}
+    >
+      <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" fill={active ? "currentColor" : "none"} />
+      {active && (
+        <path d="M5 8l2 2 4-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      )}
+    </svg>
+  );
+}
 
 function LoadingContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { t } = useLocale();
   const [progress, setProgress] = useState(0);
-  const [loadingText, setLoadingText] = useState("결과 분석 중");
+  const [dots, setDots] = useState("");
+
+  const baseText = t("loading.analyzing");
 
   useEffect(() => {
     const answersParam = searchParams.get("answers");
-    
+
     if (!answersParam) {
       router.push("/");
       return;
     }
 
-    // 로딩 텍스트 애니메이션
-    const textInterval = setInterval(() => {
-      setLoadingText((prev) => {
-        if (prev === "결과 분석 중...") return "결과 분석 중";
-        return prev + ".";
-      });
+    const dotInterval = setInterval(() => {
+      setDots((prev) => (prev.length >= 3 ? "" : prev + "."));
     }, 500);
 
-    // 프로그레스 바 애니메이션
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) return 100;
         return prev + 2;
       });
-    }, 60); // 3초 동안 100%까지
+    }, 60);
 
     const modeParam = searchParams.get("mode") || "";
     const matchMeParam = searchParams.get("matchMe") || "";
 
-    // 3초 후 결과 페이지로 이동 (answers, mode, matchMe 유지)
     const timer = setTimeout(() => {
       const params = new URLSearchParams({ answers: answersParam });
       if (modeParam) params.set("mode", modeParam);
@@ -46,69 +86,56 @@ function LoadingContent() {
 
     return () => {
       clearTimeout(timer);
-      clearInterval(textInterval);
+      clearInterval(dotInterval);
       clearInterval(progressInterval);
     };
   }, [searchParams, router]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
-      {/* 메인 로딩 화면 */}
       <div className="card max-w-md w-full text-center space-y-8">
-        {/* 로딩 애니메이션 */}
-        <div className="relative">
-          <div className="text-8xl animate-bounce-slow">
-            🔮
-          </div>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-32 h-32 border-4 border-pastel-purple/30 border-t-pastel-pink rounded-full animate-spin"></div>
-          </div>
-        </div>
+        {/* SVG 막대 차트 애니메이션 */}
+        <AnalyzingBars />
 
         {/* 로딩 텍스트 */}
         <div className="space-y-4">
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">
-            {loadingText}
+          <h2 className="text-3xl font-bold text-brand-navy">
+            {baseText}{dots}
           </h2>
-          <p className="text-gray-600">
-            당신의 유형을 분석하고 있어요
+          <p className="text-brand-muted">
+            {t("loading.subtitle")}
           </p>
         </div>
 
         {/* 프로그레스 바 */}
         <div className="space-y-2">
-          <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+          <div className="w-full bg-brand-border-light rounded-full h-2 overflow-hidden">
             <div
-              className="bg-gradient-to-r from-pastel-purple via-pastel-pink to-pastel-blue h-full rounded-full transition-all duration-300 ease-out flex items-center justify-end pr-2"
+              className="bg-brand-accent h-full rounded-full transition-all duration-300 ease-out"
               style={{ width: `${progress}%` }}
-            >
-              {progress > 10 && (
-                <span className="text-xs font-bold text-white">
-                  {Math.round(progress)}%
-                </span>
-              )}
-            </div>
+            />
           </div>
+          <p className="text-xs text-brand-muted tabular-nums">{Math.round(progress)}%</p>
         </div>
 
         {/* 분석 단계 표시 */}
-        <div className="space-y-3 text-left bg-pastel-yellow/10 rounded-2xl p-6">
+        <div className="space-y-3 text-left bg-brand-highlight rounded-button p-6 border border-brand-border">
           <div className="flex items-center gap-3">
-            <div className={`w-2 h-2 rounded-full ${progress > 20 ? 'bg-green-400' : 'bg-gray-300'}`}></div>
-            <span className={`text-sm ${progress > 20 ? 'text-gray-700 font-medium' : 'text-gray-400'}`}>
-              답변 데이터 수집 완료
+            <CheckIcon active={progress > 20} />
+            <span className={`text-sm ${progress > 20 ? 'text-brand-charcoal font-medium' : 'text-brand-muted'}`}>
+              {t("loading.step1")}
             </span>
           </div>
           <div className="flex items-center gap-3">
-            <div className={`w-2 h-2 rounded-full ${progress > 50 ? 'bg-green-400' : 'bg-gray-300'}`}></div>
-            <span className={`text-sm ${progress > 50 ? 'text-gray-700 font-medium' : 'text-gray-400'}`}>
-              성격 유형 분석 중
+            <CheckIcon active={progress > 50} />
+            <span className={`text-sm ${progress > 50 ? 'text-brand-charcoal font-medium' : 'text-brand-muted'}`}>
+              {t("loading.step2")}
             </span>
           </div>
           <div className="flex items-center gap-3">
-            <div className={`w-2 h-2 rounded-full ${progress > 80 ? 'bg-green-400' : 'bg-gray-300'}`}></div>
-            <span className={`text-sm ${progress > 80 ? 'text-gray-700 font-medium' : 'text-gray-400'}`}>
-              궁합 정보 생성 중
+            <CheckIcon active={progress > 80} />
+            <span className={`text-sm ${progress > 80 ? 'text-brand-charcoal font-medium' : 'text-brand-muted'}`}>
+              {t("loading.step3")}
             </span>
           </div>
         </div>

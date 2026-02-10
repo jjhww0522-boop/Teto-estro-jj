@@ -33,6 +33,7 @@ export const QUESTIONS: QuestionItem[] = [
       { text: "\"뭐 먹고 싶어?\" 내 의견을 묻고 조심스럽게 옵션을 제안한다.", scores: { potato: 1, sweet_potato: 1 } },
       { text: "\"우리 그냥 발길 닿는 대로 가볼까?\" 즉흥적인 무드에 몸을 맡긴다.", scores: { era: 1, salsa: 1 } },
       { text: "\"분위기 좋은 데 가고 싶어.\" 로맨틱한 장소 위주로 폭풍 검색한다.", scores: { egen: 1, cheese: 1 } },
+      { text: "\"일단 여기 갈래? 맛있는 거 먹이고 싶어서..\" 달달하면서도 자연스럽게 에스코트한다.", scores: { sweet_potato: 1, ehem: 1 } },
     ],
   },
   {
@@ -73,6 +74,7 @@ export const QUESTIONS: QuestionItem[] = [
       { text: "\"아이구.. 속상해. 오늘 무리하지 말고 일찍 들어갈까?\" 마음부터 달래준다.", scores: { egen: 1 } },
       { text: "\"내 눈엔 여전히 예쁜데? 얼른 당 충전하러 가자!\" 능글맞게 기분을 풀어준다.", scores: { cheese: 1 } },
       { text: "\"나도 오늘 좀 피곤하긴 한데, 우리 같이 맛있는 거 먹고 힘내자!\"", scores: { salsa: 1 } },
+      { text: "\"진짜? 내가 봤을 땐 괜찮아 보이는데.. 일단 앉아서 좀 쉬자.\" 무뚝뚝하지만 행동으로 챙긴다.", scores: { teto: 1, potato: 1 } },
     ],
   },
   {
@@ -103,6 +105,7 @@ export const QUESTIONS: QuestionItem[] = [
       { text: "\"기분 나쁘게 해서 미안해.. 화 풀릴 때까지 기다릴게.\" 내 감정을 먼저 살핀다.", scores: { potato: 1, sweet_potato: 1 } },
       { text: "\"에라 모르겠다! 우리 맛있는 거 먹으면서 기분 풀자!\" 분위기 전환을 시도한다.", scores: { era: 1, salsa: 1 } },
       { text: "\"내가 뭘 잘못했는지 조근조근 말해줄 수 있어? 고치고 싶어서.\"", scores: { egen: 1 } },
+      { text: "\"...일단 밖에 나가서 좀 걷자.\" 말없이 시간을 두고 감정을 식히려 한다.", scores: { cheese: 1 } },
     ],
   },
   {
@@ -133,6 +136,7 @@ export const QUESTIONS: QuestionItem[] = [
       { text: "\"우와 고마워! 잘 쓸게!\" 리액션은 크게 하지만 속으로는 활용도를 생각하는 눈치.", scores: { cheese: 1, salsa: 1 } },
       { text: "\"준비하느라 고생했겠다. 근데 다음에는 이런 스타일로 사주면 더 좋을 것 같아!\"", scores: { teto: 1, ehem: 1 } },
       { text: "\"고마워. 근데 이런 건 나보다 네가 쓰면 더 잘 어울릴 것 같은데?\"", scores: { era: 1, sweet_potato: 1 } },
+      { text: "\"헉 이거 어디서 났어? 근데 나 이런 거 좋아하는데 어떻게 알았어?\" 감자 특유의 솔직한 감동 표출.", scores: { potato: 1, egen: 1 } },
     ],
   },
   {
@@ -145,9 +149,43 @@ export const QUESTIONS: QuestionItem[] = [
       { text: "\"오늘도 알차게 놀았다! 자, 이제 내 개인 시간 시작인가?\"", scores: { era: 1, cheese: 1 } },
     ],
   },
+  {
+    id: 13,
+    question: "SNS에 우리 사진을 올릴 때, {subject}의 스타일은?",
+    options: [
+      { text: "\"이 사진 진짜 잘 나왔다! 올려도 돼?\" 꼭 동의를 구하고 캡션도 고심해서 올린다.", scores: { teto: 1, ehem: 1 } },
+      { text: "\"나 SNS 잘 안 해서..\" 올리기보다는 핸드폰 갤러리에 소중히 보관하는 편이다.", scores: { sweet_potato: 1, potato: 1 } },
+      { text: "\"이거 봐봐! 우리 진짜 잘 어울린다~\" 자랑하듯 업로드하고 반응을 즐긴다.", scores: { salsa: 1, cheese: 1 } },
+      { text: "사진은 찍지만 올리진 않는다. 공개보다 둘만의 추억을 중요하게 생각한다.", scores: { potato: 1, era: 1 } },
+      { text: "\"필터 뭐가 좋을까?\" 감성적으로 꾸며서 스토리에 올린다.", scores: { egen: 1 } },
+    ],
+  },
+  {
+    id: 14,
+    question: "장거리 이동 중 함께하는 시간에, {subject}의 모습은?",
+    options: [
+      { text: "미리 플레이리스트를 만들어 와서 함께 듣자고 한다.", scores: { teto: 1, egen: 1 } },
+      { text: "조용히 내 어깨에 기대 잠들거나, 창밖을 멍하니 바라본다.", scores: { sweet_potato: 1, potato: 1 } },
+      { text: "\"심심한데 게임 할까?\" 이것저것 함께할 거리를 찾는다.", scores: { salsa: 1, cheese: 1 } },
+      { text: "\"여기 맛집 있대! 중간에 내려서 먹고 갈까?\" 경유지 맛집을 실시간으로 검색한다.", scores: { era: 1, salsa: 1 } },
+      { text: "이동 시간을 활용해 앞으로의 일정이나 계획을 정리한다.", scores: { ehem: 1, teto: 1 } },
+    ],
+  },
+  {
+    id: 15,
+    question: "기념일을 챙기는 방식에서, {subject}의 스타일은?",
+    options: [
+      { text: "한 달 전부터 레스토랑 예약, 선물 리스트까지 빈틈없이 준비한다.", scores: { teto: 2 } },
+      { text: "\"기념일이 언제였더라..?\" 날짜를 잘 기억 못 하지만 알려주면 최선을 다한다.", scores: { potato: 1, sweet_potato: 1 } },
+      { text: "\"기념일이니까 특별한 거 하자!\" 이벤트를 직접 기획하는 걸 즐긴다.", scores: { salsa: 1, cheese: 1 } },
+      { text: "편지나 손글씨 카드 등 마음이 담긴 아날로그 선물을 준비한다.", scores: { egen: 1 } },
+      { text: "\"매일이 기념일이지~\" 특별한 날보다 일상에서 꾸준히 챙기는 타입이다.", scores: { era: 1 } },
+      { text: "\"뭐 원하는 거 있어? 말해!\" 상대방이 진짜 원하는 걸 직접 물어보고 사준다.", scores: { ehem: 1 } },
+    ],
+  },
 ];
 
-/** 여자친구 테토 농도 분석기: 대중 공감 버전 (12문항) - 남자가 여친을 관찰 */
+/** 여자친구 테토 농도 분석기: 대중 공감 버전 (15문항) - 남자가 여친을 관찰 */
 export const QUESTIONS_GIRLFRIEND: QuestionItem[] = [
   {
     id: 1,
@@ -157,6 +195,7 @@ export const QUESTIONS_GIRLFRIEND: QuestionItem[] = [
       { text: "\"너 하고 싶은 거 하자~\"라고 말하며 은근히 내가 고르기를 기다린다.", scores: { potato: 1 } },
       { text: "\"요즘 여기가 예쁘대.\" 인스타 감성 가득한 장소 위주로 찾아본다.", scores: { egen: 1 } },
       { text: "\"일단 만나서 생각할까?\" 계획 없이 그날의 기분에 맡기는 편이다.", scores: { era: 1 } },
+      { text: "\"여기 가볼까? 맛있는 거 같이 먹자~\" 자연스럽게 분위기를 이끈다.", scores: { sweet_potato: 1, cheese: 1 } },
     ],
   },
   {
@@ -191,12 +230,13 @@ export const QUESTIONS_GIRLFRIEND: QuestionItem[] = [
   },
   {
     id: 5,
-    question: "예쁜 카페에 갔을 때, 그녀의 \'인생샷\'을 대하는 태도는?",
+    question: "예쁜 카페에 갔을 때, 그녀의 '인생샷'을 대하는 태도는?",
     options: [
       { text: "\"수평 잘 맞춰서 다시 찍어줘!\" 만족할 때까지 구도를 코칭하며 열정적으로 임한다.", scores: { teto: 1 } },
       { text: "\"그냥 대충 찍어줘~\"라고 하지만, 결과물이 잘 나오면 세상 행복해한다.", scores: { potato: 1 } },
       { text: "\"와, 지금 배경 너무 예쁘다! 자기랑 같이 셀카 찍자!\" 나랑 같이 찍는 걸 더 좋아한다.", scores: { cheese: 1 } },
       { text: "\"사진보다 지금 이 분위기가 너무 좋아.\" 사진 한두 장 찍고 대화에 집중한다.", scores: { era: 1 } },
+      { text: "\"이 각도가 더 예쁘지 않아?\" 직접 포즈와 각도를 잡아주며 인생샷을 만들어 준다.", scores: { teto: 1, egen: 1 } },
     ],
   },
   {
@@ -227,6 +267,7 @@ export const QUESTIONS_GIRLFRIEND: QuestionItem[] = [
       { text: "\"재밌게 놀고 이따 집 갈 때 연락할게!\" 미리 말해주고 노는 데 집중한다.", scores: { era: 1 } },
       { text: "틈틈이 내 안부를 물으며 \"자기 생각나서 연락했어\"라고 다정하게 말한다.", scores: { cheese: 1 } },
       { text: "답장이 꽤 느리지만 한 번 올 때 길고 정성스럽게 온다.", scores: { sweet_potato: 1 } },
+      { text: "\"방금 찍은 사진인데 봐봐~\" 즐거운 순간을 사진으로 공유해 준다.", scores: { egen: 1, salsa: 1 } },
     ],
   },
   {
@@ -257,6 +298,7 @@ export const QUESTIONS_GIRLFRIEND: QuestionItem[] = [
       { text: "\"집 가서 카톡 해!\" 짧게 인사하고 쿨하게 들어간다.", scores: { era: 1 } },
       { text: "\"아쉽다.. 조금만 더 같이 있으면 안 돼?\" 대문 앞에서 한참을 서성인다.", scores: { cheese: 1 } },
       { text: "\"오늘 너무 즐거웠어, 조심히 가!\" 다정한 인사와 함께 오늘 데이트 피드백을 해준다.", scores: { teto: 1 } },
+      { text: "\"내일 뭐 해? 내일도 볼 수 있어?\" 헤어지기 전 이미 다음 만남을 약속한다.", scores: { potato: 1, sweet_potato: 1 } },
     ],
   },
   {
@@ -269,5 +311,38 @@ export const QUESTIONS_GIRLFRIEND: QuestionItem[] = [
       { text: "\"자세한 건 내일 만나서 얘기하자, 잘 자!\" 깔끔하게 인사하고 잠든다.", scores: { era: 1 } },
     ],
   },
+  {
+    id: 13,
+    question: "SNS에 우리 사진을 올릴 때, 그녀의 스타일은?",
+    options: [
+      { text: "\"이 사진 올려도 돼?\" 나한테 꼭 확인하고 캡션과 필터도 고심해서 올린다.", scores: { teto: 1, ehem: 1 } },
+      { text: "SNS보다는 갤러리에 소중히 보관한다. 공개보다 둘만의 기록을 좋아한다.", scores: { sweet_potato: 1, potato: 1 } },
+      { text: "\"우리 사진 진짜 잘 나왔다!\" 자랑하듯 스토리에 올리고 반응을 즐긴다.", scores: { salsa: 1, cheese: 1 } },
+      { text: "셀카는 매번 찍지만 올리진 않는다. 나중에 앨범처럼 모아두는 타입.", scores: { potato: 1, era: 1 } },
+      { text: "\"이 필터 분위기 있지 않아?\" 감성 가득한 편집으로 예쁘게 올린다.", scores: { egen: 1 } },
+    ],
+  },
+  {
+    id: 14,
+    question: "장거리 이동 중 함께하는 시간에, 그녀의 모습은?",
+    options: [
+      { text: "직접 플레이리스트를 만들어 와서 같이 들으며 기분을 띄운다.", scores: { teto: 1, egen: 1 } },
+      { text: "내 어깨에 살짝 기대 잠들거나, 창밖을 보며 조용한 시간을 즐긴다.", scores: { sweet_potato: 1, potato: 1 } },
+      { text: "\"이거 같이 하자!\" 게임이나 퀴즈 등 함께할 거리를 찾는다.", scores: { salsa: 1, cheese: 1 } },
+      { text: "\"여기 맛집 있대! 잠깐 내려서 먹고 갈까?\" 실시간으로 경유지를 검색한다.", scores: { era: 1, salsa: 1 } },
+      { text: "이동 시간에 앞으로의 일정을 같이 정리하자고 한다.", scores: { ehem: 1, teto: 1 } },
+    ],
+  },
+  {
+    id: 15,
+    question: "기념일을 챙기는 방식에서, 그녀의 스타일은?",
+    options: [
+      { text: "한 달 전부터 레스토랑 예약, 매칭 코디까지 빈틈없이 준비하는 완벽주의자.", scores: { teto: 2 } },
+      { text: "\"기념일이 언제였더라..?\" 날짜를 잘 기억 못 하지만 리마인더에 챙겨두는 편.", scores: { potato: 1, sweet_potato: 1 } },
+      { text: "\"기념일에 뭐 하고 싶어?\" 나한테 물어보고 함께 계획하는 걸 좋아한다.", scores: { cheese: 1 } },
+      { text: "편지나 직접 만든 선물 등 마음이 담긴 아날로그 감성을 선호한다.", scores: { egen: 1 } },
+      { text: "\"매일이 기념일이지~\" 특별한 날보다 일상에서 꾸준히 챙기는 타입.", scores: { era: 1 } },
+      { text: "\"우리 이날 뭐 하자!\" 깜짝 이벤트를 직접 기획하는 걸 즐긴다.", scores: { salsa: 1, ehem: 1 } },
+    ],
+  },
 ];
-

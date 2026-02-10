@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   description:
     "내 애인의 테토 농도는 몇 %? 지금 바로 정밀 분석 리포트를 확인하세요!",
   openGraph: {
-    title: "내 애인의 테토 농도 분석기 ⚗️",
+    title: "내 애인의 테토 농도 분석기",
     description: "12가지 상황으로 알아보는 내 애인의 진짜 테토력!",
     url: SITE_URL,
     siteName: "테토 연구소",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "내 애인의 테토 농도 분석기 ⚗️",
+    title: "내 애인의 테토 농도 분석기",
     description: "12가지 상황으로 알아보는 내 애인의 진짜 테토력!",
     images: ["/images/og-main.png"],
   },
@@ -57,6 +57,13 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
+        {/* Pretendard Variable 폰트 */}
+        <link
+          rel="stylesheet"
+          as="style"
+          crossOrigin="anonymous"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"
+        />
         {/* 카카오 SDK */}
         <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" async></script>
       </head>
