@@ -66,6 +66,12 @@ export default function RootLayout({
         />
         {/* 카카오 SDK */}
         <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" async></script>
+        {/* Google AdSense */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1924006200055778"
+          crossOrigin="anonymous"
+        />
       </head>
       <body className="antialiased flex flex-col min-h-screen">
         <LocaleProvider>

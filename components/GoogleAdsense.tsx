@@ -36,7 +36,7 @@ export default function GoogleAdsense({
         textAlign: "center",
         ...style,
       }}
-      data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" // 여기에 실제 애드센스 Publisher ID 입력
+      data-ad-client="ca-pub-1924006200055778"
       data-ad-slot={adSlot}
       data-ad-format={adFormat}
       data-full-width-responsive={fullWidthResponsive.toString()}

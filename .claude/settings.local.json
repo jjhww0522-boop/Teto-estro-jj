@@ -14,7 +14,8 @@
       "Bash(del \"C:\\\\Users\\\\EKR\\\\Desktop\\\\Teto-estro-jj-main\\\\_fix_quotes.js\")",
       "Bash(npx.cmd tsc:*)",
       "Bash(NODE_OPTIONS=\"--max-old-space-size=4096\" npx.cmd next build:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git -C \"C:\\\\Users\\\\82102\\\\Desktop\\\\Tetolab\" add .)"
     ]
   }
 }
