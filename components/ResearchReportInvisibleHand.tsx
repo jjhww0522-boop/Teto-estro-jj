@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function ResearchReportInvisibleHand() {
   return (
     <section className="w-full max-w-[480px] mt-6 relative z-20">
-      <details className="group">
+      <details className="group" open>
         <summary className="list-none cursor-pointer w-full py-3 px-4 bg-brand-surface hover:bg-brand-highlight border border-brand-border rounded-card shadow-card transition-colors flex items-center justify-between gap-2 [&::-webkit-details-marker]:hidden">
           <span className="text-sm font-bold text-brand-accent">
             연구 리포트: 연애 농도를 결정짓는 또 다른 보이지 않는 손

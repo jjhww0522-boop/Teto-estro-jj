@@ -19,6 +19,10 @@ export default function Footer() {
           <Link href="/terms" className="text-brand-muted hover:text-brand-accent underline underline-offset-2">
             {t("footer.terms")}
           </Link>
+          <span className="text-brand-border">|</span>
+          <Link href="/about" className="text-brand-muted hover:text-brand-accent underline underline-offset-2">
+            About
+          </Link>
         </nav>
 
         <p className="text-xs text-brand-muted leading-relaxed max-w-xl mx-auto pt-2">
