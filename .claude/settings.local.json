@@ -27,7 +27,14 @@
       "Bash(git push:*)",
       "Bash(npx next dev:*)",
       "Bash(npx.cmd next dev:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(du:*)",
+      "Bash(sort:*)",
+      "Bash(find:*)",
+      "Bash(file:*)",
+      "Bash(grep:*)",
+      "Bash(ls:*)",
+      "Bash(npm uninstall:*)"
     ]
   }
 }
