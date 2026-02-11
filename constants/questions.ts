@@ -154,9 +154,8 @@ export const QUESTIONS: QuestionItem[] = [
     question: "SNS에 우리 사진을 올릴 때, {subject}의 스타일은?",
     options: [
       { text: "\"이 사진 진짜 잘 나왔다! 올려도 돼?\" 꼭 동의를 구하고 캡션도 고심해서 올린다.", scores: { teto: 1, ehem: 1 } },
-      { text: "\"나 SNS 잘 안 해서..\" 올리기보다는 핸드폰 갤러리에 소중히 보관하는 편이다.", scores: { sweet_potato: 1, potato: 1 } },
+      { text: "\"나 SNS 잘 안 해서..\" 올리기보다는 핸드폰 갤러리에 소중히 보관하는 편이다.", scores: { sweet_potato: 1, potato: 1, era: 1 } },
       { text: "\"이거 봐봐! 우리 진짜 잘 어울린다~\" 자랑하듯 업로드하고 반응을 즐긴다.", scores: { salsa: 1, cheese: 1 } },
-      { text: "사진은 찍지만 올리진 않는다. 공개보다 둘만의 추억을 중요하게 생각한다.", scores: { potato: 1, era: 1 } },
       { text: "\"필터 뭐가 좋을까?\" 감성적으로 꾸며서 스토리에 올린다.", scores: { egen: 1 } },
     ],
   },
@@ -316,9 +315,8 @@ export const QUESTIONS_GIRLFRIEND: QuestionItem[] = [
     question: "SNS에 우리 사진을 올릴 때, 그녀의 스타일은?",
     options: [
       { text: "\"이 사진 올려도 돼?\" 나한테 꼭 확인하고 캡션과 필터도 고심해서 올린다.", scores: { teto: 1, ehem: 1 } },
-      { text: "SNS보다는 갤러리에 소중히 보관한다. 공개보다 둘만의 기록을 좋아한다.", scores: { sweet_potato: 1, potato: 1 } },
+      { text: "SNS보다는 갤러리에 소중히 보관한다. 공개보다 둘만의 기록을 좋아한다.", scores: { sweet_potato: 1, potato: 1, era: 1 } },
       { text: "\"우리 사진 진짜 잘 나왔다!\" 자랑하듯 스토리에 올리고 반응을 즐긴다.", scores: { salsa: 1, cheese: 1 } },
-      { text: "셀카는 매번 찍지만 올리진 않는다. 나중에 앨범처럼 모아두는 타입.", scores: { potato: 1, era: 1 } },
       { text: "\"이 필터 분위기 있지 않아?\" 감성 가득한 편집으로 예쁘게 올린다.", scores: { egen: 1 } },
     ],
   },

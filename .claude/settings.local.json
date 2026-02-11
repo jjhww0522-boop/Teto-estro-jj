@@ -34,7 +34,8 @@
       "Bash(file:*)",
       "Bash(grep:*)",
       "Bash(ls:*)",
-      "Bash(npm uninstall:*)"
+      "Bash(npm uninstall:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
