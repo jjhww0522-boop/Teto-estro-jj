@@ -1,7 +1,10 @@
 import { MetadataRoute } from "next";
+import { getBlogPosts } from "@/data/blog";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tetolab.com";
+  const lastModified = new Date("2026-02-12");
+  const posts = getBlogPosts();
 
   const resultTypes = [
     "teto",
@@ -24,7 +27,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const resultUrls = resultTypes.map((type) => ({
     url: `${baseUrl}/result/${type}`,
-    lastModified: new Date(),
+    lastModified,
     changeFrequency: "monthly" as const,
     priority: 0.8,
   }));
@@ -32,34 +35,52 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified,
       changeFrequency: "weekly" as const,
       priority: 1,
     },
     {
       url: `${baseUrl}/test`,
-      lastModified: new Date(),
+      lastModified,
       changeFrequency: "monthly" as const,
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
+      url: `${baseUrl}/match`,
+      lastModified,
       changeFrequency: "monthly" as const,
-      priority: 0.5,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/about`,
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
     },
     {
       url: `${baseUrl}/privacy`,
-      lastModified: new Date(),
+      lastModified,
       changeFrequency: "yearly" as const,
       priority: 0.3,
     },
     {
       url: `${baseUrl}/terms`,
-      lastModified: new Date(),
+      lastModified,
       changeFrequency: "yearly" as const,
       priority: 0.3,
     },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified,
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+    },
+    ...posts.map((p) => ({
+      url: `${baseUrl}/blog/${p.slug}`,
+      lastModified: new Date(p.updatedAt),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
     ...resultUrls,
   ];
 }

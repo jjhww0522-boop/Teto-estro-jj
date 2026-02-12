@@ -23,6 +23,10 @@ export default function Footer() {
           <Link href="/about" className="text-brand-muted hover:text-brand-accent underline underline-offset-2">
             About
           </Link>
+          <span className="text-brand-border">|</span>
+          <Link href="/blog" className="text-brand-muted hover:text-brand-accent underline underline-offset-2">
+            블로그
+          </Link>
         </nav>
 
         <p className="text-xs text-brand-muted leading-relaxed max-w-xl mx-auto pt-2">
