@@ -235,12 +235,18 @@ export default function AboutPage() {
               <strong>서비스명:</strong> 테토 연구소 (Teto Lab)
             </p>
             <p className="leading-relaxed">
+              <strong>도메인:</strong> tetolab.com
+            </p>
+            <p className="leading-relaxed">
               <strong>운영:</strong> 테토 연구소는 연애 심리 콘텐츠에 관심 있는 개인
               개발자가 운영하는 서비스입니다. 심리학 이론과 웹 기술을 결합하여 누구나 쉽고
               재미있게 자신의 연애 성향을 탐구할 수 있는 콘텐츠를 만들고 있습니다.
             </p>
             <p className="leading-relaxed">
               <strong>목적:</strong> 연애 심리 콘텐츠 제공 및 엔터테인먼트
+            </p>
+            <p className="leading-relaxed">
+              <strong>광고:</strong> Google AdSense를 통해 광고가 노출될 수 있습니다.
             </p>
           </div>
         </section>
@@ -253,7 +259,7 @@ export default function AboutPage() {
             문의해 주세요.
           </p>
           <a
-            href={"mailto:" + ["hsseo1492", "gmail.com"].join("@")}
+            href="mailto:potatoman21@gmail.com"
             className="inline-block px-6 py-3 bg-pink-500 text-white font-bold rounded-xl hover:bg-pink-600 transition-colors"
           >
             이메일 문의하기

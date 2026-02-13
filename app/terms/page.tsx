@@ -1,21 +1,21 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "이용약관 | 테토남/포테토남/에겐남 유형 테스트",
-  description: "potatoboyfriends 서비스 이용약관",
+  title: "이용약관 | 테토 연구소",
+  description: "테토 연구소(Teto Lab) 서비스 이용약관",
 };
 
 export default function TermsPage() {
   return (
     <div className="min-h-screen p-6 max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold text-gray-800 mb-2">서비스 이용약관</h1>
-      <p className="text-sm text-gray-500 mb-8">Terms of Service · 시행일: 서비스 게시일</p>
+      <p className="text-sm text-gray-500 mb-8">Terms of Service · 시행일: 2026-02-13</p>
 
       <div className="prose prose-sm text-gray-700 space-y-8 text-kr-wrap">
         <section>
           <h2 className="text-lg font-bold text-gray-800 mt-0 mb-2">제1조 (목적)</h2>
           <p className="m-0 leading-relaxed">
-            본 약관은 &apos;테토남 연애 유형 테스트&apos;(이하 &quot;서비스&quot;)가 제공하는 모든 서비스의 이용 조건 및 절차, 이용자와 서비스 제공자의 권리, 의무 및 책임 사항을 규정함을 목적으로 합니다.
+            본 약관은 &apos;테토 연구소(Teto Lab)&apos;(이하 &quot;서비스&quot;)가 제공하는 모든 서비스의 이용 조건 및 절차, 이용자와 서비스 제공자의 권리, 의무 및 책임 사항을 규정함을 목적으로 합니다.
           </p>
         </section>
 

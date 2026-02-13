@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { LocaleProvider } from "@/components/LocaleProvider";
 import Footer from "@/components/Footer";
+import AgentationDevTool from "@/components/AgentationDevTool";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -77,6 +78,7 @@ export default function RootLayout({
         <LocaleProvider>
           <main className="flex-1">{children}</main>
           <Footer />
+          <AgentationDevTool />
           <Analytics />
         </LocaleProvider>
       </body>

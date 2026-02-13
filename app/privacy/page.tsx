@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "개인정보처리방침 | 테토남/포테토남/에겐남 유형 테스트",
-  description: "potatoboyfriends 개인정보처리방침 및 Privacy Policy",
+  title: "개인정보처리방침 | 테토 연구소",
+  description: "테토 연구소(Teto Lab) 개인정보처리방침",
 };
 
 export default function PrivacyPage() {
@@ -11,7 +11,8 @@ export default function PrivacyPage() {
       <h1 className="text-2xl font-bold text-gray-800 mb-2">
         개인정보처리방침 (Privacy Policy)
       </h1>
-      <p className="text-sm text-gray-500 mb-8">[개인정보처리방침 전문 보기]</p>
+      <p className="text-sm text-gray-500 mb-2">시행일: 2026-02-13</p>
+      <p className="text-sm text-gray-500 mb-8">최종 수정일: 2026-02-13</p>
 
       <div className="prose prose-sm text-gray-700 space-y-8 text-kr-wrap">
         <section>
@@ -19,7 +20,7 @@ export default function PrivacyPage() {
             1. 수집하는 개인정보 항목
           </h2>
           <p className="leading-relaxed">
-            본 서비스(&apos;테토남 연애 테스트&apos;)는 별도의 회원가입 없이 이용 가능하며,
+            본 서비스(&apos;테토 연구소&apos;)는 별도의 회원가입 없이 이용 가능하며,
             이름, 연락처 등 직접적인 개인정보를 수집하지 않습니다. 다만, 서비스 이용
             과정에서 쿠키, 방문 기록, 기기 정보 등이 자동 생성되어 수집될 수 있습니다.
           </p>
@@ -116,10 +117,8 @@ export default function PrivacyPage() {
             5. 제3자 제공 및 위탁
           </h2>
           <p className="leading-relaxed">
-            본 서비스는 Google에서 제공하는 로그 분석 도구(Google Analytics) 및
-            광고 게재 서비스(Google AdSense)를 이용합니다. 이 과정에서 비식별화된
-            정보가 Google 측에 제공될 수 있으며, 이는 각 서비스의 개인정보
-            보호정책을 따릅니다.
+            본 서비스는 광고 게재 서비스(Google AdSense), 호스팅/트래픽 분석 서비스(Vercel Analytics), 선택적 통계 저장(Upstash Redis)을 이용할 수 있습니다.
+            이 과정에서 비식별화된 정보가 각 사업자에게 처리될 수 있으며, 자세한 내용은 각 사업자의 정책을 따릅니다.
           </p>
         </section>
 
@@ -144,7 +143,10 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-gray-800 mb-2">8. 문의처</h2>
+          <h2 className="text-lg font-bold text-gray-800 mb-2">8. 운영자 및 문의처</h2>
+          <p className="leading-relaxed">
+            운영자(서비스 제공자): 테토 연구소(Teto Lab)
+          </p>
           <p className="leading-relaxed">
             개인정보와 관련한 문의사항은{" "}
             <a
