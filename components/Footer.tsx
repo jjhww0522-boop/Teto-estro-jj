@@ -21,11 +21,11 @@ export default function Footer() {
           </Link>
           <span className="text-brand-border">|</span>
           <Link href="/about" className="text-brand-muted hover:text-brand-accent underline underline-offset-2">
-            About
+            {t("footer.about")}
           </Link>
           <span className="text-brand-border">|</span>
           <Link href="/blog" className="text-brand-muted hover:text-brand-accent underline underline-offset-2">
-            블로그
+            {t("footer.blog")}
           </Link>
         </nav>
 

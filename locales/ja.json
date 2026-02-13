@@ -10,7 +10,14 @@
     "analyzeGirlfriend": "🧪 彼女濃度を分析",
     "statsTime": "約3分・全15問",
     "statsCount": "これまで{{count}}人が分析完了",
-    "characters": "TETO · POTATO · EGEN · GOGUMA · CHEESE · SALSA · EHEM · ERA"
+    "characters": "TETO · POTATO · EGEN · GOGUMA · CHEESE · SALSA · EHEM · ERA",
+    "analyzePartner": "恋人の分析",
+    "analyzeSelf": "自分の傾向分析"
+  },
+  "genderSelect": {
+    "title": "あなたの性別は？",
+    "male": "男性",
+    "female": "女性"
   },
   "test": {
     "previous": "← 前の質問へ",
@@ -48,10 +55,33 @@
     "viewResult": "結果を見る",
     "tryTest": "テストする",
     "chemistryLink": "全相性表を見る (Chemistry) →",
-    "progress": "進行度"
+    "progress": "進行度",
+    "concentrationLabel": "恋人のテト力{{percent}}%！",
+    "loveStyleSection": "恋愛スタイル",
+    "psychAnalysisSection": "心理分析",
+    "bigFiveBadge": "Big Five性格モデル",
+    "attachmentBadge": "愛着理論",
+    "otherTypesTitle": "他の恋愛タイプを見る",
+    "retakeTestLink": "もう一度テスト",
+    "aboutLabLink": "テト研究所について",
+    "chemistryMatchLink": "相性チェック",
+    "storyReportTitle": "テト研究所 | 傾向分析レポート",
+    "storyReportTitleSelf": "Tetolab | 自分の傾向レポート",
+    "storyMyPartnerResult": "恋人のテト濃度分析結果",
+    "storyMyPartnerResultSelf": "私のテト濃度分析結果",
+    "storyConcentration": "テト濃度",
+    "storyBestHelper": "ベストマッチ",
+    "storyCaution": "要注意",
+    "downloadResultSuffix": "テスト結果",
+    "downloadStorySuffix": "インスタストーリー",
+    "youAreType": "あなたは{{type}}だよ ✨",
+    "concentrationLabelSelf": "私のテト力{{percent}}%！",
+    "shareTitlePartner": "恋人のタイプは{{type}}！",
+    "shareTitleSelf": "私のタイプは{{type}}！"
   },
   "compatibility": {
     "title": "恋人との相性は？",
+    "titleSelf": "相性のいいタイプを探す 💕",
     "selectType": "相手のタイプを選んでください",
     "analyzing": "テトエネルギーを分析中...",
     "bestMatch": "ベストマッチ",
@@ -80,11 +110,25 @@
   "footer": {
     "privacy": "プライバシーポリシー",
     "terms": "利用規約",
+    "about": "紹介",
+    "blog": "ブログ",
     "copyright": "Copyright © 2026 potatoboyfriends. All rights reserved.",
     "disclaimer": "本テストは恋愛傾向を楽しむ心理テストです。診断・治療目的ではなく、結果は参考としてご利用ください。",
     "modified": "更新"
   },
   "common": {
-    "language": "言語"
+    "language": "言語",
+    "siteName": "テト研究所",
+    "loading": "読み込み中..."
+  },
+  "radar": {
+    "teto": "直進力",
+    "potato": "安定感",
+    "egen": "感性",
+    "sweet_potato": "献身",
+    "cheese": "魅力",
+    "salsa": "情熱",
+    "ehem": "責任感",
+    "era": "自由"
   }
 }

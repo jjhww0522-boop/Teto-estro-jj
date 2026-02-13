@@ -29,6 +29,8 @@ interface ResultViewProps {
   matchMe?: string | null;
   dimensionScores?: Record<CharType, number> | null;
   isSharedView?: boolean;
+  /** 셀프 진단 결과일 때 (당신은 ㅇㅇ남/ㅇㅇ녀입니다) */
+  isSelf?: boolean;
 }
 
 function toPartnerMatchNames(names: string[], resultSlug?: string): string[] {
@@ -63,7 +65,7 @@ function groupCompatibilitiesByDescription(
   }));
 }
 
-export default function ResultView({ result, shareUrl, resultSlug, matchMe, dimensionScores, isSharedView }: ResultViewProps) {
+export default function ResultView({ result, shareUrl, resultSlug, matchMe, dimensionScores, isSharedView, isSelf }: ResultViewProps) {
   const resultCardRef = useRef<HTMLDivElement>(null);
   const [showShareButtons, setShowShareButtons] = useState(true);
   const { t, locale } = useLocale();
@@ -98,10 +100,13 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
     const imageUrl = isFemaleResult
       ? `${BASE_URL}/images/og-result-female.png`
       : `${BASE_URL}/images/og-result-male.png`;
+    const shareTitle = isSelf
+      ? t("result.shareTitleSelf", { type: displayResult.type })
+      : t("result.shareTitlePartner", { type: displayResult.type });
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
-        title: `나는 ${displayResult.type}! ${displayResult.title}`,
+        title: `${shareTitle} ${displayResult.title}`,
         description: textPart,
         imageUrl,
         link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
@@ -130,7 +135,7 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
         useCORS: true,
       });
       const link = document.createElement("a");
-      link.download = `${displayResult.type}_테스트결과.png`;
+      link.download = `${displayResult.type}_${t("result.downloadResultSuffix")}.png`;
       link.href = canvas.toDataURL("image/png");
       link.click();
       if (button) button.textContent = t("result.saveImage");
@@ -154,7 +159,7 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
         useCORS: true,
       });
       const link = document.createElement("a");
-      link.download = `${displayResult.type}_인스타스토리.png`;
+      link.download = `${displayResult.type}_${t("result.downloadStorySuffix")}.png`;
       link.href = canvas.toDataURL("image/png");
       link.click();
       if (button) button.textContent = t("result.saveStory");
@@ -169,7 +174,7 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
     <div className="min-h-screen flex flex-col items-center justify-center p-4 py-8">
       {/* 인스타 스토리용 오프스크린 카드 */}
       <div style={{ position: "absolute", left: "-9999px", top: 0 }} aria-hidden="true">
-        <ResultStoryCard result={result} resultSlug={resultSlug} />
+        <ResultStoryCard result={displayResult} resultSlug={resultSlug} isSelf={isSelf} />
       </div>
 
       {/* 공유 링크로 유입된 사용자용 CTA */}
@@ -191,7 +196,12 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
           <div className="w-20 h-20 mx-auto bg-brand-highlight border border-brand-border rounded-card flex items-center justify-center text-5xl">
             {result.emoji}
           </div>
-          <TetoConcentrationBar percent={getConcentrationPercent(resultSlug ?? result.type)} />
+          <TetoConcentrationBar percent={getConcentrationPercent(resultSlug ?? result.type)} isSelf={isSelf} />
+          {isSelf && (
+            <p className="text-xl md:text-2xl font-black text-brand-accent">
+              {t("result.youAreType", { type: displayResult.type })}
+            </p>
+          )}
           <h1
             className="font-bold text-brand-charcoal whitespace-nowrap max-w-full text-sm min-[400px]:text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl px-0.5"
             style={{ letterSpacing: "-0.04em" }}
@@ -220,7 +230,19 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
               <span className="section-label">{t("result.tendencyAnalysis")}</span>
             </h3>
             <div className="bg-brand-highlight rounded-card p-6 border border-brand-border flex justify-center">
-              <RadarChart scores={dimensionScores} />
+              <RadarChart
+                scores={dimensionScores}
+                labels={{
+                  teto: t("radar.teto"),
+                  potato: t("radar.potato"),
+                  egen: t("radar.egen"),
+                  sweet_potato: t("radar.sweet_potato"),
+                  cheese: t("radar.cheese"),
+                  salsa: t("radar.salsa"),
+                  ehem: t("radar.ehem"),
+                  era: t("radar.era"),
+                }}
+              />
             </div>
           </div>
         )}
@@ -325,7 +347,7 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
         {/* 액션 버튼 */}
         <div className="space-y-3 pt-4">
           {resultSlug && (
-            <CompatibilityCalculator currentSlug={resultSlug} currentResult={result} onViewChange={handleCompatibilityViewChange} />
+            <CompatibilityCalculator currentSlug={resultSlug} currentResult={result} onViewChange={handleCompatibilityViewChange} isSelf={isSelf} />
           )}
           {resultSlug && (
             <Link
@@ -342,7 +364,7 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
             </Link>
           )}
           {showShareButtons && (
-            <>
+            <div className="space-y-3 mt-6 pt-6 border-t border-brand-border">
               <button
                 onClick={shareToKakao}
                 className="w-full bg-[#FEE500] hover:bg-[#FDD835] text-gray-800 font-bold py-4 px-6 rounded-button shadow-button hover:shadow-card-hover transform hover:scale-[1.02] transition-all duration-200 flex items-center justify-center gap-2"
@@ -370,9 +392,9 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
               >
                 <span>{t("result.saveImage")}</span>
               </button>
-            </>
+            </div>
           )}
-          <Link href="/">
+          <Link href="/" className="block">
             <button className="w-full btn-primary">{t("result.retakeTest")}</button>
           </Link>
         </div>

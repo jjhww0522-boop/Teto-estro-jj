@@ -25,6 +25,8 @@ interface CompatibilityCalculatorProps {
   currentSlug: string;
   currentResult: ResultType;
   onViewChange?: (view: View) => void;
+  /** 셀프 진단 결과일 때 궁합 문구를 "나는 어떤 유형과 잘맞을까?"로 표시 */
+  isSelf?: boolean;
 }
 
 type View = "button" | "grid" | "loading" | "result";
@@ -88,6 +90,7 @@ export default function CompatibilityCalculator({
   currentSlug,
   currentResult,
   onViewChange,
+  isSelf,
 }: CompatibilityCalculatorProps) {
   const [view, setView] = useState<View>("button");
   const [targetSlug, setTargetSlug] = useState<string | null>(null);
@@ -198,7 +201,7 @@ export default function CompatibilityCalculator({
               onClick={openGrid}
               className="w-full btn-primary flex items-center justify-center gap-2"
             >
-              <span>{t("compatibility.title")}</span>
+              <span>{t(isSelf ? "compatibility.titleSelf" : "compatibility.title")}</span>
             </button>
           </motion.div>
         )}

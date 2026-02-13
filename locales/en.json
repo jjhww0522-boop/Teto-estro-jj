@@ -10,7 +10,14 @@
     "analyzeGirlfriend": "🧪 Analyze girlfriend",
     "statsTime": "About 3 min · 15 questions",
     "statsCount": "{{count}} partners analyzed so far",
-    "characters": "TETO · POTATO · EGEN · GOGUMA · CHEESE · SALSA · EHEM · ERA"
+    "characters": "TETO · POTATO · EGEN · GOGUMA · CHEESE · SALSA · EHEM · ERA",
+    "analyzePartner": "Analyze my partner",
+    "analyzeSelf": "Analyze my type"
+  },
+  "genderSelect": {
+    "title": "What is your gender?",
+    "male": "Male",
+    "female": "Female"
   },
   "test": {
     "previous": "← Previous question",
@@ -48,10 +55,33 @@
     "viewResult": "View Result",
     "tryTest": "Take the Test",
     "chemistryLink": "View full compatibility chart (Chemistry) →",
-    "progress": "Progress"
+    "progress": "Progress",
+    "concentrationLabel": "Partner's Teto level {{percent}}%!",
+    "loveStyleSection": "Love Style",
+    "psychAnalysisSection": "Psychological Analysis",
+    "bigFiveBadge": "Big Five Personality Model",
+    "attachmentBadge": "Attachment Theory",
+    "otherTypesTitle": "Explore other love types",
+    "retakeTestLink": "Retake Test",
+    "aboutLabLink": "About Teto Lab",
+    "chemistryMatchLink": "Compatibility",
+    "storyReportTitle": "Teto Lab | Tendency Report",
+    "storyReportTitleSelf": "Tetolab | My Type Report",
+    "storyMyPartnerResult": "Partner's Teto Level Analysis Result",
+    "storyMyPartnerResultSelf": "My Teto Level Analysis Result",
+    "storyConcentration": "Teto Level",
+    "storyBestHelper": "Best match",
+    "storyCaution": "Caution",
+    "downloadResultSuffix": "TestResult",
+    "downloadStorySuffix": "InstaStory",
+    "youAreType": "You are {{type}}",
+    "concentrationLabelSelf": "My Teto level {{percent}}%!",
+    "shareTitlePartner": "My partner's type is {{type}}!",
+    "shareTitleSelf": "My type is {{type}}!"
   },
   "compatibility": {
     "title": "Check our compatibility!",
+    "titleSelf": "Find my match 💕",
     "selectType": "Select partner type",
     "analyzing": "Analyzing Teto energy...",
     "bestMatch": "Best Match",
@@ -80,11 +110,25 @@
   "footer": {
     "privacy": "Privacy Policy",
     "terms": "Terms of Use",
+    "about": "About",
+    "blog": "Blog",
     "copyright": "Copyright © 2026 potatoboyfriends. All rights reserved.",
     "disclaimer": "This test is for entertainment only. It is not for diagnosis or treatment. Use results for reference only.",
     "modified": "Updated"
   },
   "common": {
-    "language": "Language"
+    "language": "Language",
+    "siteName": "Teto Lab",
+    "loading": "Loading..."
+  },
+  "radar": {
+    "teto": "Drive",
+    "potato": "Stability",
+    "egen": "Sensitivity",
+    "sweet_potato": "Commitment",
+    "cheese": "Charm",
+    "salsa": "Passion",
+    "ehem": "Responsibility",
+    "era": "Freedom"
   }
 }

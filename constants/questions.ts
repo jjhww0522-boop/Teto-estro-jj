@@ -19,8 +19,8 @@ export type QuestionItem = {
   options: QuestionOption[];
 };
 
-/** 주어 치환: question 문자열 내 {subject} → '그' | '그녀' */
-export function formatQuestion(question: string, subject: "그" | "그녀"): string {
+/** 주어 치환: question 문자열 내 {subject} → '그' | '그녀' | '나' (셀프 진단 시) */
+export function formatQuestion(question: string, subject: "그" | "그녀" | "나"): string {
   return question.replace(/\{subject\}/g, subject);
 }
 
@@ -29,7 +29,7 @@ export const QUESTIONS: QuestionItem[] = [
     id: 1,
     question: "데이트 코스를 정할 때, {subject}의 스타일은?",
     options: [
-      { text: "\"여기 가자!\" 이미 맛집부터 동선까지 농도 100% 계획을 짜온다.", scores: { teto: 2 } },
+      { text: "\"여기 가자!\" 이미 맛집부터 동선까지 농도 100% 계획을 짜온다.", scores: { teto: 1 } },
       { text: "\"뭐 먹고 싶어?\" 내 의견을 묻고 조심스럽게 옵션을 제안한다.", scores: { potato: 1, sweet_potato: 1 } },
       { text: "\"우리 그냥 발길 닿는 대로 가볼까?\" 즉흥적인 무드에 몸을 맡긴다.", scores: { era: 1, salsa: 1 } },
       { text: "\"분위기 좋은 데 가고 싶어.\" 로맨틱한 장소 위주로 폭풍 검색한다.", scores: { egen: 1, cheese: 1 } },
@@ -51,7 +51,7 @@ export const QUESTIONS: QuestionItem[] = [
     question: "북적이는 핫플에서 내가 \"사람 너무 많아서 기 빨려..\"라고 하면, {subject}의 반응은?",
     options: [
       { text: "\"그럼 바로 다른 데 갈까? 근처에 조용한 곳 내가 알고 있어.\"", scores: { teto: 1 } },
-      { text: "\"고생이 많네.. 우리 조금만 더 기운 내보자! 다 먹고 맛있는 거 사줄게.\"", scores: { salsa: 2 } },
+      { text: "\"고생이 많네.. 우리 조금만 더 기운 내보자! 다 먹고 맛있는 거 사줄게.\"", scores: { salsa: 1 } },
       { text: "\"미안해, 내가 더 세심하게 체크했어야 했는데.. 조금만 앉아서 쉴까?\"", scores: { potato: 1, egen: 1 } },
       { text: "\"주말엔 원래 다 이렇지 뭐. 조금만 참으면 우리 차례야.\"", scores: { ehem: 1, sweet_potato: 1 } },
     ],
@@ -82,7 +82,7 @@ export const QUESTIONS: QuestionItem[] = [
     question: "밥 먹고 나왔더니 비가 온다. 우산이 하나뿐일 때 {subject}의 대처는?",
     options: [
       { text: "\"잠시만, 편의점 위치 파악 끝!\" 10초 만에 달려가 우산을 하나 더 사온다.", scores: { teto: 1 } },
-      { text: "\"오히려 좋아!\" 우산을 나 쪽으로 더 기울여주며 딱 붙어서 걷는다.", scores: { salsa: 2 } },
+      { text: "\"오히려 좋아!\" 우산을 나 쪽으로 더 기울여주며 딱 붙어서 걷는다.", scores: { salsa: 1 } },
       { text: "\"비 오는 것도 나름 운치 있네. 근처 카페에서 비 구경 더 하다 갈까?\"", scores: { egen: 1, era: 1 } },
       { text: "\"옷 다 젖겠다. 일단 가까운 건물 안으로 들어가서 비 좀 피하자.\"", scores: { ehem: 1, sweet_potato: 1 } },
     ],
@@ -93,7 +93,7 @@ export const QUESTIONS: QuestionItem[] = [
     options: [
       { text: "\"갑자기 왜 그런 말을 해? 무슨 일 있어?\" 이유를 논리적으로 묻는다.", scores: { ehem: 1, teto: 1 } },
       { text: "\"상상만 해도 너무 슬퍼.. 우리 절대 헤어지지 말자.\" 울컥하며 감정 이입한다.", scores: { egen: 1 } },
-      { text: "\"무슨 소리야~ 나 없으면 넌 밥도 못 챙겨 먹을걸?\" 장난스럽게 웃으며 화제를 돌린다.", scores: { salsa: 2 } },
+      { text: "\"무슨 소리야~ 나 없으면 넌 밥도 못 챙겨 먹을걸?\" 장난스럽게 웃으며 화제를 돌린다.", scores: { salsa: 1 } },
       { text: "\"글쎄.. 근데 지금 우리 사이 좋잖아? 미래 일은 그때 생각하자.\"", scores: { era: 1, sweet_potato: 1 } },
     ],
   },
@@ -114,7 +114,7 @@ export const QUESTIONS: QuestionItem[] = [
     options: [
       { text: "\"수평 맞추고 발끝은 선에 맞춰야지.\" 완벽한 구도를 위해 여러 번 찍는다.", scores: { ehem: 1, potato: 1 } },
       { text: "\"지금 표정 너무 좋다!\" 분위기와 찰나의 감성을 담는 데 집중한다.", scores: { egen: 1, era: 1 } },
-      { text: "\"인생샷 나올 때까지 찍어줄게!\" 칭찬 감옥에 가두며 열정적으로 셔터를 누른다.", scores: { salsa: 2 } },
+      { text: "\"인생샷 나올 때까지 찍어줄게!\" 칭찬 감옥에 가두며 열정적으로 셔터를 누른다.", scores: { salsa: 1 } },
       { text: "\"자, 찍는다? 하나, 둘, 셋!\" 일단 정직하게 찍고 확인시켜준다.", scores: { sweet_potato: 1 } },
     ],
   },
@@ -146,7 +146,7 @@ export const QUESTIONS: QuestionItem[] = [
       { text: "\"오늘 정말 행복했다~\" 같이 찍은 사진을 다시 보며 몽글몽글해한다.", scores: { egen: 1, salsa: 1 } },
       { text: "\"오늘 쓴 거 정리하고, 내일 할 일 미리 체크해야지.\" 깔끔하게 마무리한다.", scores: { ehem: 1, teto: 1 } },
       { text: "\"아까 그 식당 맛있었지.. 다음엔 거기 가보자고 해야겠다.\"", scores: { potato: 1, sweet_potato: 1 } },
-      { text: "\"오늘도 알차게 놀았다! 자, 이제 내 개인 시간 시작인가?\"", scores: { era: 2 } },
+      { text: "\"오늘도 알차게 놀았다! 자, 이제 내 개인 시간 시작인가?\"", scores: { era: 1 } },
     ],
   },
   {
@@ -165,7 +165,7 @@ export const QUESTIONS: QuestionItem[] = [
     options: [
       { text: "미리 플레이리스트를 만들어 와서 함께 듣자고 한다.", scores: { teto: 1, egen: 1 } },
       { text: "조용히 내 어깨에 기대 잠들거나, 창밖을 멍하니 바라본다.", scores: { sweet_potato: 1, potato: 1 } },
-      { text: "\"심심한데 게임 할까?\" 이것저것 함께할 거리를 찾는다.", scores: { salsa: 2 } },
+      { text: "\"심심한데 게임 할까?\" 이것저것 함께할 거리를 찾는다.", scores: { salsa: 1 } },
       { text: "\"여기 맛집 있대! 중간에 내려서 먹고 갈까?\" 경유지 맛집을 실시간으로 검색한다.", scores: { era: 1, salsa: 1 } },
       { text: "이동 시간을 활용해 앞으로의 일정이나 계획을 정리한다.", scores: { ehem: 1, teto: 1 } },
     ],
@@ -174,9 +174,9 @@ export const QUESTIONS: QuestionItem[] = [
     id: 15,
     question: "기념일을 챙기는 방식에서, {subject}의 스타일은?",
     options: [
-      { text: "한 달 전부터 레스토랑 예약, 선물 리스트까지 빈틈없이 준비한다.", scores: { teto: 2 } },
+      { text: "한 달 전부터 레스토랑 예약, 선물 리스트까지 빈틈없이 준비한다.", scores: { teto: 1 } },
       { text: "\"기념일이 언제였더라..?\" 날짜를 잘 기억 못 하지만 알려주면 최선을 다한다.", scores: { potato: 1, sweet_potato: 1 } },
-      { text: "\"기념일이니까 특별한 거 하자!\" 이벤트를 직접 기획하는 걸 즐긴다.", scores: { salsa: 2 } },
+      { text: "\"기념일이니까 특별한 거 하자!\" 이벤트를 직접 기획하는 걸 즐긴다.", scores: { salsa: 1 } },
       { text: "편지나 손글씨 카드 등 마음이 담긴 아날로그 선물을 준비한다.", scores: { egen: 1 } },
       { text: "\"매일이 기념일이지~\" 특별한 날보다 일상에서 꾸준히 챙기는 타입이다.", scores: { era: 1 } },
       { text: "\"뭐 원하는 거 있어? 말해!\" 상대방이 진짜 원하는 걸 직접 물어보고 사준다.", scores: { ehem: 1 } },
@@ -326,7 +326,7 @@ export const QUESTIONS_GIRLFRIEND: QuestionItem[] = [
     options: [
       { text: "직접 플레이리스트를 만들어 와서 같이 들으며 기분을 띄운다.", scores: { teto: 1, egen: 1 } },
       { text: "내 어깨에 살짝 기대 잠들거나, 창밖을 보며 조용한 시간을 즐긴다.", scores: { sweet_potato: 1, potato: 1 } },
-      { text: "\"이거 같이 하자!\" 게임이나 퀴즈 등 함께할 거리를 찾는다.", scores: { salsa: 2 } },
+      { text: "\"이거 같이 하자!\" 게임이나 퀴즈 등 함께할 거리를 찾는다.", scores: { salsa: 1 } },
       { text: "\"여기 맛집 있대! 잠깐 내려서 먹고 갈까?\" 실시간으로 경유지를 검색한다.", scores: { era: 1, salsa: 1 } },
       { text: "이동 시간에 앞으로의 일정을 같이 정리하자고 한다.", scores: { ehem: 1, teto: 1 } },
     ],
@@ -335,7 +335,7 @@ export const QUESTIONS_GIRLFRIEND: QuestionItem[] = [
     id: 15,
     question: "기념일을 챙기는 방식에서, 그녀의 스타일은?",
     options: [
-      { text: "한 달 전부터 레스토랑 예약, 매칭 코디까지 빈틈없이 준비하는 완벽주의자.", scores: { teto: 2 } },
+      { text: "한 달 전부터 레스토랑 예약, 매칭 코디까지 빈틈없이 준비하는 완벽주의자.", scores: { teto: 1 } },
       { text: "\"기념일이 언제였더라..?\" 날짜를 잘 기억 못 하지만 리마인더에 챙겨두는 편.", scores: { potato: 1, sweet_potato: 1 } },
       { text: "\"기념일에 뭐 하고 싶어?\" 나한테 물어보고 함께 계획하는 걸 좋아한다.", scores: { potato: 1 } },
       { text: "편지나 직접 만든 선물 등 마음이 담긴 아날로그 감성을 선호한다.", scores: { egen: 1 } },

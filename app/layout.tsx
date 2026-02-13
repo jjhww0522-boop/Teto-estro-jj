@@ -15,12 +15,12 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://tetolab.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "내 애인의 테토 농도 분석기",
+  title: "테토 농도 분석기 | 연인 분석 · 나의 성향 셀프진단",
   description:
-    "내 애인의 테토 농도는 몇 %? 지금 바로 정밀 분석 리포트를 확인하세요!",
+    "연인의 테토력을 분석하거나, 나의 연애 유형을 셀프 진단해보세요. 15가지 상황으로 알아보는 정밀 성향 리포트!",
   openGraph: {
-    title: "내 애인의 테토 농도 분석기",
-    description: "12가지 상황으로 알아보는 내 애인의 진짜 테토력!",
+    title: "테토 농도 분석기 | 연인 분석 · 나의 성향 셀프진단",
+    description: "연인 테토력 분석부터 나의 연애 유형 셀프진단까지. 15가지 상황으로 알아보는 정밀 성향 리포트!",
     url: SITE_URL,
     siteName: "테토 연구소",
     images: [
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
         url: "/images/og-main.png",
         width: 1200,
         height: 630,
-        alt: "내 애인의 테토 농도 분석기 대표 이미지",
+        alt: "테토 농도 분석기 - 연인 분석 & 나의 성향",
       },
     ],
     locale: "ko_KR",
@@ -36,8 +36,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "내 애인의 테토 농도 분석기",
-    description: "12가지 상황으로 알아보는 내 애인의 진짜 테토력!",
+    title: "테토 농도 분석기 | 연인 분석 · 나의 성향 셀프진단",
+    description: "연인 테토력 분석부터 나의 연애 유형 셀프진단까지. 15가지 상황으로 알아보는 정밀 성향 리포트!",
     images: ["/images/og-main.png"],
   },
   robots: {

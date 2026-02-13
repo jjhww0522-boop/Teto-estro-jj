@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { cookies } from "next/headers";
 import { getResultBySlug, RESULT_SLUGS } from "@/data/results";
 import ResultView from "@/components/ResultView";
+import { getLocaleFromCookies, loadTranslations, t } from "@/lib/i18n";
+import { RESULTS_I18N } from "@/constants/results-i18n";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://tetolab.com";
 
@@ -38,8 +41,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const result = getResultBySlug(type);
   if (!result) return {};
 
-  const title = `${result.type}: ${result.title} | 테토 연구소`;
-  const description = `${result.tagline} ${result.oneLiner} - 테토 연구소 연애 유형 테스트 결과`;
+  const cookieStore = await cookies();
+  const locale = getLocaleFromCookies(cookieStore);
+  const translations = await loadTranslations(locale);
+  const siteName = t(translations, "common.siteName");
+  const i18nResult = locale !== "ko" ? RESULTS_I18N[locale]?.[type] : null;
+  const displayType = i18nResult?.type ?? result.type;
+  const displayTitle = i18nResult?.title ?? result.title;
+  const displayTagline = i18nResult?.tagline ?? result.tagline;
+  const displayOneLiner = i18nResult?.oneLiner ?? result.oneLiner;
+
+  const title = `${displayType}: ${displayTitle} | ${siteName}`;
+  const description = `${displayTagline} ${displayOneLiner} - ${siteName}`;
   const url = `${BASE_URL}/result/${type}`;
 
   return {
@@ -47,10 +60,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description,
     keywords: result.keywords?.join(", "),
     openGraph: {
-      title: `${result.type}: ${result.title} | 테토 연구소`,
-      description: `${result.tagline} - ${result.oneLiner}`,
+      title: `${displayType}: ${displayTitle} | ${siteName}`,
+      description: `${displayTagline} - ${displayOneLiner}`,
       url,
-      siteName: "테토 연구소",
+      siteName,
       type: "article",
     },
     alternates: {
@@ -72,18 +85,34 @@ export default async function ResultTypePage({ params }: PageProps) {
   const result = getResultBySlug(type);
   if (!result) notFound();
 
+  const cookieStore = await cookies();
+  const locale = getLocaleFromCookies(cookieStore);
+  const translations = await loadTranslations(locale);
+  const siteName = t(translations, "common.siteName");
+  const i18nResult = locale !== "ko" ? RESULTS_I18N[locale]?.[type] : null;
+  const displayResult = i18nResult ? { ...result, ...i18nResult } : result;
+
   const shareUrl = `${BASE_URL}/result/${type}`;
   const otherTypes = getOtherTypes(type);
+
+  function getTypeDisplayName(slug: string): string {
+    if (locale !== "ko") {
+      const name = RESULTS_I18N[locale]?.[slug]?.type;
+      if (name) return name;
+    }
+    const info = SLUG_INFO[slug];
+    return info ? `${info.name}${info.gender}` : slug;
+  }
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: `${result.type}: ${result.title}`,
-    description: `${result.tagline} - ${result.oneLiner}`,
+    headline: `${displayResult.type}: ${displayResult.title}`,
+    description: `${displayResult.tagline} - ${displayResult.oneLiner}`,
     url: shareUrl,
     publisher: {
       "@type": "Organization",
-      name: "테토 연구소",
+      name: siteName,
       url: BASE_URL,
     },
     mainEntityOfPage: {
@@ -103,15 +132,15 @@ export default async function ResultTypePage({ params }: PageProps) {
       <article className="max-w-2xl mx-auto px-6 pt-6">
         <header className="mb-6">
           <h1 className="text-2xl font-bold text-gray-800">
-            {result.emoji} {result.type}: {result.title}
+            {result.emoji} {displayResult.type}: {displayResult.title}
           </h1>
-          <p className="text-gray-600 mt-2 italic">{result.tagline}</p>
-          <p className="text-gray-700 mt-2">{result.oneLiner}</p>
+          <p className="text-gray-600 mt-2 italic">{displayResult.tagline}</p>
+          <p className="text-gray-700 mt-2">{displayResult.oneLiner}</p>
         </header>
 
-        {result.keywords && result.keywords.length > 0 && (
+        {displayResult.keywords && displayResult.keywords.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-4">
-            {result.keywords.map((kw) => (
+            {displayResult.keywords.map((kw) => (
               <span
                 key={kw}
                 className="text-xs bg-pink-50 text-pink-600 px-2 py-1 rounded-full"
@@ -123,23 +152,23 @@ export default async function ResultTypePage({ params }: PageProps) {
         )}
 
         <section className="mb-6">
-          <h2 className="text-lg font-bold text-gray-800 mb-2">연애 스타일</h2>
+          <h2 className="text-lg font-bold text-gray-800 mb-2">{t(translations, "result.loveStyleSection")}</h2>
           <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
-            {result.loveDescription}
+            {displayResult.loveDescription}
           </p>
         </section>
 
         <section className="mb-6">
-          <h2 className="text-lg font-bold text-gray-800 mb-2">심리 분석</h2>
+          <h2 className="text-lg font-bold text-gray-800 mb-2">{t(translations, "result.psychAnalysisSection")}</h2>
           <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
-            {result.psychologicalAnalysis}
+            {displayResult.psychologicalAnalysis}
           </p>
           <div className="flex gap-2 mt-2">
             <span className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">
-              Big Five 성격 모델
+              {t(translations, "result.bigFiveBadge")}
             </span>
             <span className="text-xs bg-purple-50 text-purple-600 px-2 py-1 rounded-full">
-              애착 이론
+              {t(translations, "result.attachmentBadge")}
             </span>
           </div>
         </section>
@@ -151,7 +180,7 @@ export default async function ResultTypePage({ params }: PageProps) {
       {/* Server-rendered internal links for SEO */}
       <nav className="max-w-2xl mx-auto px-6 pb-10">
         <h2 className="text-lg font-bold text-gray-800 mb-4">
-          다른 연애 유형 알아보기
+          {t(translations, "result.otherTypesTitle")}
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           {otherTypes.map((slug) => {
@@ -165,7 +194,7 @@ export default async function ResultTypePage({ params }: PageProps) {
               >
                 <span className="text-lg">{info.emoji}</span>
                 <span className="text-gray-700 font-medium">
-                  {info.name}{info.gender}
+                  {getTypeDisplayName(slug)}
                 </span>
               </Link>
             );
@@ -173,13 +202,13 @@ export default async function ResultTypePage({ params }: PageProps) {
         </div>
         <div className="mt-6 flex gap-4 text-sm">
           <Link href="/test" className="text-pink-500 hover:underline font-medium">
-            테스트 다시하기
+            {t(translations, "result.retakeTestLink")}
           </Link>
           <Link href="/about" className="text-pink-500 hover:underline font-medium">
-            테토 연구소 소개
+            {t(translations, "result.aboutLabLink")}
           </Link>
           <Link href="/match" className="text-pink-500 hover:underline font-medium">
-            궁합 매칭
+            {t(translations, "result.chemistryMatchLink")}
           </Link>
         </div>
       </nav>

@@ -23,6 +23,13 @@ export function getLocaleFromCookie(cookieHeader: string | null): Locale {
   return "ko";
 }
 
+/** 서버 컴포넌트용: Next.js cookies()에서 locale 추출 */
+export function getLocaleFromCookies(cookieStore: { get: (name: string) => { value: string } | undefined }): Locale {
+  const value = cookieStore.get(COOKIE_NAME)?.value?.trim();
+  if (value === "en" || value === "ja" || value === "zh") return value;
+  return "ko";
+}
+
 export function setLocaleCookie(locale: Locale) {
   if (typeof document === "undefined") return;
   document.cookie = `${COOKIE_NAME}=${locale};path=/;max-age=${COOKIE_MAX_AGE};SameSite=Lax`;

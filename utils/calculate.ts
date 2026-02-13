@@ -56,9 +56,12 @@ export function getTestResult(
     });
   });
 
-  return CHAR_ORDER.reduce((a, b) =>
-    finalScores[a] >= finalScores[b] ? a : b
-  );
+  // 최고점 유형 찾기 (동점이면 답변 조합으로 결정 → 같은 답이면 같은 결과, 유형은 고르게)
+  const maxScore = Math.max(...Object.values(finalScores));
+  const tied = (CHAR_ORDER.filter((c) => finalScores[c] === maxScore) as CharType[]);
+  if (tied.length <= 1) return tied[0] ?? CHAR_ORDER[0];
+  const seed = userAnswers.reduce((acc, val) => acc + val, 0);
+  return tied[seed % tied.length];
 }
 
 /**

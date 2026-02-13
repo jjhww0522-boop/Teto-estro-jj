@@ -3,6 +3,7 @@
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useLocale } from "@/components/LocaleProvider";
+import { LoadingFallback } from "@/components/LoadingFallback";
 
 /** SVG 막대 차트 애니메이션 - 8개 바가 순차적으로 올라가는 분석 시각화 */
 function AnalyzingBars() {
@@ -76,12 +77,18 @@ function LoadingContent() {
 
     const modeParam = searchParams.get("mode") || "";
     const matchMeParam = searchParams.get("matchMe") || "";
+    const isSelfParam = searchParams.get("isSelf") || "";
 
     const timer = setTimeout(() => {
       const params = new URLSearchParams({ answers: answersParam });
       if (modeParam) params.set("mode", modeParam);
       if (matchMeParam) params.set("matchMe", matchMeParam);
-      router.push(`/result?${params.toString()}`);
+      if (isSelfParam) {
+        params.set("isSelf", "1");
+        router.push(`/result/self?${params.toString()}`);
+      } else {
+        router.push(`/result?${params.toString()}`);
+      }
     }, 3000);
 
     return () => {
@@ -146,11 +153,7 @@ function LoadingContent() {
 
 export default function LoadingPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-2xl">로딩 중...</div>
-      </div>
-    }>
+    <Suspense fallback={<LoadingFallback />}>
       <LoadingContent />
     </Suspense>
   );

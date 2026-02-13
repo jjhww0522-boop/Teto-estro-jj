@@ -10,6 +10,7 @@ import {
 } from "@/constants/questions";
 import { QUESTIONS_I18N, QUESTIONS_GIRLFRIEND_I18N } from "@/constants/questions-i18n";
 import RollingPotatoBar from "@/components/RollingPotatoBar";
+import { LoadingFallback } from "@/components/LoadingFallback";
 import { useLocale } from "@/components/LocaleProvider";
 
 export type TestMode = "boyfriend" | "girlfriend";
@@ -53,7 +54,8 @@ function TestContent() {
   const searchParams = useSearchParams();
   const { locale, t } = useLocale();
   const mode: TestMode = (searchParams.get("mode") === "girlfriend" ? "girlfriend" : "boyfriend");
-  const subject = mode === "girlfriend" ? "그녀" : "그";
+  const isSelf = searchParams.get("isSelf") === "1";
+  const subject = isSelf ? "나" : (mode === "girlfriend" ? "그녀" : "그");
   const shuffledQuestions =
     mode === "girlfriend" ? SHUFFLED_QUESTIONS_GIRLFRIEND : SHUFFLED_QUESTIONS_BOYFRIEND;
 
@@ -73,6 +75,7 @@ function TestContent() {
       const params = new URLSearchParams({ answers: newIndices.join(","), mode });
       const matchMe = searchParams.get("matchMe");
       if (matchMe) params.set("matchMe", matchMe);
+      if (isSelf) params.set("isSelf", "1");
       router.push(`/loading?${params.toString()}`);
     }
   };
@@ -91,10 +94,16 @@ function TestContent() {
   const i18nEntry = locale !== "ko" ? i18nMap[locale]?.[question.id] : null;
 
   let questionText: string;
-  if (i18nEntry) {
+  if (i18nEntry && !isSelf) {
     questionText = i18nEntry.question;
-  } else if (mode === "girlfriend") {
+  } else if (mode === "girlfriend" && !isSelf) {
     questionText = question.question;
+  } else if (isSelf && mode === "girlfriend") {
+    questionText = question.question
+      .replace(/그녀의/g, "나의")
+      .replace(/그녀가/g, "내가")
+      .replace(/그녀는/g, "나는")
+      .replace(/그녀/g, "나");
   } else {
     questionText = formatQuestion(question.question, subject);
   }
@@ -151,7 +160,7 @@ function TestContent() {
 
 export default function TestPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-xl">로딩 중...</div>}>
+    <Suspense fallback={<LoadingFallback />}>
       <TestContent />
     </Suspense>
   );

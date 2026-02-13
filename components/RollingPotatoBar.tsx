@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useLocale } from "@/components/LocaleProvider";
 
 interface ProgressBarProps {
   currentStep: number;
@@ -8,13 +9,14 @@ interface ProgressBarProps {
 }
 
 export default function RollingPotatoBar({ currentStep, totalSteps }: ProgressBarProps) {
+  const { t } = useLocale();
   const progress = (currentStep / totalSteps) * 100;
 
   return (
     <div className="w-full max-w-md mx-auto px-0 py-2">
       {/* 진행도 표시 */}
       <div className="flex justify-between items-end mb-3">
-        <span className="section-label">진행도</span>
+        <span className="section-label">{t("result.progress")}</span>
         <span className="text-sm font-semibold text-brand-accent tabular-nums">
           {currentStep} / {totalSteps}
         </span>

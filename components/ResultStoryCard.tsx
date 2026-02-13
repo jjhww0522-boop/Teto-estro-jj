@@ -2,6 +2,7 @@
 
 import type { ResultType } from "@/data/results";
 import { getConcentrationPercent } from "@/utils/concentration";
+import { useLocale } from "@/components/LocaleProvider";
 
 /** 인스타 스토리용 9:16 카드 (360×640 기준, 캡처 시 scale 3 → 1080×1920) */
 const CARD_WIDTH = 360;
@@ -10,6 +11,8 @@ const CARD_HEIGHT = 640;
 interface ResultStoryCardProps {
   result: ResultType;
   resultSlug?: string;
+  /** 셀프 진단 결과일 때 카드 문구를 "나의 ~"로 표시 */
+  isSelf?: boolean;
 }
 
 function toPartnerMatchNames(names: string[], resultSlug?: string): string[] {
@@ -28,13 +31,17 @@ function getSerialNumber() {
   return `No. ${y}-${m}${d}`;
 }
 
-export default function ResultStoryCard({ result, resultSlug }: ResultStoryCardProps) {
+export default function ResultStoryCard({ result, resultSlug, isSelf }: ResultStoryCardProps) {
+  const { t } = useLocale();
   const serial = getSerialNumber();
   const percent = getConcentrationPercent(resultSlug ?? result.type);
   const goodMatches = toPartnerMatchNames(result.goodMatch, resultSlug);
   const badMatches = toPartnerMatchNames(result.badMatch, resultSlug);
   const goodOne = goodMatches[0] ?? "—";
   const badOne = badMatches[0] ?? "—";
+
+  const reportTitleKey = isSelf ? "result.storyReportTitleSelf" : "result.storyReportTitle";
+  const resultTitleKey = isSelf ? "result.storyMyPartnerResultSelf" : "result.storyMyPartnerResult";
 
   return (
     <div
@@ -55,7 +62,7 @@ export default function ResultStoryCard({ result, resultSlug }: ResultStoryCardP
         style={{ borderBottom: "2px dashed rgba(108, 92, 231, 0.2)" }}
       >
         <p className="text-xs font-bold text-brand-accent tracking-wide opacity-90">
-          테토 연구소 | 성향 분석 보고서
+          {t(reportTitleKey)}
         </p>
         <p className="text-xs font-mono text-brand-muted">{serial}</p>
       </div>
@@ -63,7 +70,7 @@ export default function ResultStoryCard({ result, resultSlug }: ResultStoryCardP
       {/* 중앙 상단: 분석 대상 */}
       <div className="px-4 pt-4 pb-2 text-center">
         <h2 className="text-base font-black text-brand-charcoal leading-tight">
-          내 애인의 테토 농도 분석 결과
+          {t(resultTitleKey)}
         </h2>
       </div>
 
@@ -93,7 +100,7 @@ export default function ResultStoryCard({ result, resultSlug }: ResultStoryCardP
           </div>
         </div>
         <p className="text-sm font-bold text-brand-accent text-center mb-1">
-          테토 농도 {percent}%
+          {t("result.storyConcentration")} {percent}%
         </p>
         <p className="text-xs text-brand-muted text-center leading-snug max-w-[280px] text-kr-balance" style={{ letterSpacing: "-0.03em" }}>
           &ldquo;{result.tagline}&rdquo;
@@ -119,9 +126,9 @@ export default function ResultStoryCard({ result, resultSlug }: ResultStoryCardP
           ))}
         </div>
         <div className="text-[10px] text-brand-muted flex flex-wrap gap-x-2">
-          <span>최고의 조수: {goodOne}</span>
+          <span>{t("result.storyBestHelper")}: {goodOne}</span>
           <span>|</span>
-          <span>경계 대상: {badOne}</span>
+          <span>{t("result.storyCaution")}: {badOne}</span>
         </div>
         <p className="text-[10px] text-brand-accent font-bold text-center pt-2 tracking-wide">
           tetolab.com

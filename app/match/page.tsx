@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { RESULTS_DATA, getCompatibility, ALL_RESULT_SLUGS } from "@/constants/results";
 import type { ResultSlug } from "@/constants/results";
 import { useLocale } from "@/components/LocaleProvider";
+import { LoadingFallback } from "@/components/LoadingFallback";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://teto-potato-test.vercel.app";
 
@@ -156,13 +157,7 @@ function MatchContent() {
 
 export default function MatchPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="text-xl">로딩 중...</div>
-        </div>
-      }
-    >
+    <Suspense fallback={<LoadingFallback />}>
       <MatchContent />
     </Suspense>
   );

@@ -10,7 +10,14 @@
     "analyzeGirlfriend": "🧪 分析女友浓度",
     "statsTime": "约3分钟 · 共15题",
     "statsCount": "截至目前已有{{count}}人完成分析",
-    "characters": "TETO · POTATO · EGEN · GOGUMA · CHEESE · SALSA · EHEM · ERA"
+    "characters": "TETO · POTATO · EGEN · GOGUMA · CHEESE · SALSA · EHEM · ERA",
+    "analyzePartner": "分析我的恋人",
+    "analyzeSelf": "分析我的类型"
+  },
+  "genderSelect": {
+    "title": "你的性别是？",
+    "male": "男",
+    "female": "女"
   },
   "test": {
     "previous": "← 上一题",
@@ -48,10 +55,22 @@
     "viewResult": "查看结果",
     "tryTest": "去做测试",
     "chemistryLink": "查看完整匹配表 (Chemistry) →",
-    "progress": "进度"
+    "progress": "进度",
+    "youAreType": "你是{{type}}呀 ✨",
+    "concentrationLabelSelf": "我的泰托力{{percent}}%！",
+    "storyReportTitle": "泰托研究所 | 倾向分析报告",
+    "storyReportTitleSelf": "Tetolab | 我的类型报告",
+    "storyMyPartnerResult": "恋人的泰托浓度分析结果",
+    "storyMyPartnerResultSelf": "我的泰托浓度分析结果",
+    "storyConcentration": "泰托浓度",
+    "storyBestHelper": "绝配",
+    "storyCaution": "需注意",
+    "shareTitlePartner": "TA的类型是{{type}}！",
+    "shareTitleSelf": "我的类型是{{type}}！"
   },
   "compatibility": {
     "title": "和恋人的匹配度？",
+    "titleSelf": "找找和我最配的类型 💕",
     "selectType": "请选择对方类型",
     "analyzing": "正在分析泰托能量...",
     "bestMatch": "绝配",
@@ -80,11 +99,25 @@
   "footer": {
     "privacy": "隐私政策",
     "terms": "使用条款",
+    "about": "介绍",
+    "blog": "博客",
     "copyright": "Copyright © 2026 potatoboyfriends. All rights reserved.",
     "disclaimer": "本测试仅供娱乐了解恋爱倾向，非诊断或治疗用途，结果仅供参考。",
     "modified": "更新"
   },
   "common": {
-    "language": "语言"
+    "language": "语言",
+    "siteName": "泰托研究所",
+    "loading": "加载中..."
+  },
+  "radar": {
+    "teto": "直进力",
+    "potato": "稳定感",
+    "egen": "感性",
+    "sweet_potato": "奉献",
+    "cheese": "魅力",
+    "salsa": "热情",
+    "ehem": "责任感",
+    "era": "自由"
   }
 }

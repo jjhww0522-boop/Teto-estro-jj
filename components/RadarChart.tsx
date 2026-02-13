@@ -3,7 +3,12 @@
 import { motion } from "framer-motion";
 import type { CharType } from "@/utils/calculate";
 
-const DIMENSION_LABELS: Record<CharType, string> = {
+const DIMENSIONS: CharType[] = [
+  "teto", "potato", "egen", "sweet_potato",
+  "cheese", "salsa", "ehem", "era",
+];
+
+const DEFAULT_LABELS: Record<CharType, string> = {
   teto: "직진력",
   potato: "안정감",
   egen: "감성",
@@ -14,17 +19,15 @@ const DIMENSION_LABELS: Record<CharType, string> = {
   era: "자유",
 };
 
-const DIMENSIONS: CharType[] = [
-  "teto", "potato", "egen", "sweet_potato",
-  "cheese", "salsa", "ehem", "era",
-];
-
 interface RadarChartProps {
   scores: Record<CharType, number>;
   size?: number;
+  /** 다국어 라벨 (미제공 시 한글 기본값) */
+  labels?: Partial<Record<CharType, string>>;
 }
 
-export default function RadarChart({ scores, size = 280 }: RadarChartProps) {
+export default function RadarChart({ scores, size = 280, labels: labelsProp }: RadarChartProps) {
+  const labels = { ...DEFAULT_LABELS, ...labelsProp };
   const cx = size / 2;
   const cy = size / 2;
   const maxRadius = size * 0.38;
@@ -124,7 +127,7 @@ export default function RadarChart({ scores, size = 280 }: RadarChartProps) {
             className="text-[10px] fill-brand-muted font-medium"
             style={{ fontSize: "10px" }}
           >
-            {DIMENSION_LABELS[DIMENSIONS[i]]}
+            {labels[DIMENSIONS[i]]}
           </text>
         ))}
       </svg>
