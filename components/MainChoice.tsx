@@ -32,7 +32,7 @@ export default function MainChoice() {
           className="flex-1 flex flex-col items-center justify-center p-6 md:p-12 min-h-[50vh] md:min-h-0 border-r border-brand-border/50"
         >
           <motion.div
-            className="w-full max-w-sm aspect-square flex flex-col items-center justify-center rounded-card bg-brand-highlight border-2 border-brand-accent/30 shadow-card hover:shadow-card-hover p-8 text-center"
+            className="w-full max-w-md aspect-square flex flex-col items-center justify-center rounded-card bg-brand-highlight border-2 border-brand-accent/30 shadow-card hover:shadow-card-hover p-8 text-center"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -41,7 +41,7 @@ export default function MainChoice() {
             <h2 className="text-xl md:text-2xl font-black text-brand-charcoal leading-tight mb-2 text-kr-balance">
               {t("home.analyzeSelf")}
             </h2>
-            <p className="text-sm text-brand-muted">
+            <p className="text-sm text-brand-muted whitespace-nowrap">
               나는 어떤 연애 유형일까? 셀프 진단
             </p>
           </motion.div>
@@ -53,7 +53,7 @@ export default function MainChoice() {
           className="flex-1 flex flex-col items-center justify-center p-6 md:p-12 min-h-[50vh] md:min-h-0"
         >
           <motion.div
-            className="w-full max-w-sm aspect-square flex flex-col items-center justify-center rounded-card bg-brand-surface border-2 border-brand-border shadow-card hover:shadow-card-hover p-8 text-center"
+            className="w-full max-w-md aspect-square flex flex-col items-center justify-center rounded-card bg-brand-surface border-2 border-brand-border shadow-card hover:shadow-card-hover p-8 text-center"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -62,8 +62,10 @@ export default function MainChoice() {
             <h2 className="text-xl md:text-2xl font-black text-brand-charcoal leading-tight mb-2 text-kr-balance">
               {t("home.analyzePartner")}
             </h2>
-            <p className="text-sm text-brand-muted">
-              연인을 관찰한 답변으로 유형을 분석해요
+            <p className="text-sm text-brand-muted leading-relaxed">
+              연인을 관찰한 답변으로
+              <br />
+              유형을 분석해요
             </p>
           </motion.div>
         </Link>

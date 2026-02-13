@@ -6,6 +6,7 @@ import {
   QUESTIONS,
   QUESTIONS_GIRLFRIEND,
   formatQuestion,
+  formatOptionForSelfGirlfriend,
   type QuestionOption,
 } from "@/constants/questions";
 import { QUESTIONS_I18N, QUESTIONS_GIRLFRIEND_I18N } from "@/constants/questions-i18n";
@@ -100,6 +101,7 @@ function TestContent() {
     questionText = question.question;
   } else if (isSelf && mode === "girlfriend") {
     questionText = question.question
+      .replace(/내가 /g, "그가 ") // 질문 안의 '내가'(남자) → '그가'
       .replace(/그녀의/g, "나의")
       .replace(/그녀가/g, "내가")
       .replace(/그녀는/g, "나는")
@@ -107,11 +109,35 @@ function TestContent() {
   } else {
     questionText = formatQuestion(question.question, subject);
   }
+  if (isSelf) {
+    questionText = questionText
+      .replace(/나를 발견했을 때/g, "상대방을 발견했을 때")
+      .replace(/내 사진을 찍어줄 때/g, "상대방의 사진을 찍어줄 때")
+      .replace(/나에게 /g, "상대방에게 ")
+      .replace(/내가 가장 먼저 하는 반응은\?/g, "나의 반응은?")
+      .replace(/나가 /g, "내가 ");
+    if (mode === "boyfriend") {
+      questionText = questionText
+        .replace(/내가 /g, "상대방이 ")
+        .replace(/상대방이 가장 중시하는 건\?/g, "내가 가장 중시하는 건?");
+    }
+  }
 
-  // 옵션 텍스트 오버레이
+  // 옵션 텍스트 오버레이 (셀프 모드일 때는 '나' 시점 문장으로)
   const getOptionText = (option: OptionWithIndex): string => {
-    if (i18nEntry && i18nEntry.options[option.originalIndex]) {
+    if (i18nEntry && i18nEntry.options[option.originalIndex] && !isSelf) {
       return i18nEntry.options[option.originalIndex];
+    }
+    if (isSelf && mode === "girlfriend") {
+      return option.textSelf ?? formatOptionForSelfGirlfriend(option.text);
+    }
+    if (isSelf) {
+      const base = option.textSelf ?? option.text;
+      return base
+        .replace(/내 의견을 묻고/g, "상대방의 의견을 묻고")
+        .replace(/내 어깨에/g, "상대방의 어깨에")
+        .replace(/내 안부를/g, "상대방의 안부를")
+        .replace(/내 감정을/g, "상대의 감정을");
     }
     return option.text;
   };
@@ -124,11 +150,11 @@ function TestContent() {
           totalSteps={shuffledQuestions.length}
         />
 
-        <div className="text-center py-8">
+        <div className="py-8 px-4">
           <div className="w-10 h-10 rounded-full bg-brand-accent text-white flex items-center justify-center text-lg font-bold mx-auto mb-4">
             🤔
           </div>
-          <h2 className="text-2xl md:text-3xl font-bold text-brand-charcoal leading-relaxed">
+          <h2 className="text-lg md:text-xl font-bold text-brand-charcoal leading-8 text-kr-wrap text-center max-w-2xl mx-auto">
             {questionText}
           </h2>
         </div>
@@ -138,9 +164,11 @@ function TestContent() {
             <button
               key={index}
               onClick={() => handleAnswer(index)}
-              className="btn-answer w-full text-left text-kr-wrap"
+              className="btn-answer w-full text-kr-wrap"
             >
-              <span className="text-lg">{getOptionText(option as OptionWithIndex)}</span>
+              <span className="block text-sm text-center leading-relaxed whitespace-pre-line">
+                {getOptionText(option as OptionWithIndex)}
+              </span>
             </button>
           ))}
         </div>

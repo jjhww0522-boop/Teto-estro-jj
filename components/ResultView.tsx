@@ -188,7 +188,7 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
 
       <div
         ref={resultCardRef}
-        className="card max-w-2xl w-full space-y-8"
+        className="card max-w-2xl w-full space-y-8 text-left"
         style={{ backgroundColor: "#ffffff" }}
       >
         {/* 헤더: 이모지 + 테토력 그래프 + 유형명 */}
@@ -208,10 +208,10 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
           >
             {displayResult.type}:{"\u00A0"}{displayResult.title}
           </h1>
-          <blockquote className="text-lg text-brand-muted italic border-l-4 border-brand-accent/30 pl-4 py-1 text-center text-kr-balance" style={{ letterSpacing: "-0.03em" }}>
+          <blockquote className="text-lg text-brand-muted italic border-l-4 border-brand-accent/30 pl-4 py-1 text-center text-kr-balance leading-relaxed" style={{ letterSpacing: "-0.03em" }}>
             &ldquo;{displayResult.tagline}&rdquo;
           </blockquote>
-          <p className="text-base text-brand-muted font-medium text-kr-balance" style={{ letterSpacing: "-0.03em" }}>{displayResult.oneLiner}</p>
+          <p className="text-base text-brand-muted font-medium text-kr-balance leading-relaxed" style={{ letterSpacing: "-0.03em" }}>{displayResult.oneLiner}</p>
         </div>
 
         {/* 키워드 태그 */}
@@ -253,7 +253,7 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
             <span className="section-label">{t("result.loveStyle")}</span>
           </h3>
           <div className="bg-brand-highlight rounded-card p-6 border border-brand-border">
-            <p className="text-brand-charcoal leading-relaxed text-kr-wrap">{displayResult.loveDescription}</p>
+            <p className="text-brand-charcoal leading-7 text-kr-wrap">{displayResult.loveDescription}</p>
           </div>
         </div>
 
@@ -265,11 +265,11 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-brand-success/5 rounded-card p-4 border border-brand-success/20">
               <p className="text-xs font-bold text-brand-success uppercase tracking-wide mb-2">Good</p>
-              <p className="text-brand-charcoal text-sm leading-relaxed text-kr-wrap">{displayResult.checkGood}</p>
+              <p className="text-brand-charcoal text-sm leading-7 text-kr-wrap">{displayResult.checkGood}</p>
             </div>
             <div className="bg-brand-warning/8 rounded-card p-4 border border-brand-warning/30">
               <p className="text-xs font-bold text-brand-accent-rose uppercase tracking-wide mb-2">Bad</p>
-              <p className="text-brand-charcoal text-sm leading-relaxed text-kr-wrap">{displayResult.checkBad}</p>
+              <p className="text-brand-charcoal text-sm leading-7 text-kr-wrap">{displayResult.checkBad}</p>
             </div>
           </div>
         </div>
@@ -340,7 +340,7 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
             <span className="theory-badge">Attachment Theory</span>
           </div>
           <div className="bg-brand-highlight rounded-card p-6 border border-brand-border">
-            <p className="text-brand-charcoal leading-relaxed text-sm text-kr-wrap">{displayResult.psychologicalAnalysis}</p>
+            <p className="text-brand-charcoal leading-7 text-sm text-kr-wrap">{displayResult.psychologicalAnalysis}</p>
           </div>
         </div>
 

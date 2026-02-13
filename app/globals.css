@@ -4,13 +4,13 @@
 
 @layer base {
   body {
-    @apply bg-brand-cream text-brand-charcoal;
+    @apply bg-brand-cream text-brand-charcoal leading-relaxed;
   }
 }
 
 @layer components {
   .card {
-    @apply bg-brand-surface rounded-card shadow-card p-8 border border-brand-border;
+    @apply bg-brand-surface rounded-card shadow-card p-8 border border-brand-border text-left leading-relaxed;
   }
 
   /* 한글 줄바꿈: 단어 중간에서 끊기지 않게 (당신입니|다. 방지) */
@@ -35,7 +35,7 @@
   }
 
   .btn-answer {
-    @apply bg-brand-surface hover:bg-brand-highlight text-brand-charcoal font-medium py-4 px-6 rounded-button shadow-button hover:shadow-card-hover transform hover:scale-[1.02] transition-all duration-200 border border-brand-border hover:border-brand-accent/30;
+    @apply bg-brand-surface hover:bg-brand-highlight text-brand-charcoal font-medium py-4 px-6 rounded-button shadow-button hover:shadow-card-hover transform hover:scale-[1.02] transition-all duration-200 border border-brand-border hover:border-brand-accent/30 text-left leading-relaxed;
   }
 
   .section-label {

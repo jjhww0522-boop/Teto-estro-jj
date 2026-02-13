@@ -100,15 +100,6 @@ export const QUESTIONS_I18N: QuestionsI18nMap = {
         "\"Ready? One, two, three!\" He takes a straightforward shot and shows me right away.",
       ],
     },
-    10: {
-      question: "Right before the date ends, when asked \"Where should we go next?\", what's his answer?",
-      options: [
-        "\"It'd be a shame to part now! I know a cool pub nearby, want to check it out?\"",
-        "\"Today was really fun! How about we each rest comfortably at home now?\"",
-        "\"How about a cocktail somewhere quiet? We've been vibing so well today.\"",
-        "\"I should go thinking about tomorrow's work/school.. but it's a shame. Shall we walk a little more?\"",
-      ],
-    },
     11: {
       question: "When a gift I prepared is the complete opposite of his taste, how does he react?",
       options: [
@@ -246,15 +237,6 @@ export const QUESTIONS_I18N: QuestionsI18nMap = {
         "「はい、撮るよ？ 1、2、3！」素直に撮ってすぐ見せてくれる。",
       ],
     },
-    10: {
-      question: "デート終了直前、「二次会どこ行く？」への彼の答えは？",
-      options: [
-        "「このまま帰るのもったいない！おしゃれなバー知ってるんだけど、行かない？」",
-        "「今日は本当に楽しかった！もうお互い家でゆっくり休もうよ。」",
-        "「静かなところでカクテル一杯どう？今日すごく話が弾んだよね。」",
-        "「明日の仕事/学校を考えると帰らなきゃ..でも名残惜しいな。もう少しだけ歩こうか？」",
-      ],
-    },
     11: {
       question: "私が用意したプレゼントが彼の好みと正反対だったとき、彼の反応は？",
       options: [
@@ -390,15 +372,6 @@ export const QUESTIONS_I18N: QuestionsI18nMap = {
         "「你现在的表情太好了！」专注于捕捉氛围和那一瞬间的感觉。",
         "「拍到最满意的为止！」一边夸我一边热情地按快门。",
         "「来，拍了啊？一、二、三！」老实地拍完直接给我看。",
-      ],
-    },
-    10: {
-      question: "约会快结束时，问「接下来去哪？」，他的回答是？",
-      options: [
-        "「就这样分开太可惜了！我知道一家很酷的酒吧，要不要去？」",
-        "「今天真的很开心！现在各自回家好好休息吧？」",
-        "「找个安静的地方喝杯鸡尾酒怎么样？今天我们聊得特别投机。」",
-        "「想到明天还要上班/上学就该走了..好可惜。再走一会儿吧？」",
       ],
     },
     11: {
@@ -543,15 +516,6 @@ export const QUESTIONS_GIRLFRIEND_I18N: QuestionsI18nMap = {
         "\"Wow, I actually needed this!\" She's totally satisfied if the gift is practical.",
       ],
     },
-    10: {
-      question: "What's the typical theme of her \"what if~\" questions?",
-      options: [
-        "\"What if I turned into a zombie, what would you do?\" She loves wild, creative hypotheticals.",
-        "\"What if we get married someday, where should we live?\" She imagines a realistic future together.",
-        "\"What if I suddenly got sick, what would you do?\" She asks questions to confirm my love.",
-        "She doesn't really like \"what if\" questions and prefers to focus on reality.",
-      ],
-    },
     11: {
       question: "When I walk her home after a date, what's her final moment like?",
       options: [
@@ -689,15 +653,6 @@ export const QUESTIONS_GIRLFRIEND_I18N: QuestionsI18nMap = {
         "「わあ、ちょうど欲しかったやつ！」実用的なプレゼントだと大満足する。",
       ],
     },
-    10: {
-      question: "彼女が普段「もしも～」と聞いてくる質問の特徴は？",
-      options: [
-        "「もし私がゾンビになったらどうする？」突拍子もない想像を楽しむ。",
-        "「もし将来結婚したらどこに住もうか？」現実的な未来について想像する。",
-        "「もし私が急に病気になったらどうする？」私の愛を確かめたがる質問をする。",
-        "「もしも..」という質問自体があまり好きではなく、現実に集中する。",
-      ],
-    },
     11: {
       question: "デートの後、家まで送ったときの彼女の最後の姿は？",
       options: [
@@ -833,15 +788,6 @@ export const QUESTIONS_GIRLFRIEND_I18N: QuestionsI18nMap = {
         "（眼眶湿润）被我为她用心准备的心意感动到了。",
         "「谢谢！但这个不贵吧？」一半担心一半感激，先想到价格。",
         "「哇，我正好需要这个！」如果是实用的礼物就非常满意。",
-      ],
-    },
-    10: {
-      question: "她平时问的「如果～」问题的特点是？",
-      options: [
-        "「如果我变成僵尸了你怎么办？」喜欢天马行空的创意想象。",
-        "「如果以后我们结婚了住哪里？」对现实中的未来进行想象。",
-        "「如果我突然生病了你怎么办？」想确认我的爱有多深的问题。",
-        "不太喜欢「如果..」这类问题，更注重现实。",
       ],
     },
     11: {
