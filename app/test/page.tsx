@@ -42,14 +42,6 @@ function buildShuffledQuestions(questions: typeof QUESTIONS) {
 const SHUFFLED_QUESTIONS_BOYFRIEND = buildShuffledQuestions(QUESTIONS);
 const SHUFFLED_QUESTIONS_GIRLFRIEND = buildShuffledQuestions(QUESTIONS_GIRLFRIEND);
 
-/** locale별 subject 치환용 맵 */
-const SUBJECT_MAP: Record<string, { boyfriend: string; girlfriend: string }> = {
-  ko: { boyfriend: "그", girlfriend: "그녀" },
-  en: { boyfriend: "he", girlfriend: "she" },
-  ja: { boyfriend: "彼", girlfriend: "彼女" },
-  zh: { boyfriend: "他", girlfriend: "她" },
-};
-
 function TestContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -93,10 +85,11 @@ function TestContent() {
   // i18n 오버레이: locale !== "ko"일 때 번역 텍스트 사용
   const i18nMap = mode === "girlfriend" ? QUESTIONS_GIRLFRIEND_I18N : QUESTIONS_I18N;
   const i18nEntry = locale !== "ko" ? i18nMap[locale]?.[question.id] : null;
+  const useI18nText = locale !== "ko" && !!i18nEntry;
 
   let questionText: string;
-  if (i18nEntry && !isSelf) {
-    questionText = i18nEntry.question;
+  if (useI18nText) {
+    questionText = i18nEntry!.question;
   } else if (mode === "girlfriend" && !isSelf) {
     questionText = question.question;
   } else if (isSelf && mode === "girlfriend") {
@@ -109,7 +102,7 @@ function TestContent() {
   } else {
     questionText = formatQuestion(question.question, subject);
   }
-  if (isSelf) {
+  if (isSelf && locale === "ko") {
     questionText = questionText
       .replace(/나를 발견했을 때/g, "상대방을 발견했을 때")
       .replace(/내 사진을 찍어줄 때/g, "상대방의 사진을 찍어줄 때")
@@ -125,13 +118,13 @@ function TestContent() {
 
   // 옵션 텍스트 오버레이 (셀프 모드일 때는 '나' 시점 문장으로)
   const getOptionText = (option: OptionWithIndex): string => {
-    if (i18nEntry && i18nEntry.options[option.originalIndex] && !isSelf) {
-      return i18nEntry.options[option.originalIndex];
+    if (useI18nText && i18nEntry!.options[option.originalIndex]) {
+      return i18nEntry!.options[option.originalIndex];
     }
-    if (isSelf && mode === "girlfriend") {
+    if (isSelf && mode === "girlfriend" && locale === "ko") {
       return option.textSelf ?? formatOptionForSelfGirlfriend(option.text);
     }
-    if (isSelf) {
+    if (isSelf && locale === "ko") {
       const base = option.textSelf ?? option.text;
       return base
         .replace(/내 의견을 묻고/g, "상대방의 의견을 묻고")

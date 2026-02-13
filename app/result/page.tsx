@@ -10,7 +10,7 @@ import { LoadingFallback } from "@/components/LoadingFallback";
 import type { ResultType } from "@/data/results";
 import { useLocale } from "@/components/LocaleProvider";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://teto-potato-test.vercel.app";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://tetolab.com";
 
 function ResultContent() {
   const searchParams = useSearchParams();

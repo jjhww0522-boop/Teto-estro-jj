@@ -19,7 +19,8 @@ declare global {
   }
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://teto-potato-test.vercel.app";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://tetolab.com";
+const KAKAO_JS_KEY = process.env.NEXT_PUBLIC_KAKAO_KEY;
 
 interface CompatibilityCalculatorProps {
   currentSlug: string;
@@ -102,6 +103,14 @@ export default function CompatibilityCalculator({
   const resultCacheRef = useRef<Record<string, { score: number; description: string; category: CompatibilityCategory }>>({});
   const CATEGORY_LABEL = getCategoryLabels(t);
 
+  const ensureKakaoReady = useCallback(() => {
+    if (typeof window === "undefined" || !window.Kakao || !KAKAO_JS_KEY) return false;
+    if (!window.Kakao.isInitialized()) {
+      window.Kakao.init(KAKAO_JS_KEY);
+    }
+    return true;
+  }, []);
+
   const isFemaleResult = currentSlug.endsWith("_f");
   const otherSlugs = ALL_RESULT_SLUGS.filter(
     (s) => s !== currentSlug && (isFemaleResult ? !s.endsWith("_f") : s.endsWith("_f"))
@@ -156,12 +165,9 @@ export default function CompatibilityCalculator({
   }, [view, targetSlug, currentSlug]);
 
   const shareKakaoCompatibility = useCallback(() => {
-    if (typeof window === "undefined" || !window.Kakao) {
+    if (!ensureKakaoReady()) {
       alert(t("result.kakaoUnavailable"));
       return;
-    }
-    if (!window.Kakao.isInitialized()) {
-      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_KEY || "3226a5c1a88b15cf36cbd977ec3b1821");
     }
     const targetName = targetSlug ? RESULTS_DATA[targetSlug]?.type ?? targetSlug : "";
     const title = `${currentResult.emoji} ${currentResult.type} × ${targetName} ${RESULTS_DATA[targetSlug!]?.emoji ?? ""} ${score.toFixed(1)}%!`;
@@ -183,7 +189,7 @@ export default function CompatibilityCalculator({
         { title: t("result.tryTest"), link: { mobileWebUrl: BASE_URL, webUrl: BASE_URL } },
       ],
     });
-  }, [currentResult.type, targetSlug, score, description, currentSlug]);
+  }, [currentResult.type, targetSlug, score, description, currentSlug, ensureKakaoReady, t, isFemaleResult]);
 
   return (
     <section className="rounded-card bg-brand-surface p-6 border border-brand-border shadow-card">

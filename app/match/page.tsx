@@ -9,7 +9,7 @@ import type { ResultSlug } from "@/constants/results";
 import { useLocale } from "@/components/LocaleProvider";
 import { LoadingFallback } from "@/components/LoadingFallback";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://teto-potato-test.vercel.app";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://tetolab.com";
 
 function isValidSlug(s: string | null): s is ResultSlug {
   return s !== null && (ALL_RESULT_SLUGS as readonly string[]).includes(s);

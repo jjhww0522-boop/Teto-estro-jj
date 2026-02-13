@@ -20,7 +20,8 @@ declare global {
   }
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://teto-potato-test.vercel.app";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://tetolab.com";
+const KAKAO_JS_KEY = process.env.NEXT_PUBLIC_KAKAO_KEY;
 
 interface ResultViewProps {
   result: ResultType;
@@ -83,14 +84,20 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
   const displayGoodMatch = toPartnerMatchNames(result.goodMatch, resultSlug);
   const displayBadMatch = toPartnerMatchNames(result.badMatch, resultSlug);
 
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_KEY || "3226a5c1a88b15cf36cbd977ec3b1821");
+  const ensureKakaoReady = useCallback(() => {
+    if (typeof window === "undefined" || !window.Kakao || !KAKAO_JS_KEY) return false;
+    if (!window.Kakao.isInitialized()) {
+      window.Kakao.init(KAKAO_JS_KEY);
     }
+    return true;
   }, []);
 
+  useEffect(() => {
+    ensureKakaoReady();
+  }, [ensureKakaoReady]);
+
   const shareToKakao = () => {
-    if (!window.Kakao) {
+    if (!ensureKakaoReady()) {
       alert(t("result.kakaoUnavailable"));
       return;
     }

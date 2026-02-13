@@ -9,7 +9,7 @@ export default function MainChoice() {
   const { t } = useLocale();
 
   return (
-    <main className="min-h-screen bg-brand-cream flex flex-col font-sans relative overflow-hidden pt-16">
+    <main className="min-h-screen bg-brand-cream flex flex-col font-sans relative overflow-hidden pt-12 md:pt-16">
       {/* 우측 상단 언어 설정 */}
       <div className="absolute top-4 right-4 z-20">
         <LanguageSwitcher />
@@ -25,14 +25,14 @@ export default function MainChoice() {
       />
 
       {/* 좌우 이등분 큰 버튼 */}
-      <div className="flex-1 flex z-10">
+      <div className="flex-1 flex flex-col md:flex-row z-10">
         {/* 왼쪽: 나의 성향 분석하기 */}
         <Link
           href="/gender-select"
-          className="flex-1 flex flex-col items-center justify-center p-6 md:p-12 min-h-[50vh] md:min-h-0 border-r border-brand-border/50"
+          className="flex-1 flex flex-col items-center justify-center p-5 md:p-12 min-h-[42vh] md:min-h-0 md:border-r border-brand-border/50"
         >
           <motion.div
-            className="w-full max-w-md aspect-square flex flex-col items-center justify-center rounded-card bg-brand-highlight border-2 border-brand-accent/30 shadow-card hover:shadow-card-hover p-8 text-center"
+            className="w-full max-w-md md:aspect-square flex flex-col items-center justify-center rounded-card bg-brand-highlight border-2 border-brand-accent/30 shadow-card hover:shadow-card-hover p-7 md:p-8 text-center"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -50,10 +50,10 @@ export default function MainChoice() {
         {/* 오른쪽: 내 애인 분석하기 */}
         <Link
           href="/partner-select"
-          className="flex-1 flex flex-col items-center justify-center p-6 md:p-12 min-h-[50vh] md:min-h-0"
+          className="flex-1 flex flex-col items-center justify-center p-5 md:p-12 min-h-[42vh] md:min-h-0"
         >
           <motion.div
-            className="w-full max-w-md aspect-square flex flex-col items-center justify-center rounded-card bg-brand-surface border-2 border-brand-border shadow-card hover:shadow-card-hover p-8 text-center"
+            className="w-full max-w-md md:aspect-square flex flex-col items-center justify-center rounded-card bg-brand-surface border-2 border-brand-border shadow-card hover:shadow-card-hover p-7 md:p-8 text-center"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -72,7 +72,7 @@ export default function MainChoice() {
       </div>
 
       {/* 하단 로고/브랜드 */}
-      <div className="z-10 py-4 text-center">
+      <div className="z-10 py-3 md:py-4 text-center">
         <p className="text-xs text-brand-muted font-medium">Tetolab</p>
       </div>
     </main>

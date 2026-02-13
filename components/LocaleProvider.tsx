@@ -31,7 +31,7 @@ const LocaleContext = createContext<LocaleState | null>(null);
 export function LocaleProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>("ko");
   const [translations, setTranslations] = useState<Translations>((koFallback as Translations));
-  const [ready, setReady] = useState(true);
+  const [ready, setReady] = useState(false);
 
   const load = useCallback(async (l: Locale) => {
     const tr = await loadTranslations(l);
@@ -39,12 +39,17 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    let cancelled = false;
     const stored = getLocaleFromStorage();
     setLocaleState(stored);
-    if (stored !== "ko") {
-      setReady(false);
-      load(stored).then(() => setReady(true));
-    }
+    load(stored)
+      .catch(() => {})
+      .finally(() => {
+        if (!cancelled) setReady(true);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [load]);
 
   const setLocale = useCallback(
@@ -53,7 +58,9 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
       setLocaleCookie(l);
       setLocaleStorage(l);
       setReady(false);
-      load(l).then(() => setReady(true));
+      load(l)
+        .catch(() => {})
+        .finally(() => setReady(true));
     },
     [load]
   );
@@ -65,6 +72,8 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     },
     [translations]
   );
+
+  if (!ready) return null;
 
   return (
     <LocaleContext.Provider value={{ locale, translations, setLocale, t }}>
