@@ -194,11 +194,18 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
     try {
       const button = document.getElementById("download-story-btn");
       if (button) button.textContent = t("result.savingStory");
+      if (typeof document !== "undefined" && "fonts" in document) {
+        await (document as Document & { fonts: FontFaceSet }).fonts.ready;
+      }
       const canvas = await html2canvas(storyCard, {
         backgroundColor: null,
         scale: 3,
         logging: false,
         useCORS: true,
+        width: storyCard.scrollWidth,
+        height: storyCard.scrollHeight,
+        windowWidth: storyCard.scrollWidth,
+        windowHeight: storyCard.scrollHeight,
       });
       const fileName = `${displayResult.type}_${t("result.downloadStorySuffix")}.png`;
       const shared = await shareCanvasToMobileGallery(canvas, fileName);
@@ -251,7 +258,7 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
             </p>
           )}
           <h1
-            className="font-bold text-brand-charcoal whitespace-nowrap max-w-full text-sm min-[400px]:text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl px-0.5"
+            className="font-bold text-brand-charcoal whitespace-normal break-words text-kr-wrap max-w-full text-sm min-[400px]:text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl px-0.5"
             style={{ letterSpacing: "-0.04em" }}
           >
             {displayResult.type}:{"\u00A0"}{displayResult.title}
