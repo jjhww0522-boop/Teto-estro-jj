@@ -130,6 +130,35 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
     alert(t("result.linkCopied"));
   };
 
+  const shareCanvasToMobileGallery = useCallback(async (canvas: HTMLCanvasElement, fileName: string) => {
+    if (typeof navigator === "undefined" || !navigator.share) return false;
+
+    const isMobileDevice = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (!isMobileDevice) return false;
+
+    const blob = await new Promise<Blob | null>((resolve) => {
+      canvas.toBlob(resolve, "image/png");
+    });
+    if (!blob) return false;
+
+    const imageFile = new File([blob], fileName, { type: "image/png" });
+    const canShareFiles =
+      typeof navigator.canShare === "function" && navigator.canShare({ files: [imageFile] });
+    if (!canShareFiles) return false;
+
+    try {
+      await navigator.share({ files: [imageFile], title: fileName });
+      alert(t("result.imageSaved"));
+      return true;
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") {
+        return true;
+      }
+      console.error("Mobile share save failed:", error);
+      return false;
+    }
+  }, [t]);
+
   const downloadImage = async () => {
     if (!resultCardRef.current) return;
     try {
@@ -141,12 +170,18 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
         logging: false,
         useCORS: true,
       });
-      const link = document.createElement("a");
-      link.download = `${displayResult.type}_${t("result.downloadResultSuffix")}.png`;
-      link.href = canvas.toDataURL("image/png");
-      link.click();
+      const fileName = `${displayResult.type}_${t("result.downloadResultSuffix")}.png`;
+      const shared = await shareCanvasToMobileGallery(canvas, fileName);
+      if (!shared) {
+        const link = document.createElement("a");
+        link.download = fileName;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      }
       if (button) button.textContent = t("result.saveImage");
-      alert(t("result.imageSaved"));
+      if (!shared) {
+        alert(t("result.imageSaved"));
+      }
     } catch (error) {
       console.error("이미지 저장 실패:", error);
       alert(t("result.imageFail"));
@@ -165,12 +200,18 @@ export default function ResultView({ result, shareUrl, resultSlug, matchMe, dime
         logging: false,
         useCORS: true,
       });
-      const link = document.createElement("a");
-      link.download = `${displayResult.type}_${t("result.downloadStorySuffix")}.png`;
-      link.href = canvas.toDataURL("image/png");
-      link.click();
+      const fileName = `${displayResult.type}_${t("result.downloadStorySuffix")}.png`;
+      const shared = await shareCanvasToMobileGallery(canvas, fileName);
+      if (!shared) {
+        const link = document.createElement("a");
+        link.download = fileName;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      }
       if (button) button.textContent = t("result.saveStory");
-      alert(t("result.storySaved"));
+      if (!shared) {
+        alert(t("result.storySaved"));
+      }
     } catch (error) {
       console.error("스토리 이미지 저장 실패:", error);
       alert(t("result.imageFail"));
