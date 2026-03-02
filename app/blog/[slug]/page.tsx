@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getBlogPost, getBlogPosts } from "@/data/blog";
+import AdSenseUnit from "@/components/AdSenseUnit";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://tetolab.com";
 
@@ -63,10 +64,16 @@ export default async function BlogPostPage({ params }: Props) {
         </p>
       </header>
 
+      {/* 본문 상단 광고 */}
+      <AdSenseUnit adSlot="" adFormat="auto" className="mb-6" />
+
       <div
         className="prose prose-sm max-w-none text-brand-charcoal leading-relaxed text-kr-wrap whitespace-pre-line"
         dangerouslySetInnerHTML={{ __html: escapeHtmlAndNewlines(post.content) }}
       />
+
+      {/* 본문 하단 광고 */}
+      <AdSenseUnit adSlot="" adFormat="auto" className="mt-8" />
 
       <footer className="mt-10 pt-6 border-t border-brand-border">
         <Link

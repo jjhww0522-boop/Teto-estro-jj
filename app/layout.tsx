@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { LocaleProvider } from "@/components/LocaleProvider";
 import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import AgentationDevTool from "@/components/AgentationDevTool";
 
 export const viewport: Viewport = {
@@ -76,6 +77,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased flex flex-col min-h-screen">
         <LocaleProvider>
+          <Header />
           <main className="flex-1">{children}</main>
           <Footer />
           <AgentationDevTool />
