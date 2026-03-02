@@ -3,7 +3,7 @@ import { getBlogPosts } from "@/data/blog";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tetolab.com";
-  const lastModified = new Date("2026-02-12");
+  const lastModified = new Date(); // 빌드 시점의 현재 날짜 (동적)
   const posts = getBlogPosts();
 
   const resultTypes = [

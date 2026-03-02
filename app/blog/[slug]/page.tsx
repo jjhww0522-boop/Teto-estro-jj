@@ -58,10 +58,18 @@ export default async function BlogPostPage({ params }: Props) {
         <h1 className="text-2xl font-bold text-brand-charcoal mt-3 text-kr-wrap">
           {post.title}
         </h1>
-        <p className="text-sm text-brand-muted mt-2">
-          {post.createdAt}
-          {post.updatedAt !== post.createdAt && ` · 수정 ${post.updatedAt}`}
-        </p>
+        {/* 작성자 + 날짜 */}
+        <div className="flex items-center gap-2 mt-3">
+          <span className="flex items-center gap-1.5 text-xs text-brand-muted">
+            <span className="w-6 h-6 rounded-full bg-brand-accent/10 flex items-center justify-center text-sm">🧪</span>
+            <span className="font-medium text-brand-charcoal">테토 연구소 리서치팀</span>
+          </span>
+          <span className="text-brand-muted text-xs">·</span>
+          <span className="text-xs text-brand-muted">
+            {post.createdAt}
+            {post.updatedAt !== post.createdAt && ` · 수정 ${post.updatedAt}`}
+          </span>
+        </div>
       </header>
 
       {/* 본문 상단 광고 */}
