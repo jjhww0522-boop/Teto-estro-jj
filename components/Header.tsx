@@ -47,6 +47,13 @@ export default function Header() {
               </Link>
             );
           })}
+          {/* 타로 앱 바로가기 */}
+          <Link
+            href="/tarot"
+            className="ml-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors text-amber-600 hover:text-amber-700 hover:bg-amber-50 border border-amber-200 hover:border-amber-300"
+          >
+            🔮 타로
+          </Link>
         </nav>
       </div>
     </header>
