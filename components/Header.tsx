@@ -50,9 +50,10 @@ export default function Header() {
           {/* 타로 앱 바로가기 */}
           <Link
             href="/tarot"
-            className="ml-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors text-amber-600 hover:text-amber-700 hover:bg-amber-50 border border-amber-200 hover:border-amber-300"
+            className="ml-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors text-amber-600 hover:text-amber-700 hover:bg-amber-50 border border-amber-200 hover:border-amber-300 flex items-center gap-1"
           >
-            🔮 타로
+            🔮 타로점 보기
+            <span className="text-[10px] font-bold text-white bg-amber-500 rounded px-1 py-0.5 leading-none">NEW</span>
           </Link>
         </nav>
       </div>
