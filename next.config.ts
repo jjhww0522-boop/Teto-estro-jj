@@ -1,5 +1,6 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
   async rewrites() {
     return [
       // ── 타로 앱 (990taro) → tetolab.com/tarot 프록시 ──────────────────────
@@ -22,4 +23,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig
+export default nextConfig;
