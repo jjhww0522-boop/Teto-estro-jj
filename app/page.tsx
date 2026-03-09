@@ -39,34 +39,34 @@ export default function HomePage() {
       {/* 서비스 카드 섹션 */}
       <section className="max-w-2xl mx-auto px-4 pb-10">
         <h2 className="text-lg font-black text-brand-charcoal mb-4">제공 서비스</h2>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3">
           <Link
             href="/gender-select"
-            className="flex flex-col gap-2 p-4 bg-brand-highlight rounded-xl border border-brand-accent/30 hover:shadow-sm transition-all"
+            className="flex flex-col items-center gap-1.5 p-3 sm:p-4 bg-brand-highlight rounded-xl border border-brand-accent/30 hover:shadow-sm transition-all text-center"
           >
             <span className="text-2xl">🥔</span>
-            <strong className="text-sm font-black text-brand-charcoal">나의 성향 분석</strong>
-            <p className="text-xs text-brand-muted leading-relaxed">
+            <strong className="text-[11px] sm:text-sm font-black text-brand-charcoal leading-tight">나의 성향 분석</strong>
+            <p className="hidden sm:block text-xs text-brand-muted leading-relaxed">
               15가지 연애 상황에 답변하고 나의 테토·에스트로 성향을 확인해보세요.
             </p>
           </Link>
           <Link
             href="/partner-select"
-            className="flex flex-col gap-2 p-4 bg-white rounded-xl border border-brand-border hover:shadow-sm transition-all"
+            className="flex flex-col items-center gap-1.5 p-3 sm:p-4 bg-white rounded-xl border border-brand-border hover:shadow-sm transition-all text-center"
           >
             <span className="text-2xl">💕</span>
-            <strong className="text-sm font-black text-brand-charcoal">연인 성향 분석</strong>
-            <p className="text-xs text-brand-muted leading-relaxed">
+            <strong className="text-[11px] sm:text-sm font-black text-brand-charcoal leading-tight">연인 성향 분석</strong>
+            <p className="hidden sm:block text-xs text-brand-muted leading-relaxed">
               연인을 관찰한 내용으로 답변하면 상대방의 유형을 정밀 분석해드립니다.
             </p>
           </Link>
           <Link
             href="/tarot"
-            className="flex flex-col gap-2 p-4 bg-white rounded-xl border border-brand-border hover:shadow-sm transition-all"
+            className="flex flex-col items-center gap-1.5 p-3 sm:p-4 bg-white rounded-xl border border-brand-border hover:shadow-sm transition-all text-center"
           >
             <span className="text-2xl">✨</span>
-            <strong className="text-sm font-black text-brand-charcoal">별빛 타로 (New!)</strong>
-            <p className="text-xs text-brand-muted leading-relaxed">
+            <strong className="text-[11px] sm:text-sm font-black text-brand-charcoal leading-tight">별빛 타로 <span className="text-brand-accent">New</span></strong>
+            <p className="hidden sm:block text-xs text-brand-muted leading-relaxed">
               AI 타로 리딩으로 연애운·금전운·건강운을 카드 세 장으로 살펴보세요.
             </p>
           </Link>
