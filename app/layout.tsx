@@ -67,6 +67,34 @@ export default function RootLayout({
           crossOrigin="anonymous"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"
         />
+        {/* WebSite + Organization JSON-LD */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "WebSite",
+                  "@id": `${SITE_URL}/#website`,
+                  "name": "테토 연구소",
+                  "url": SITE_URL,
+                  "description": "연인 테토력 분석부터 나의 연애 유형 셀프진단, AI 타로까지 — 테토 연구소",
+                  "inLanguage": "ko-KR",
+                  "publisher": { "@id": `${SITE_URL}/#organization` },
+                },
+                {
+                  "@type": "Organization",
+                  "@id": `${SITE_URL}/#organization`,
+                  "name": "테토 연구소",
+                  "url": SITE_URL,
+                  "description": "심리학 이론 기반 연애 유형 분석 서비스. Big Five, 애착 이론, 스턴버그 사랑의 삼각형 이론 적용.",
+                  "sameAs": [`${SITE_URL}/about`],
+                },
+              ],
+            }),
+          }}
+        />
       </head>
       <body className="antialiased flex flex-col min-h-screen">
         <LocaleProvider>

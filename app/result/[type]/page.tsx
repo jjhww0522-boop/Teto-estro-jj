@@ -172,6 +172,35 @@ export default async function ResultTypePage({ params }: PageProps) {
             </span>
           </div>
         </section>
+
+        {(displayResult.checkGood || displayResult.checkBad) && (
+          <section className="mb-6">
+            <h2 className="text-lg font-bold text-gray-800 mb-2">장점 &amp; 주의점</h2>
+            <div className="flex flex-col gap-2">
+              {displayResult.checkGood && (
+                <div className="flex items-start gap-2 p-3 bg-green-50 rounded-lg border border-green-100">
+                  <span className="text-green-500 font-bold text-sm mt-0.5">✓</span>
+                  <p className="text-sm text-gray-700">{displayResult.checkGood}</p>
+                </div>
+              )}
+              {displayResult.checkBad && (
+                <div className="flex items-start gap-2 p-3 bg-amber-50 rounded-lg border border-amber-100">
+                  <span className="text-amber-500 font-bold text-sm mt-0.5">!</span>
+                  <p className="text-sm text-gray-700">{displayResult.checkBad}</p>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
+        {displayResult.lovePattern && (
+          <section className="mb-6">
+            <h2 className="text-lg font-bold text-gray-800 mb-2">연애 패턴 심층 분석</h2>
+            <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
+              {displayResult.lovePattern}
+            </p>
+          </section>
+        )}
       </article>
 
       {/* Client-rendered interactive result view */}

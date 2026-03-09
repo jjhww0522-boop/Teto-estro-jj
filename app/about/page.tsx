@@ -80,7 +80,39 @@ const characters = [
 ];
 
 export default function AboutPage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "AboutPage",
+        "@id": `${BASE_URL}/about`,
+        "name": "테토 연구소 소개",
+        "url": `${BASE_URL}/about`,
+        "description":
+          "테토 연구소는 Big Five 성격 모델, 애착 이론, 스턴버그의 사랑의 삼각형 이론을 기반으로 8가지 연애 유형을 분석하는 인터랙티브 심리 테스트 서비스입니다.",
+        "inLanguage": "ko-KR",
+        "publisher": {
+          "@type": "Organization",
+          "name": "테토 연구소",
+          "url": BASE_URL,
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "홈", "item": BASE_URL },
+          { "@type": "ListItem", "position": 2, "name": "소개", "item": `${BASE_URL}/about` },
+        ],
+      },
+    ],
+  };
+
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
     <div className="min-h-screen p-6 max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold text-gray-800 mb-2">
         테토 연구소 소개
@@ -298,5 +330,6 @@ export default function AboutPage() {
         </Link>
       </div>
     </div>
+    </>
   );
 }

@@ -72,8 +72,9 @@ export default function MainChoice() {
       </div>
 
       {/* 하단 로고/브랜드 */}
-      <div className="z-10 py-3 md:py-4 text-center">
-        <p className="text-xs text-brand-muted font-medium">Tetolab</p>
+      <div className="z-10 py-3 md:py-4 text-center border-t border-brand-border/40">
+        <p className="text-xs text-brand-muted font-medium mb-1">Tetolab</p>
+        <p className="text-[11px] text-brand-muted/60">심리 유형 분석 · 연인 분석 · AI 타로</p>
       </div>
     </main>
   );

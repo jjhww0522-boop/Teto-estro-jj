@@ -40,7 +40,50 @@ export default async function BlogPostPage({ params }: Props) {
   const post = getBlogPost(slug);
   if (!post) notFound();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${BASE_URL}/blog/${post.slug}`,
+        "headline": post.title,
+        "description": post.description,
+        "datePublished": post.createdAt,
+        "dateModified": post.updatedAt,
+        "inLanguage": "ko-KR",
+        "author": {
+          "@type": "Organization",
+          "name": "테토 연구소 리서치팀",
+          "url": BASE_URL,
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "테토 연구소",
+          "url": BASE_URL,
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": `${BASE_URL}/blog/${post.slug}`,
+        },
+        "articleSection": post.category,
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "홈", "item": BASE_URL },
+          { "@type": "ListItem", "position": 2, "name": "블로그", "item": `${BASE_URL}/blog` },
+          { "@type": "ListItem", "position": 3, "name": post.title, "item": `${BASE_URL}/blog/${post.slug}` },
+        ],
+      },
+    ],
+  };
+
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
     <article className="min-h-screen p-6 max-w-2xl mx-auto">
       <div className="mb-6">
         <Link
@@ -92,6 +135,7 @@ export default async function BlogPostPage({ params }: Props) {
         </Link>
       </footer>
     </article>
+    </>
   );
 }
 

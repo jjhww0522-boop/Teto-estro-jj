@@ -32,6 +32,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
+  const typeSlugs = ["teto", "potato", "egen", "sweet_potato", "cheese", "salsa", "ehem", "era"];
+  const typeGuideUrls = typeSlugs.map((slug) => ({
+    url: `${baseUrl}/types/${slug}`,
+    lastModified,
+    changeFrequency: "monthly" as const,
+    priority: 0.75,
+  }));
+
+  // 타로 서비스 경로 (tetolab.com/tarot → Vercel rewrite 프록시)
+  const tarotUrls = [
+    { path: "/tarot",             priority: 0.8  },
+    { path: "/tarot/about",       priority: 0.6  },
+    { path: "/tarot/guide",       priority: 0.6  },
+    { path: "/tarot/tarot-guide", priority: 0.6  },
+  ].map(({ path, priority }) => ({
+    url: `${baseUrl}${path}`,
+    lastModified,
+    changeFrequency: "monthly" as const,
+    priority,
+  }));
+
   return [
     {
       url: baseUrl,
@@ -82,5 +103,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     })),
     ...resultUrls,
+    ...typeGuideUrls,
+    ...tarotUrls,
+    {
+      url: `${baseUrl}/types`,
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
   ];
 }
