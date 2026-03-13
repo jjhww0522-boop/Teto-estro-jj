@@ -114,6 +114,13 @@ export default function AboutPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
     <div className="min-h-screen p-6 max-w-2xl mx-auto">
+      {/* Breadcrumb */}
+      <nav className="flex items-center gap-2 text-xs text-brand-muted mb-6">
+        <Link href="/" className="hover:underline">홈</Link>
+        <span>›</span>
+        <span className="text-brand-charcoal font-medium">소개</span>
+      </nav>
+
       <h1 className="text-2xl font-bold text-gray-800 mb-2">
         테토 연구소 소개
       </h1>

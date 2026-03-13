@@ -67,12 +67,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/match`,
-      lastModified,
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    },
-    {
       url: `${baseUrl}/about`,
       lastModified,
       changeFrequency: "monthly" as const,
@@ -108,6 +102,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.6,
     })),
+    // 블로그 카테고리 허브 페이지
+    ...["연애 심리", "커플 소통법", "테토 캐릭터", "심리학 이론", "관계 심리", "연애 조언", "애착 이론"]
+      .map((cat) => ({
+        url: `${baseUrl}/blog/category/${encodeURIComponent(cat)}`,
+        lastModified,
+        changeFrequency: "monthly" as const,
+        priority: 0.65,
+      })),
     ...resultUrls,
     ...typeGuideUrls,
     ...tarotUrls,

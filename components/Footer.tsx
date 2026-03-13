@@ -27,6 +27,14 @@ export default function Footer() {
           <Link href="/blog" className="text-brand-muted hover:text-brand-accent underline underline-offset-2">
             {t("footer.blog")}
           </Link>
+          <span className="text-brand-border">|</span>
+          <Link href="/faq" className="text-brand-muted hover:text-brand-accent underline underline-offset-2">
+            FAQ
+          </Link>
+          <span className="text-brand-border">|</span>
+          <Link href="/types" className="text-brand-muted hover:text-brand-accent underline underline-offset-2">
+            유형 가이드
+          </Link>
         </nav>
 
         <p className="text-xs text-brand-muted leading-relaxed max-w-xl mx-auto pt-2">

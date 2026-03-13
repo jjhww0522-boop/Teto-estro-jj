@@ -123,6 +123,13 @@ export default function FaqPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <main className="max-w-2xl mx-auto px-4 py-10">
+        {/* Breadcrumb */}
+        <nav className="flex items-center gap-2 text-xs text-brand-muted mb-6">
+          <Link href="/" className="hover:underline">홈</Link>
+          <span>›</span>
+          <span className="text-brand-charcoal font-medium">FAQ</span>
+        </nav>
+
         <header className="mb-8">
           <h1 className="text-2xl font-black text-brand-charcoal mb-2">
             자주 묻는 질문

@@ -130,6 +130,15 @@ export default async function ResultTypePage({ params }: PageProps) {
 
       {/* Server-rendered SEO content - visible to crawlers */}
       <article className="max-w-2xl mx-auto px-6 pt-6">
+        {/* Breadcrumb */}
+        <nav className="flex items-center gap-2 text-xs text-gray-500 mb-4">
+          <Link href="/" className="hover:underline">홈</Link>
+          <span>›</span>
+          <Link href="/types" className="hover:underline">유형 가이드</Link>
+          <span>›</span>
+          <span className="text-gray-700 font-medium">{displayResult.type} 유형</span>
+        </nav>
+
         <header className="mb-6">
           <h1 className="text-2xl font-bold text-gray-800">
             {result.emoji} {displayResult.type}: {displayResult.title}
@@ -229,16 +238,41 @@ export default async function ResultTypePage({ params }: PageProps) {
             );
           })}
         </div>
-        <div className="mt-6 flex gap-4 text-sm">
+        <div className="mt-6 flex flex-wrap gap-3 text-sm">
           <Link href="/test" className="text-pink-500 hover:underline font-medium">
             {t(translations, "result.retakeTestLink")}
           </Link>
           <Link href="/about" className="text-pink-500 hover:underline font-medium">
             {t(translations, "result.aboutLabLink")}
           </Link>
-          <Link href="/match" className="text-pink-500 hover:underline font-medium">
-            {t(translations, "result.chemistryMatchLink")}
-          </Link>
+          {/* 유형 가이드 딥링크 */}
+          {SLUG_INFO[type]?.gender === "남" && (
+            <Link href={`/types/${type}`} className="text-pink-500 hover:underline font-medium">
+              {SLUG_INFO[type]?.name}남 유형 상세 가이드 →
+            </Link>
+          )}
+        </div>
+
+        {/* 관련 블로그 */}
+        <div className="mt-8 p-4 bg-gray-50 rounded-xl border border-gray-200">
+          <h2 className="text-sm font-bold text-gray-700 mb-3">관련 심리 콘텐츠</h2>
+          <ul className="space-y-2">
+            <li>
+              <Link href="/blog/attachment-style-love-type" className="text-sm text-pink-500 hover:underline">
+                애착 유형으로 알아보는 나의 연애 스타일
+              </Link>
+            </li>
+            <li>
+              <Link href="/blog/five-love-languages" className="text-sm text-pink-500 hover:underline">
+                5가지 사랑의 언어 — 연인과 다른 언어를 쓰고 있진 않나요?
+              </Link>
+            </li>
+            <li>
+              <Link href="/blog" className="text-xs text-gray-500 hover:underline">
+                연애 심리 블로그 전체 보기 →
+              </Link>
+            </li>
+          </ul>
         </div>
       </nav>
     </>
